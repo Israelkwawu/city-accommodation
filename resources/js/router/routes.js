@@ -1,0 +1,44 @@
+const routes = [
+    {
+        path: '/',
+        component: () => import(/* webpackChunkName: "users" */'../views/users/HomeView.vue'),
+        name: 'home'
+    },
+    {
+        path: '/about',
+        component: () => import(/* webpackChunkName: "users" */'../views/users/AboutView.vue'),
+        name: 'about'
+    },
+    {
+        path: '/contact',
+        component: () => import(/* webpackChunkName: "users" */'../views/users/ContactView.vue'),
+        name: 'contact'
+    },
+    {
+        path: '/property-agent',
+        component: () => import(/* webpackChunkName: "users" */'../views/users/PropertyAgentView.vue'),
+        name: 'property_agent'
+    },
+    {
+        path: '/property-list',
+        component: () => import(/* webpackChunkName: "users" */'../views/users/PropertyListView.vue'),
+        name: 'property_list'
+    },
+    {
+        path: '/property-type',
+        component: () => import(/* webpackChunkName: "users" */'../views/users/PropertyTypeView.vue'),
+        name: 'property_type'
+    },
+    {
+        path: '/testimonial',
+        component: () => import(/* webpackChunkName: "users" */'../views/users/TestimonialView.vue'),
+        name: 'testimonial'
+    },
+    {
+        path: '*',
+        component: () => import(/* webpackChunkName: "users" */'../views/users/404View.vue'),
+        name: 'not_found'
+    }
+]
+
+export default routes;
