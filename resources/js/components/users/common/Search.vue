@@ -22,10 +22,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-none d-sm-block">
                     <button class="btn btn-dark border-0 w-100 py-3"><i class="fa fa-cog"></i></button>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 d-none d-sm-block">
                     <button class="btn btn-dark border-0 w-100 py-3">Search</button>
                 </div>
             </div>
@@ -58,11 +58,17 @@
                                 <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="height: 55px">
                             <vue-range-slider v-model="value" tooltip-dir="bottom" :process-style="processStyle" :enable-cross="enableCross" :tooltip-style="tooltipStyle"  :bg-style="bgStyle" :min="min" :max="max" :formatter="formatter"></vue-range-slider>
                         </div>
-                        <div class="col-md-6">
-                            <div id="dp"><Datepicker v-model="dateRange" :show-picker-inital="true" placeholder="Property Listing Date Interval" showClearButton="true" range="true" circle="true" lang="en" /></div>
+                        <div class="col-md-3" >
+                            <Datepicker id="date-picker" class="d-block pa-0" style="--v-calendar-datepicker-icon-color: #26c49f; --v-calendar-active-bg-color: #26c49f;  --v-calendar-input-text-color: #212529; width: 100%;" v-model="dateRange" :show-picker-inital="true" placeholder="Property Listing Date Interval" :showClearButton="showClearButton" :range="range" :circle="circle" :lang="lang" />
+                        </div>
+                        <div class="col-md-1 d-sm-none d-block">
+                            <button class="btn btn-dark border-0 w-100 py-3"><i class="fa fa-cog"></i></button>
+                        </div>
+                        <div class="col-md-2  d-sm-none d-block">
+                            <button class="btn btn-dark border-0 w-100 py-3">Search</button>
                         </div>
                     </div>
                 </div>
@@ -77,42 +83,20 @@ import 'vue-range-component/dist/vue-range-slider.css';
 import VueRangeSlider from 'vue-range-component';
 import 'vue-datepicker-ui/lib/vuedatepickerui.css';
 import VueDatepickerUi from 'vue-datepicker-ui';
-import VueTypeHead from 'vue-typeahead';
 export default {
     name: "Search",
     components: {
         VueRangeSlider,
-        Datepicker: VueDatepickerUi,
-        VueTypeHead
+        Datepicker: VueDatepickerUi
     },
     data() {
         return {
-        value: [0, 10000000],
-        dateRange: '',
-        // The source url
-        // (required)
-        src: '...',
-
-        // The data that would be sent by request
-        // (optional)
-        data: {},
-
-        // Limit the number of items which is shown at the list
-        // (optional)
-        limit: 5,
-
-        // The minimum character length needed before triggering
-        // (optional)
-        minChars: 3,
-
-        // Highlight the first item in the list
-        // (optional)
-        selectFirst: false,
-
-        // Override the default value (`q`) of query parameter name
-        // Use a falsy value for RESTful query
-        // (optional)
-        queryParamName: 'search'
+            value: [0, 10000000],
+            dateRange: '',
+            range: true,
+            circle: true,
+            showClearButton: true,
+            lang: "en",
         }
     },
     computed: {
@@ -125,18 +109,6 @@ export default {
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
-        // The callback function which is triggered when the user hits on an item
-        // (required)
-        onHit (item) {
-        // alert(item)
-        },
-
-        // The callback function which is triggered when the response data are received
-        // (optional)
-        prepareResponseData (data) {
-        // data = ...
-        return data
-        }
     },
     created() {
         this.min = 0;
@@ -161,10 +133,15 @@ export default {
 }
 </script>
 <style scoped>
-.datePicker {
+#date-picker >>> .input-field input {
+    width: 100%;
+    color: #212529;
+    background-color: #f8fafc;
+    border-radius: 0.25rem;
+    height: 55px;
 }
-#dp .v-calendar .input-field svg.datepicker {
-    fill: red;
+#date-picker >>> .input-field input::placeholder {
+    color: #212529;
 }
 
 li.active {
