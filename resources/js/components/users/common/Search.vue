@@ -23,51 +23,61 @@
                     </div>
                 </div>
                 <div class="col-md-1 d-none d-sm-block">
-                    <button class="btn btn-dark border-0 w-100 py-3"><i class="fa fa-cog"></i></button>
+                    <button @click="toggleAdvanceFilter = !toggleAdvanceFilter" class="btn btn-dark border-0 w-100 py-3"><i class="fa fa-cog"></i></button>
                 </div>
                 <div class="col-md-2 d-none d-sm-block">
                     <button class="btn btn-dark border-0 w-100 py-3">Search</button>
                 </div>
             </div>
         </div>
-        <div class="container my-2">
+        <transition>
+            <div v-if="toggleAdvanceFilter" class="container my-2">
+                <div class="row g-2">
+                    <div class="col-md-12">
+                        <div class="row g-2">
+                            <div class="col-md-3">
+                                <select class="form-select border-0 py-3">
+                                    <option hidden disabled selected>Status</option>
+                                    <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select border-0 py-3">
+                                    <option hidden disabled selected>Property Sub Type</option>
+                                    <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select border-0 py-3">
+                                    <option hidden disabled selected>State</option>
+                                    <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select border-0 py-3">
+                                    <option hidden disabled selected>City</option>
+                                    <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" style="height: 55px">
+                                <vue-range-slider v-model="value" tooltip-dir="bottom" :process-style="processStyle" :enable-cross="enableCross" :tooltip-style="tooltipStyle"  :bg-style="bgStyle" :min="min" :max="max" :formatter="formatter"></vue-range-slider>
+                            </div>
+                            <div class="col-md-3" >
+                                <Datepicker id="date-picker" class="d-block pa-0" style="--v-calendar-datepicker-icon-color: #26c49f; --v-calendar-active-bg-color: #26c49f;  --v-calendar-input-text-color: #212529; width: 100%;" v-model="dateRange" :show-picker-inital="true" placeholder="Property Listing Date Interval" :showClearButton="showClearButton" :range="range" :circle="circle" :lang="lang" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </transition>
+        <div class="container my-2 d-sm-none">
             <div class="row g-2">
                 <div class="col-md-12">
                     <div class="row g-2">
-                        <div class="col-md-3">
-                            <select class="form-select border-0 py-3">
-                                <option hidden disabled selected>Status</option>
-                                <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
-                            </select>
+                        <div class="col-md-1">
+                            <button @click="toggleAdvanceFilter = !toggleAdvanceFilter" class="btn btn-dark border-0 w-100 py-3"><i class="fa fa-cog"></i></button>
                         </div>
-                        <div class="col-md-3">
-                            <select class="form-select border-0 py-3">
-                                <option hidden disabled selected>Property Sub Type</option>
-                                <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select border-0 py-3">
-                                <option hidden disabled selected>State</option>
-                                <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select border-0 py-3">
-                                <option hidden disabled selected>City</option>
-                                <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6" style="height: 55px">
-                            <vue-range-slider v-model="value" tooltip-dir="bottom" :process-style="processStyle" :enable-cross="enableCross" :tooltip-style="tooltipStyle"  :bg-style="bgStyle" :min="min" :max="max" :formatter="formatter"></vue-range-slider>
-                        </div>
-                        <div class="col-md-3" >
-                            <Datepicker id="date-picker" class="d-block pa-0" style="--v-calendar-datepicker-icon-color: #26c49f; --v-calendar-active-bg-color: #26c49f;  --v-calendar-input-text-color: #212529; width: 100%;" v-model="dateRange" :show-picker-inital="true" placeholder="Property Listing Date Interval" :showClearButton="showClearButton" :range="range" :circle="circle" :lang="lang" />
-                        </div>
-                        <div class="col-md-1 d-sm-none d-block">
-                            <button class="btn btn-dark border-0 w-100 py-3"><i class="fa fa-cog"></i></button>
-                        </div>
-                        <div class="col-md-2  d-sm-none d-block">
+                        <div class="col-md-2">
                             <button class="btn btn-dark border-0 w-100 py-3">Search</button>
                         </div>
                     </div>
@@ -97,6 +107,7 @@ export default {
             circle: true,
             showClearButton: true,
             lang: "en",
+            toggleAdvanceFilter: false,
         }
     },
     computed: {
@@ -144,7 +155,13 @@ export default {
     color: #212529;
 }
 
-li.active {
-    /* ... */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
