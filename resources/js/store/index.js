@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import search from './modules/search';
 import property_type from './modules/property_type';
 import country from './modules/country';
+import property_list from './modules/property_list';
 
 Vue.use(Vuex);
 
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
   modules: {
     search,
     property_type,
-    country
+    country,
+    property_list
   }
 })
 
