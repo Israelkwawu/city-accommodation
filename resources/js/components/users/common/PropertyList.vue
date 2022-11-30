@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                            <a class="btn btn-primary py-3 px-5" href="">Browse More Property</a>
+                            <browse-more-property href="fgf"></browse-more-property>
                         </div>
                     </div>
                 </div>
@@ -262,7 +262,7 @@
                             </div>
                         </div>
                         <div class="col-12 text-center">
-                            <a class="btn btn-primary py-3 px-5" href="">Browse More Property</a>
+                            <browse-more-property href="er"></browse-more-property>
                         </div>
                     </div>
                 </div>
@@ -383,7 +383,7 @@
                             </div>
                         </div>
                         <div class="col-12 text-center">
-                            <a class="btn btn-primary py-3 px-5" href="">Browse More Property</a>
+                            <browse-more-property href="gggggggggggggg"></browse-more-property>
                         </div>
                     </div>
                 </div>
@@ -394,7 +394,35 @@
 
 </template>
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import BrowseMoreProperty from './BrowseMoreProperty.vue';
 export default {
-    name: "PropertyList"
+    name: "PropertyList",
+
+    components: {
+        BrowseMoreProperty
+    },
+
+    data() {
+        return {
+            featured: [],
+            rent: [],
+            sell: [],
+        }
+    },
+
+    computed: {
+        ...mapGetters("property_list", ["getPropertyList", "getNextPageUrl", "getError"]),
+    },
+
+    methods: {
+        ...mapActions("property_list", ["getMorePropertyList"]),  
+        filterRent() {},
+        filterSell() {}
+    },
+
+    created() {
+        this.getMorePropertyList();
+    }
 }
 </script>
