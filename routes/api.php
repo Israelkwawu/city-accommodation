@@ -39,4 +39,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/search', [SearchController::class, 'filter']);
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/property_types', [PropertyTypeController::class, 'index']);
-Route::get('/property_list', [PropertyListController::class, 'index']);
+Route::get('/property_lists', [PropertyListController::class, 'index']);
