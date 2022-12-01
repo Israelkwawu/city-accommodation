@@ -1,15 +1,8 @@
 <template>
-    <a class="btn btn-primary py-3 px-5" :href="href">Browse More Property</a>
+    <a class="btn btn-primary py-3 px-5" href="javascript:void(0)">Browse More Property</a>
 </template>
 <script>
 export default {
-    name: "BrowseMoreProperty",
-
-    props: {
-        href: {
-            type: String,
-            required: true
-        }
-    }
+    name: "BrowseMoreProperty"
 }
 </script>
