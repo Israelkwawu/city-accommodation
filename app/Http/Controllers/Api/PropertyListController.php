@@ -11,6 +11,6 @@ class PropertyListController extends Controller
 {
     public function index()
     { 
-        return response()->json(Listing::cursorPaginate(5));
+        return response()->json(Listing::cursorPaginate(6));
     }
 }
