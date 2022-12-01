@@ -60,7 +60,7 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved. 
+                        &copy; <a class="border-bottom" href="#">{{ app_name }}</a>, All Right Reserved. 
                         
                     </div>
                     <div class="col-md-6 text-center text-md-end">
@@ -79,6 +79,12 @@
 </template>
 <script>
 export default {
-    name: "TheFooter"
+    name: "TheFooter",
+
+    data() {
+        return {
+            app_name: process.env.MIX_APP_NAME
+        }
+    }
 }
 </script>
