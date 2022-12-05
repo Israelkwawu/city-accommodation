@@ -28,7 +28,7 @@
         "autoprefixer": "10.4.5",
         "js-cookie": "^3.0.1",
         "vue-datepicker-ui": "^2.3.0",
-        "vue-range-component": "^1.0.3",
+        "vue-slider-component": "^3.2.23",
         "vue-typeahead": "^2.3.2",
         "vuex": "^3.6.2"
     }
