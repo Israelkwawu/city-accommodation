@@ -60,10 +60,10 @@
                                 </select>
                             </div>
                             <div class="col-md-6" style="height: 55px">
-                                <vue-range-slider v-model="value" tooltip-dir="bottom" :process-style="processStyle" :enable-cross="enableCross" :tooltip-style="tooltipStyle"  :bg-style="bgStyle" :min="min" :max="max" :formatter="formatter"></vue-range-slider>
+                                <vue-slider :min="min" :max="max" height="6px" tooltipPlacement="bottom" v-model="value" :tooltipFormatter="formatter" :process-style="processStyle" :enable-cross="enableCross" :tooltipStyle="tooltipStyle"></vue-slider>
                             </div>
                             <div class="col-md-3" >
-                                <Datepicker id="date-picker" class="d-block pa-0" style="--v-calendar-datepicker-icon-color: #26c49f; --v-calendar-active-bg-color: #26c49f;  --v-calendar-input-text-color: #212529; width: 100%;" v-model="dateRange" :show-picker-inital="true" placeholder="Property Listing Date Interval" :showClearButton="showClearButton" :range="range" :circle="circle" :lang="lang" />
+                                <Datepicker id="date-picker" position="center" class="d-block pa-0" style="--v-calendar-datepicker-icon-color: #26c49f; --v-calendar-active-bg-color: #26c49f;  --v-calendar-input-text-color: #212529; width: 100%;" v-model="selectedDate" :show-picker-inital="true" placeholder="Property Listing Date Interval" :showClearButton="showClearButton" :range="range" :circle="circle" :lang="lang" />
                             </div>
                         </div>
                     </div>
@@ -89,25 +89,33 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import 'vue-range-component/dist/vue-range-slider.css';
-import VueRangeSlider from 'vue-range-component';
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
 import 'vue-datepicker-ui/lib/vuedatepickerui.css';
 import VueDatepickerUi from 'vue-datepicker-ui';
 export default {
     name: "Search",
     components: {
-        VueRangeSlider,
+        VueSlider,
         Datepicker: VueDatepickerUi
     },
     data() {
         return {
             value: [0, 10000000],
-            dateRange: '',
+            selectedDate: [],
             range: true,
             circle: true,
             showClearButton: true,
             lang: "en",
             toggleAdvanceFilter: false,
+        }
+    },
+    watch: {
+        selectedDate(v) {
+            console.log(v);
+        },
+        value(v){
+            console.log(v);
         }
     },
     computed: {
@@ -133,8 +141,9 @@ export default {
             borderColor: '#0E2E50'
         };
         this.enableCross = false;
+        this.useKeyboard = true;
         this.processStyle = {
-          backgroundColor: '#0E2E50'
+            backgroundColor: '#0E2E50'
         }
     },
     mounted() {
