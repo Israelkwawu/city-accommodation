@@ -38,17 +38,17 @@ export default {
     actions: {
         async getMorePropertyList({ commit }, payload) {
             try {
-               const data = await Api().get('/property_lists?cursor='+ payload.next_cursor);
-               commit('SET_PROPERTY_LISTS', data.data.data);
-               commit('SET_NEXT_PAGE_URL', data.data.next_page_url);
-               commit('SET_NEXT_CURSOR', data.data.next_cursor);
+                const data = await Api().get('/property_lists?cursor='+ payload.next_cursor);
+                commit('SET_PROPERTY_LISTS', data.data.data);
+                commit('SET_NEXT_PAGE_URL', data.data.next_page_url);
+                commit('SET_NEXT_CURSOR', data.data.next_cursor);
             } catch (error) {
                 commit('SET_ERROR',  {
                     error: error,
                     errorMessage: "An unexpected error occurred.",
                 })
             }
-           
+        
         }
     },
 }
