@@ -35,6 +35,12 @@ const routes = [
         name: 'testimonial'
     },
     {
+        path: '/search',
+        props: true,
+        component: () => import(/* webpackChunkName: "users" */'../views/users/SearchView.vue'),
+        name: 'search'
+    },
+    {
         path: '*',
         component: () => import(/* webpackChunkName: "users" */'../views/users/404View.vue'),
         name: 'not_found'
