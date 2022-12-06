@@ -1,5 +1,5 @@
 <template>
-            <!-- Search Start -->
+    <!-- Search Start -->
     <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
         <div class="container">
             <div class="row g-2">
@@ -9,13 +9,13 @@
                             <input type="text" class="form-control border-0 py-3" placeholder="Search Keyword">
                         </div>
                         <div class="col-md-4">
-                            <select class="form-select border-0 py-3">
+                            <select @change="extractSubPropertyType($event.target.value)" class="form-select border-0 py-3">
                                 <option hidden disabled selected>Property Type</option>
                                 <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <select class="form-select border-0 py-3">
+                            <select @change="extractState($event.target.value)" class="form-select border-0 py-3">
                                 <option hidden disabled selected>Country</option>
                                 <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
                             </select>
@@ -38,25 +38,27 @@
                             <div class="col-md-3">
                                 <select class="form-select border-0 py-3">
                                     <option hidden disabled selected>Status</option>
-                                    <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
+                                    <option value="buy">Buy</option>
+                                    <option value="sell">Sell</option>
+                                    <option value="rent">Rent</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <select class="form-select border-0 py-3">
                                     <option hidden disabled selected>Property Sub Type</option>
-                                    <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
+                                    <option v-for="(sub_property_type, index) in subPropertyTypes" :key="index" :value="sub_property_type">{{ ucfirst(sub_property_type) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <select class="form-select border-0 py-3">
+                                <select @change="extractCity($event.target.value)" class="form-select border-0 py-3">
                                     <option hidden disabled selected>State</option>
-                                    <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
+                                    <option v-for="(state, index) in states" :key="index" :value="state.name">{{ ucfirst(state.name) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <select class="form-select border-0 py-3">
                                     <option hidden disabled selected>City</option>
-                                    <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
+                                    <option v-for="(city, index) in cities" :key="index" :value="city.name">{{ ucfirst(city.name) }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6" style="height: 55px">
@@ -108,6 +110,10 @@ export default {
             showClearButton: true,
             lang: "en",
             toggleAdvanceFilter: false,
+            subPropertyTypes: [],
+            states: [],
+            cities: [],
+            request: {},
         }
     },
     watch: {
@@ -127,6 +133,21 @@ export default {
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        strToObject(string) {
+            return JSON.parse(string);
+        },
+        extractState(country) {
+            let selectedCountry = this.getCountries.find(countryObj => countryObj.country == country);
+            this.states = [ ...this.strToObject(selectedCountry.states_cities) ];
+        },
+        extractCity(state) {
+            let selectedState = this.states.find(stateObj => stateObj.name == state);
+            this.cities = [ ...selectedState.cities ];
+        },
+        extractSubPropertyType(property_type) {
+            let selectedProperty = this.getPropertyTypes.find(properTypeObj => properTypeObj.category == property_type);
+            this.subPropertyTypes = [ ...this.strToObject(selectedProperty.subcategories) ];
         },
     },
     created() {
