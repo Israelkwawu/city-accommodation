@@ -62,7 +62,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6" style="height: 55px">
-                                <vue-slider :min="min" :max="max" height="6px" tooltipPlacement="bottom" v-model="price" :tooltipFormatter="formatter" :process-style="processStyle" :enable-cross="enableCross" :tooltipStyle="tooltipStyle"></vue-slider>
+                                <vue-slider :min="min" :max="max" height="6px" tooltipPlacement="bottom" v-model="price" :tooltipFormatter="formatter" :process-style="processStyle" :enable-cross="enableCross" :tooltipStyle="tooltipStyle" disabled-end-date="disabledEndDate"></vue-slider>
                             </div>
                             <div class="col-md-3" >
                                 <Datepicker id="date-picker" position="center" class="d-block pa-0" style="--v-calendar-datepicker-icon-color: #26c49f; --v-calendar-active-bg-color: #26c49f;  --v-calendar-input-text-color: #212529; width: 100%;" v-model="selectedDate" :show-picker-inital="true" placeholder="Property Listing Date Interval" :showClearButton="showClearButton" :range="range" :circle="circle" :lang="lang" />
@@ -91,7 +91,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import ListingBuilder from '../../../services/ListingBuilder';
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import 'vue-datepicker-ui/lib/vuedatepickerui.css';
@@ -106,6 +105,10 @@ export default {
         return {
             price: [0, 10000000],
             selectedDate: [ null, new Date()],
+            disabledEndDate: {
+                to: new Date(),
+                from: new Date('01.12.2022')
+            },
             range: true,
             circle: true,
             showClearButton: true,
@@ -167,7 +170,17 @@ export default {
             this.selectedStatus = status;
         },
         formatDate(date_string) {
+            // Create a date object from a date string
+            var date = new Date(date_string);
 
+            // Get year, month, and day part from the date
+            var year = date.toLocaleString("default", { year: "numeric" });
+            var month = date.toLocaleString("default", { month: "2-digit" });
+            var day = date.toLocaleString("default", { day: "2-digit" });
+
+            // Generate yyyy-mm-dd date string
+            var formattedDate = [year, month, day].join('-');
+            return formattedDate;
         },
         search() {
 
@@ -192,28 +205,21 @@ export default {
                 this.request.state = this.selectedState;
                 this.request.city = this.selectedCity;
                 this.request.price = this.price.join();
-                this.request.created_at = this.selectedDate;
+                this.request.created_at = this.selectedDate.map(this.formatDate).join();
             }
-            
-            
-            const BuildRequest = new ListingBuilder(this.request);
 
-            BuildRequest.hasName()
-            .hasCity()
-            .hasCountry()
-            .hasCreatedAt()
-            .hasPrice()
-            .hasPropertyType()
-            .hasState()
-            .hasStatus()
-            .hasSubPropertyType();
+            if (this.$route.name != "search") {
+                this.$router.push({
+                    name: 'search',
+                    params: {
+                        ...this.request
+                    }
+                }).catch(()=>{});
+            }else{
+                this.$emit('request', this.request)
+            }
         
-            this.$router.push({
-                name: 'search',
-                params: {
-                    ...BuildRequest.build()
-                }
-            });
+            
         }
     },
     created() {
