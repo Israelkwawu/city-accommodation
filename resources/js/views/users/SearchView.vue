@@ -35,7 +35,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import ListingBuilder from '../../services/ListingBuilder';
 import Spinner from '../../components/users/common/Spinner.vue';
 import Navbar from '../../components/users/common/Navbar.vue';
 import TheHeader from '../../components/users/common/TheHeader.vue';
@@ -98,30 +97,6 @@ export default {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
     },
-    mounted() {
-        const L = new ListingBuilder({
-            "name": "Golden Urban House For Sell",
-            "property_type": "residential",
-            "sub_property_type": "single-family house",
-            "status": "sell",
-            "price": "12500,14000",
-            "country": "Ghana",
-            "state": "Western",
-            "city": "Takoradi",
-            "created_at": "2022-11-09,2022-11-10"
-        });
-
-        L.hasName()
-        .hasCity()
-        .hasCountry()
-        .hasCreatedAt()
-        .hasPrice()
-        .hasPropertyType()
-        .hasState()
-        .hasStatus()
-        .hasSubPropertyType();
-        
-        console.log(L.build());
-    }
+    mounted() {}
 }
 </script>
