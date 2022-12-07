@@ -3,7 +3,7 @@
         <spinner></spinner>
         <navbar></navbar>
         <the-header title="Search Result" page="Search"></the-header>
-        <search></search>
+        <search @request="onRequest"></search>
         <div class="row g-4">
             <div v-for="(result ,index) in results" :key="index" class="col-lg-4 col-md-6 wow fadeInUp" :data-wow-delay="(index%3) == 0 ?'0.1s':(index%3) == 1 ?'0.3s':(index%3) == 2?'0.5s':''">
                 <div class="property-item rounded overflow-hidden">
@@ -35,6 +35,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import ListingBuilder from '../../services/ListingBuilder';
 import Spinner from '../../components/users/common/Spinner.vue';
 import Navbar from '../../components/users/common/Navbar.vue';
 import TheHeader from '../../components/users/common/TheHeader.vue';
@@ -68,6 +69,8 @@ export default {
     data() {
         return {
             results: [],
+            request: {},
+            isRequest: false
         }
     },
 
@@ -85,7 +88,24 @@ export default {
         ...mapActions("search", ["search"]),  
 
         async browseMoreSearchResults() {
-            await this.search({next_cursor: this.getNextCursor});
+            const BuildRequest = new ListingBuilder(this.request);
+
+            BuildRequest.hasName()
+            .hasCity()
+            .hasCountry()
+            .hasCreatedAt()
+            .hasPrice()
+            .hasPropertyType()
+            .hasState()
+            .hasStatus()
+            .hasSubPropertyType();
+
+            let input = BuildRequest.build();
+            let payload = {
+                next_cursor: this.getNextCursor,
+                request: input
+            };
+            await this.search(payload);
         },
         formatMoney(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -96,7 +116,61 @@ export default {
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
+        onRequest(payload) {
+            this.isRequest = true;
+            this.request = { ...payload };
+            this.onPageSearch(this.request);
+        },
+        async onPageSearch(request) {
+            const BuildRequest = new ListingBuilder(request);
+
+            BuildRequest.hasName()
+            .hasCity()
+            .hasCountry()
+            .hasCreatedAt()
+            .hasPrice()
+            .hasPropertyType()
+            .hasState()
+            .hasStatus()
+            .hasSubPropertyType();
+
+            let input = BuildRequest.build();
+            let payload = {
+                next_cursor: null,
+                request: input
+            };
+            await this.search(payload);
+            this.results = [ ...this.getSearchResults ];
+        },
+
+        async outPageSearch() {
+            if (!this.isRequest) {
+                this.request = { ...this.$props };  
+            }
+            
+            const BuildRequest = new ListingBuilder(this.request);
+
+            BuildRequest.hasName()
+            .hasCity()
+            .hasCountry()
+            .hasCreatedAt()
+            .hasPrice()
+            .hasPropertyType()
+            .hasState()
+            .hasStatus()
+            .hasSubPropertyType();
+
+            let input = BuildRequest.build();
+            let payload = {
+                next_cursor: null,
+                request: input
+            };
+            await this.search(payload);
+            this.results = [ ...this.getSearchResults ];
+        }
     },
-    mounted() {}
+    mounted() {
+        this.outPageSearch();
+    }
 }
 </script>
