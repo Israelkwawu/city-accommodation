@@ -1,6 +1,6 @@
 <template>
     <div class="container-xxl bg-white p-0">
-        <spinner></spinner>
+        <spinner v-if="isLoading"></spinner>
         <navbar></navbar>
         <the-header title="Search Result" page="Search"></the-header>
         <search @request="onRequest"></search>
@@ -68,6 +68,7 @@ export default {
 
     data() {
         return {
+            isLoading: false,
             results: [],
             request: {},
             isRequest: false
@@ -105,7 +106,9 @@ export default {
                 next_cursor: this.getNextCursor,
                 request: input
             };
+            this.isLoading = true;
             await this.search(payload);
+            this.isLoading = false;
         },
         formatMoney(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -139,8 +142,10 @@ export default {
                 next_cursor: null,
                 request: input
             };
+            this.isLoading = true;
             await this.search(payload);
             this.results = [ ...this.getSearchResults ];
+            this.isLoading = false;
         },
 
         async outPageSearch() {
@@ -170,7 +175,9 @@ export default {
         }
     },
     mounted() {
+        this.isLoading = true;
         this.outPageSearch();
+        this.isLoading = false;
     }
 }
 </script>

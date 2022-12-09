@@ -1,6 +1,6 @@
 <template>
     <div class="container-xxl bg-white p-0">
-        <spinner></spinner>
+        <spinner v-if="isLoading"></spinner>
         <navbar></navbar>
         <the-header title="Property Agent" page="Property Agent"></the-header>
         <search></search>
@@ -31,6 +31,20 @@ export default {
         CallToAction,
         TheFooter,
         BackToTop
+    },
+    
+    data() {
+        return {
+            isLoading: false,
+        }
+    },
+
+    beforeMount() {
+        this.isLoading = true;
+    },
+
+    mounted() {
+        this.isLoading = false;
     }
 }
 </script>

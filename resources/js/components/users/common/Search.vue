@@ -171,15 +171,15 @@ export default {
         },
         formatDate(date_string) {
             // Create a date object from a date string
-            var date = new Date(date_string);
+            let date = new Date(date_string);
 
             // Get year, month, and day part from the date
-            var year = date.toLocaleString("default", { year: "numeric" });
-            var month = date.toLocaleString("default", { month: "2-digit" });
-            var day = date.toLocaleString("default", { day: "2-digit" });
+            let year = date.toLocaleString("default", { year: "numeric" });
+            let month = date.toLocaleString("default", { month: "2-digit" });
+            let day = date.toLocaleString("default", { day: "2-digit" });
 
             // Generate yyyy-mm-dd date string
-            var formattedDate = [year, month, day].join('-');
+            let formattedDate = [year, month, day].join('-');
             return formattedDate;
         },
         search() {

@@ -31,6 +31,20 @@ export default {
         CallToAction,
         TheFooter,
         BackToTop
+    },
+    
+    data() {
+        return {
+            isLoading: false,
+        }
+    },
+
+    beforeMount() {
+        this.isLoading = true;
+    },
+
+    mounted() {
+        this.isLoading = false;
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="container-xxl bg-white p-0">
-        <spinner></spinner>
+        <spinner v-if="isLoading"></spinner>
         <navbar></navbar>
         <the-header title="Testimonial" page="Testimonial"></the-header>
         <search></search>
@@ -28,6 +28,20 @@ export default {
         Testimonial,
         TheFooter,
         BackToTop
+    },
+    
+    data() {
+        return {
+            isLoading: false,
+        }
+    },
+
+    beforeMount() {
+        this.isLoading = true;
+    },
+
+    mounted() {
+        this.isLoading = false;
     }
 }
 </script>
