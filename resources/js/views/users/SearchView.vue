@@ -4,6 +4,7 @@
         <navbar></navbar>
         <the-header title="Search Result" page="Search"></the-header>
         <search @request="onRequest"></search>
+        <no-results-found v-if="isNoResultsFound" :search_term="search_term"></no-results-found>
         <div class="row g-4">
             <div v-for="(result ,index) in results" :key="index" class="col-lg-4 col-md-6 wow fadeInUp" :data-wow-delay="(index%3) == 0 ?'0.1s':(index%3) == 1 ?'0.3s':(index%3) == 2?'0.5s':''">
                 <div class="property-item rounded overflow-hidden">
@@ -42,6 +43,7 @@ import TheHeader from '../../components/users/common/TheHeader.vue';
 import Search from '../../components/users/common/Search.vue';
 import TheFooter from '../../components/users/common/TheFooter.vue';
 import BackToTop from '../../components/users/common/BackToTop.vue';
+import NoResultsFound from '../../components/users/NoResultsFound.vue';
 export default {
     name: "SearchView",
 
@@ -63,7 +65,8 @@ export default {
         TheHeader,
         Search,
         TheFooter,
-        BackToTop
+        BackToTop,
+        NoResultsFound
     },
 
     data() {
@@ -71,7 +74,9 @@ export default {
             isLoading: false,
             results: [],
             request: {},
-            isRequest: false
+            isRequest: false,
+            isNoResultsFound: false,
+            search_term: '',
         }
     },
 
@@ -142,10 +147,15 @@ export default {
                 next_cursor: null,
                 request: input
             };
+
+            this.search_term = input.name;
             this.isLoading = true;
             await this.search(payload);
             this.results = [ ...this.getSearchResults ];
             this.isLoading = false;
+            if (this.results.length == 0) {
+                this.isNoResultsFound = true;
+            }
         },
 
         async outPageSearch() {
@@ -178,6 +188,10 @@ export default {
         this.isLoading = true;
         this.outPageSearch();
         this.isLoading = false;
+        if (this.results.length == 0) {
+            this.isNoResultsFound = true;
+            this.search_term = this.name;
+        }
     }
 }
 </script>

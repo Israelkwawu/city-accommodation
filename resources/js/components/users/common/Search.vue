@@ -128,9 +128,6 @@ export default {
         }
     },
     watch: {
-        selectedDate(v) {
-            console.log(v);
-        }
     },
     computed: {
         ...mapGetters("country", ["getCountries", "getError"]),

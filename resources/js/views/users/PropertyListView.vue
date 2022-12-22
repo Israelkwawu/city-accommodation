@@ -1,6 +1,6 @@
 <template>
     <div class="container-xxl bg-white p-0">
-        <spinner></spinner>
+        <spinner v-if="isLoading"></spinner>
         <navbar></navbar>
         <the-header title="Property List" page="Property List"></the-header>
         <search></search>
