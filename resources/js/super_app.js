@@ -10,7 +10,7 @@ import VueRouter from 'vue-router';
 // window.Vue = require('vue').default; /// I commentted this
 import router from './router/index';
 import store from './store/index';
-import App from './TheSuperApp.vue';
+import TheSuperApp from './TheSuperApp.vue';
 
 /**
  * The following block of code may be used to automatically register your
@@ -37,7 +37,7 @@ const app = new Vue({
     el: '#app',
     router,
     store,
-    components: {SuperApp}
+    components: {TheSuperApp}
 });
 
 

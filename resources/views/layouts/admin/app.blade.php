@@ -38,8 +38,11 @@
 
 </head>
 
-<body id="app" class="animsition">
-    <the-super-app></the-super-app>
+<body class="animsition">
+    <div id="app">
+        <the-super-app></the-super-app>
+    </div>
+    
 
     <!-- Jquery JS-->
     <script src="{{ asset('vendor/jquery-3.2.1.min.js') }}"></script>
