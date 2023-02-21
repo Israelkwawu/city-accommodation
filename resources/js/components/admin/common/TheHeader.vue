@@ -18,35 +18,21 @@
             <nav class="navbar-mobile">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
+                        <li class="">
+                            <a class="js-arrow" href="/super/dashboard">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
-                          <!--  <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="index.html">Dashboard 1</a>
-                                </li>
-                                <li>
-                                    <a href="index2.html">Dashboard 2</a>
-                                </li>
-                                <li>
-                                    <a href="index3.html">Dashboard 3</a>
-                                </li>
-                                <li>
-                                    <a href="index4.html">Dashboard 4</a>
-                                </li>
-                            </ul>-->
                         </li>
                         <li>
-                            <a href="chart.html">
-                                <i class="fas fa-chart-bar"></i>Charts</a>
+                            <a href="/super/add-listing">
+                                <i class="fas fa-plus"></i>Add Listing</a>
                         </li>
                         <li>
-                            <a href="table.html">
-                                <i class="fas fa-table"></i>Tables</a>
+                            <a href="/super/agents">
+                                <i class="fas fa-users"></i>Manage Agents</a>
                         </li>
                         <li>
-                            <a href="form.html">
-                                <i class="far fa-check-square"></i>Forms</a>
+                            <a href="/super/property-type">
+                                <i class="far fa-check-square"></i>Property Types</a>
                         </li>
                     </ul>
                 </div>
