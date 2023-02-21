@@ -41,6 +41,15 @@ const routes = [
         name: 'search'
     },
     {
+        path: '/super',
+        redirect: '/super/dashboard'
+    },
+    {
+        path: '/super/dashboard',
+        component: () => import(/* webpackChunkName: "super" */'../views/admin/DashboardView.vue'),
+        name: 'super.dashboard'
+    },
+    {
         path: '*',
         component: () => import(/* webpackChunkName: "users" */'../views/users/404View.vue'),
         name: 'not_found'
