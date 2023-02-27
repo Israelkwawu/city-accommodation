@@ -1518,7 +1518,6 @@
   (function ($) {
     // USE STRICT
     "use strict";
-  
     // Dropdown 
     try {
       var menu = $('.js-item-menu');

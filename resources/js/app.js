@@ -40,10 +40,4 @@ const app = new Vue({
     components: {App}
 });
 
-const super_app = new Vue({
-    el: '#super_app',
-    router,
-    store,
-    components: {App}
-});
 

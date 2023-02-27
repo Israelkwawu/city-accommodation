@@ -50,6 +50,21 @@ const routes = [
         name: 'super.dashboard'
     },
     {
+        path: '/super/add-listing',
+        component: () => import(/* webpackChunkName: "super" */'../views/admin/AddListingView.vue'),
+        name: 'super.add-listing'
+    },
+    {
+        path: '/super/agents',
+        component: () => import(/* webpackChunkName: "super" */'../views/admin/AgentsView.vue'),
+        name: 'super.agents'
+    },
+    {
+        path: '/super/property-type',
+        component: () => import(/* webpackChunkName: "super" */'../views/admin/PropertyTypeView.vue'),
+        name: 'super.property-type'
+    },
+    {
         path: '*',
         component: () => import(/* webpackChunkName: "users" */'../views/users/404View.vue'),
         name: 'not_found'

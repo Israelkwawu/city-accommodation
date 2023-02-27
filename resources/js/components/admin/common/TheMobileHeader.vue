@@ -4,10 +4,10 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
-                            <img src="images/icon/logo.png" alt="CoolAdmin" />
+                        <a class="logo title-2" href="/super/dashboard">
+                            {{ app_name }}
                         </a>
-                        <button class="hamburger hamburger--slider" type="button">
+                        <button @click="toggleHambugerMenu = !toggleHambugerMenu" class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
                                 <span class="hamburger-inner"></span>
                             </span>
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <nav class="navbar-mobile">
+            <nav class="navbar-mobile" :class="{'active' : toggleHambugerMenu}">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="">
@@ -43,6 +43,17 @@
 
 <script>
 export default {
-    name: "TheHeader",
+    name: "TheMobileHeader",
+    data() {
+        return {
+            app_name: process.env.MIX_APP_NAME,
+            toggleHambugerMenu: false,
+        }
+    }
 }
 </script>
+<style scoped>
+.active {
+    display: block;
+}
+</style>

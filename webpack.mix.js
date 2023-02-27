@@ -17,6 +17,7 @@ mix.js('resources/js/app.js', 'public/js')
     .version();
 
 mix.js('resources/js/super_app.js', 'public/js')
+    // .js('resources/js/super_main.js', 'public/js')
     .vue()
     .sass('resources/sass/super_app.scss', 'public/css')
     .version();
