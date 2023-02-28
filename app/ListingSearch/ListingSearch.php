@@ -39,7 +39,7 @@ class ListingSearch {
 
     private static function getResults(Builder $query)
     {
-        return $query->cursorPaginate(3);
+        return $query->cursorPaginate(51);
     }
 
 }

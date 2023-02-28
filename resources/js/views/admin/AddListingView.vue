@@ -16,8 +16,7 @@
                             <div class="col-md-12">
                                 <div class="overview-wrap">
                                     <h2 class="title-1">Listings</h2>
-                                    <button class="au-btn au-btn-icon au-btn--blue">
-                                        <i class="zmdi zmdi-plus"></i>add listing</button>
+                                
                                 </div>
                             </div>
                         </div>
@@ -48,16 +47,9 @@
                                             <i class="zmdi zmdi-filter-list"></i>filters</button>
                                     </div>
                                     <div class="table-data__tool-right">
-                                        <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-plus"></i>add item</button>
-                                        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
-                                            <select class="js-select2" name="type">
-                                                <option selected="selected">Export</option>
-                                                <option value="">Option 1</option>
-                                                <option value="">Option 2</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
+                                        <button  data-toggle="modal" data-target="#addListing" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                            <i class="zmdi zmdi-plus"></i>add listing</button>
+                                    
                                     </div>
                                 </div>
                                 <div class="table-responsive table-responsive-data2">
@@ -70,10 +62,9 @@
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </th>
-                                                <th>name</th>
-                                                <th>email</th>
-                                                <th>description</th>
-                                                <th>date</th>
+                                                <th>listing name</th>
+                                                <th>property type</th>
+                                                <th>country</th>
                                                 <th>status</th>
                                                 <th>price</th>
                                                 <th></th>
@@ -89,136 +80,31 @@
                                                 </td>
                                                 <td>Lori Lynch</td>
                                                 <td>
-                                                    <span class="block-email">lori@example.com</span>
+                                                    dtdrthdthrtyftydrf
                                                 </td>
-                                                <td class="desc">Samsung S8 Black</td>
-                                                <td>2018-09-27 02:12</td>
+                                                <td>Ghana</td>
                                                 <td>
                                                     <span class="status--process">Processed</span>
                                                 </td>
                                                 <td>$679.00</td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
-                                                            <i class="zmdi zmdi-mail-send"></i>
+                                                        <button class="item"  data-toggle="modal" data-target="#viewListing"  data-placement="top" title="View">
+                                                            <i class="zmdi zmdi-eye"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
+                                                        <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Upload">
+                                                            <i class="zmdi zmdi-upload"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                                            <i class="zmdi zmdi-more"></i>
+                                                        <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Delete">
+                                                            <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr class="spacer"></tr>
-                                            <tr class="tr-shadow">
-                                                <td>
-                                                    <label class="au-checkbox">
-                                                        <input type="checkbox">
-                                                        <span class="au-checkmark"></span>
-                                                    </label>
-                                                </td>
-                                                <td>Lori Lynch</td>
-                                                <td>
-                                                    <span class="block-email">john@example.com</span>
-                                                </td>
-                                                <td class="desc">iPhone X 64Gb Grey</td>
-                                                <td>2018-09-29 05:57</td>
-                                                <td>
-                                                    <span class="status--process">Processed</span>
-                                                </td>
-                                                <td>$999.00</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
-                                                            <i class="zmdi zmdi-mail-send"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="spacer"></tr>
-                                            <tr class="tr-shadow">
-                                                <td>
-                                                    <label class="au-checkbox">
-                                                        <input type="checkbox">
-                                                        <span class="au-checkmark"></span>
-                                                    </label>
-                                                </td>
-                                                <td>Lori Lynch</td>
-                                                <td>
-                                                    <span class="block-email">lyn@example.com</span>
-                                                </td>
-                                                <td class="desc">iPhone X 256Gb Black</td>
-                                                <td>2018-09-25 19:03</td>
-                                                <td>
-                                                    <span class="status--denied">Denied</span>
-                                                </td>
-                                                <td>$1199.00</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
-                                                            <i class="zmdi zmdi-mail-send"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="spacer"></tr>
-                                            <tr class="tr-shadow">
-                                                <td>
-                                                    <label class="au-checkbox">
-                                                        <input type="checkbox">
-                                                        <span class="au-checkmark"></span>
-                                                    </label>
-                                                </td>
-                                                <td>Lori Lynch</td>
-                                                <td>
-                                                    <span class="block-email">doe@example.com</span>
-                                                </td>
-                                                <td class="desc">Camera C430W 4k</td>
-                                                <td>2018-09-24 19:10</td>
-                                                <td>
-                                                    <span class="status--process">Processed</span>
-                                                </td>
-                                                <td>$699.00</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
-                                                            <i class="zmdi zmdi-mail-send"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                                            <i class="zmdi zmdi-more"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -240,10 +126,211 @@
             <!-- END PAGE CONTAINER-->
         </div>
 
+        
+			<!-- modal medium -->
+			<div class="modal fade" id="addListing" tabindex="-1" role="dialog" aria-labelledby="addListingLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="addListingLabel">Add Listing</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+                            <div class="card">
+                                    <div class="card-header">
+                                        <strong>Add Listing Form</strong>
+                                    </div>
+                                    <div class="card-body card-block">
+                                        <form action="" method="post" class="form-horizontal">
+                                        
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="text-input" class=" form-control-label">Property Name</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="text" id="text-input" v-model="name" class="form-control">
+                                                    <small class="form-text text-muted">This is a help text</small>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">Property Type</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select v-model="property_type" class="form-control">
+                                                        <option selected hidden disabled value="0">Please select</option>
+                                                        <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">Sub Property Type</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select v-model="sub_property_type" class="form-control">
+                                                        <option selected hidden disabled>Please select</option>
+                                                        <optgroup label="Resident">
+                                                            <option value="1">Option #1</option>
+                                                            <option value="2">Option #2</option>
+                                                        </optgroup>
+                                                        <optgroup label="Land">
+                                                            <option value="3">Option #3</option>
+                                                        </optgroup>
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label class=" form-control-label">Property Status</label>
+                                                </div>
+                                                <div class="col col-md-9">
+                                                    <div class="form-check-inline form-check">
+                                                        <label for="inline-radio1" class="form-check-label ">
+                                                            <input type="radio" id="inline-radio1" v-model="status" value="buy" class="form-check-input"> Buy &nbsp;
+                                                        </label>
+                                                        <label for="inline-radio2" class="form-check-label ">
+                                                            <input type="radio" id="inline-radio2" v-model="status" value="sell" class="form-check-input"> Sell &nbsp;
+                                                        </label>
+                                                        <label for="inline-radio3" class="form-check-label ">
+                                                            <input type="radio" id="inline-radio3" v-model="status" value="rent" class="form-check-input"> Rent &nbsp;
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="text-input" class=" form-control-label">Property Price</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="number" v-model="price" class="form-control">
+                                                    <small class="form-text text-muted">This is a help text</small>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">Country</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select @change="extractState($event.target.value)" v-model="country" class="form-control">
+                                                        <option selected hidden disabled>Please select</option>
+                                                        <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">State/Region</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select  @change="extractCity($event.target.value)" v-model="state" class="form-control">
+                                                        <option selected hidden disabled>Please select</option>
+                                                        <option v-for="(state, index) in states" :key="index" :value="state.name">{{ ucfirst(state.name) }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">City</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select v-model="city" class="form-control">
+                                                        <option selected hidden disabled>Please select</option>
+                                                        <option v-for="(city, index) in cities" :key="index" :value="city.name">{{ ucfirst(city.name) }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="text-input" class=" form-control-label">Property Address</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="text" id="text-input" v-model="address" class="form-control">
+                                                    <small class="form-text text-muted">This is a help text</small>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="multiple-select" class=" form-control-label">Attributes/Features</label>
+                                                </div>
+                                                <div class="col col-md-9">
+                                                    <select v-model="attributes" id="multiple-select" multiple class="form-control">
+                                                        <option value="1">Option #1</option>
+                                                        <option value="2">Option #2</option>
+                                                        <option value="3">Option #3</option>
+                                                        <option value="4">Option #4</option>
+                                                        <option value="5">Option #5</option>
+                                                        <option value="6">Option #6</option>
+                                                        <option value="7">Option #7</option>
+                                                        <option value="8">Option #8</option>
+                                                        <option value="9">Option #9</option>
+                                                        <option value="10">Option #10</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="textarea-input" class=" form-control-label">Property Description</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <textarea v-model="description" id="textarea-input" rows="4" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                            
+                                    
+                                        </form>
+                                    </div>
+                                </div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal medium -->
+
+            <!-- modal medium -->
+			<div class="modal fade" id="viewListing" tabindex="-1" role="dialog" aria-labelledby="viewListingLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="viewListingLabel">View Listing</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>
+								There are three species of zebras: the plains zebra, the mountain zebra and the Grévy's zebra. The plains zebra and the mountain
+								zebra belong to the subgenus Hippotigris, but Grévy's zebra is the sole species of subgenus Dolichohippus. The latter
+								resembles an ass, to which it is closely related, while the former two are more horse-like. All three belong to the
+								genus Equus, along with other living equids.
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary">Confirm</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal medium -->
+
     </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import TheMobileHeader from '../../components/admin/common/TheMobileHeader.vue';
 import TheDesktopHeader from '../../components/admin/common/TheDesktopHeader.vue';
 import TheSideBar from '../../components/admin/common/TheSideBar.vue';
@@ -260,7 +347,62 @@ export default {
         return {
             app_name: process.env.MIX_APP_NAME,
             year: new Date().getFullYear(),
+            name: "",
+            property_type: "",
+            sub_property_type: "",
+            status: "",
+            currency: "",
+            currency_symbol: "",
+            price: 0.00,
+            address: "",
+            country: "",
+            state: "",
+            city: "",
+            attributes: [],
+            description:"",
+            states: [],
+            cities: [],
         }
+    },
+    computed: {
+        ...mapGetters("country", ["getCountries", "getError"]),
+        ...mapGetters("property_type", ["getPropertyTypes", "getError"]),
+    },
+    methods: {
+        ...mapActions("country", ["getAllCountries"]),
+        ...mapActions("property_type", ["getAllPropertyTypes"]),  
+        ucfirst(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        strToObject(string) {
+            return JSON.parse(string);
+        },
+        extractState(country) {
+            let selectedCountry = this.getCountries.find(countryObj => countryObj.country == country);
+            this.states = [ ...this.strToObject(selectedCountry.states_cities) ];
+            this.selectedCountry = selectedCountry.country;
+        },
+        extractCity(state) {
+            let selectedState = this.states.find(stateObj => stateObj.name == state);
+            this.cities = [ ...selectedState.cities ];
+            this.state = selectedState.name;
+        },
+        getSelectedCity(city) {
+            this.city = city;
+        },
+        extractSubPropertyType(property_type) {
+            let selectedProperty = this.getPropertyTypes.find(properTypeObj => properTypeObj.category == property_type);
+            this.subPropertyTypes = [ ...this.strToObject(selectedProperty.subcategories) ];
+            this.selectedProperty = selectedProperty.category;
+        },
+    
+    },
+    created() {
+    
+    },
+    mounted() {
+        this.getAllCountries();
+        this.getAllPropertyTypes();
     }
 }
 </script>

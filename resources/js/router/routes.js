@@ -65,6 +65,16 @@ const routes = [
         name: 'super.property-type'
     },
     {
+        path: '/super/attributes',
+        component: () => import(/* webpackChunkName: "super" */'../views/admin/AttributesView.vue'),
+        name: 'super.attributes'
+    },
+    {
+        path: '/super/settings',
+        component: () => import(/* webpackChunkName: "super" */'../views/admin/SettingsView.vue'),
+        name: 'super.settings'
+    },
+    {
         path: '*',
         component: () => import(/* webpackChunkName: "users" */'../views/users/404View.vue'),
         name: 'not_found'

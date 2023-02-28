@@ -24,15 +24,15 @@ export default {
     actions: {
         async getAllCountries({ commit }) {
             try {
-               const data = await Api().get('/countries');
-               commit('SET_COUNTRIES', data.data)
+                const data = await Api().get('/countries');
+                commit('SET_COUNTRIES', data.data)
             } catch (error) {
                 commit('SET_ERROR',  {
                     error: error,
                     errorMessage: "An unexpected error occurred.",
                 })
             }
-           
+        
         }
     },
 }

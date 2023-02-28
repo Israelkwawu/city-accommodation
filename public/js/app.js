@@ -5583,6 +5583,18 @@ var routes = [{
   },
   name: 'super.property-type'
 }, {
+  path: '/super/attributes',
+  component: function component() {
+    return __webpack_require__.e(/*! import() | super */ "super").then(__webpack_require__.bind(__webpack_require__, /*! ../views/admin/AttributesView.vue */ "./resources/js/views/admin/AttributesView.vue"));
+  },
+  name: 'super.attributes'
+}, {
+  path: '/super/settings',
+  component: function component() {
+    return __webpack_require__.e(/*! import() | super */ "super").then(__webpack_require__.bind(__webpack_require__, /*! ../views/admin/SettingsView.vue */ "./resources/js/views/admin/SettingsView.vue"));
+  },
+  name: 'super.settings'
+}, {
   path: '*',
   component: function component() {
     return __webpack_require__.e(/*! import() | users */ "users").then(__webpack_require__.bind(__webpack_require__, /*! ../views/users/404View.vue */ "./resources/js/views/users/404View.vue"));

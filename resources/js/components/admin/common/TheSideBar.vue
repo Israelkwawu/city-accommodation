@@ -25,6 +25,14 @@
                             <a href="/super/property-type">
                                 <i class="far fa-check-square"></i>Property Types</a>
                         </li>
+                        <li :class="{ active: activePage == 'super.attributes' }">
+                            <a href="/super/attributes">
+                                <i class="fa fa-info-circle"></i>Property Features</a>
+                        </li>
+                        <li :class="{ active: activePage == 'super.settings' }">
+                            <a href="/super/settings">
+                                <i class="fa fa-gear"></i>Settings</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
