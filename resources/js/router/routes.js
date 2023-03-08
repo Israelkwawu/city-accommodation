@@ -65,6 +65,21 @@ const routes = [
         name: 'super.property-type'
     },
     {
+        path: '/-/login',
+        component: () => import(/* webpackChunkName: "private" */'../views/admin/LoginView.vue'),
+        name: 'private.login'
+    },
+    {
+        path: '/-/register',
+        component: () => import(/* webpackChunkName: "private" */'../views/admin/RegisterView.vue'),
+        name: 'private.register'
+    },
+    {
+        path: '/-/reset',
+        component: () => import(/* webpackChunkName: "private" */'../views/admin/ResetPasswordView.vue'),
+        name: 'private.reset'
+    },
+    {
         path: '/super/attributes',
         component: () => import(/* webpackChunkName: "super" */'../views/admin/AttributesView.vue'),
         name: 'super.attributes'

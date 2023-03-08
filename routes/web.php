@@ -26,6 +26,11 @@ use Illuminate\Support\Facades\Route;
 * All other routes should be handed over to vue router
 */
 
+
+Route::get('-/{any}', function () {
+    return view('layouts.admin.app');
+})->whereIn('any', ['login', 'register', 'reset']);
+
 Route::get('super/{any?}', function () {
     return view('layouts.admin.app');
 })->where('any', '.*');
