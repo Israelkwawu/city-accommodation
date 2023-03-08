@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\PropertyListController;
 use App\Http\Controllers\Api\PropertyTypeController;
+use App\Http\Controllers\Api\PropertyAttributeController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ Route::post('/auth/login', [AuthController::class, 'loginAdmin']);
 Route::middleware(['auth:sanctum'])->group(function () {
   Route::apiResource('listings', ListingController::class);
   Route::apiResource('image', ImageUploadController::class);
+  Route::apiResource('property_attributes', PropertyAttributeController::class);
+  Route::post('/auth/logout', [AuthController::class, 'logoutAdmin']);
 });
 
 Route::post('/search', [SearchController::class, 'filter']);
