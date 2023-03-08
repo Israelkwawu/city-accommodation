@@ -3,6 +3,7 @@
     "/js/super_app.js": "/js/super_app.js",
     "/js/users.js": "/js/users.js",
     "/js/super.js": "/js/super.js",
+    "/js/private.js": "/js/private.js",
     "/css/app.css": "/css/app.css",
     "/css/super_app.css": "/css/super_app.css"
 }

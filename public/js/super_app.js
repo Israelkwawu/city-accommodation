@@ -5528,6 +5528,24 @@ var routes = [{
   },
   name: 'super.property-type'
 }, {
+  path: '/-/login',
+  component: function component() {
+    return __webpack_require__.e(/*! import() | private */ "private").then(__webpack_require__.bind(__webpack_require__, /*! ../views/admin/LoginView.vue */ "./resources/js/views/admin/LoginView.vue"));
+  },
+  name: 'private.login'
+}, {
+  path: '/-/register',
+  component: function component() {
+    return __webpack_require__.e(/*! import() | private */ "private").then(__webpack_require__.bind(__webpack_require__, /*! ../views/admin/RegisterView.vue */ "./resources/js/views/admin/RegisterView.vue"));
+  },
+  name: 'private.register'
+}, {
+  path: '/-/reset',
+  component: function component() {
+    return __webpack_require__.e(/*! import() | private */ "private").then(__webpack_require__.bind(__webpack_require__, /*! ../views/admin/ResetPasswordView.vue */ "./resources/js/views/admin/ResetPasswordView.vue"));
+  },
+  name: 'private.reset'
+}, {
   path: '/super/attributes',
   component: function component() {
     return __webpack_require__.e(/*! import() | super */ "super").then(__webpack_require__.bind(__webpack_require__, /*! ../views/admin/AttributesView.vue */ "./resources/js/views/admin/AttributesView.vue"));
@@ -5547,6 +5565,37 @@ var routes = [{
   name: 'not_found'
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (routes);
+
+/***/ }),
+
+/***/ "./resources/js/services/api.js":
+/*!**************************************!*\
+  !*** ./resources/js/services/api.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  var authToken = js_cookie__WEBPACK_IMPORTED_MODULE_1__["default"].get("authToken");
+  return axios__WEBPACK_IMPORTED_MODULE_0___default().create({
+    baseURL: "http://127.0.0.1:8000" + "/api",
+    withCredentials: true,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: authToken ? "Bearer ".concat(authToken) : null
+    }
+  });
+});
 
 /***/ }),
 
@@ -5588,32 +5637,167 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _modules_search__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/search */ "./resources/js/store/modules/search.js");
-/* harmony import */ var _modules_property_type__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/property_type */ "./resources/js/store/modules/property_type.js");
-/* harmony import */ var _modules_country__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/country */ "./resources/js/store/modules/country.js");
-/* harmony import */ var _modules_property_list__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/property_list */ "./resources/js/store/modules/property_list.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex-persistedstate */ "./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js");
+/* harmony import */ var _modules_search__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/search */ "./resources/js/store/modules/search.js");
+/* harmony import */ var _modules_property_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/property_type */ "./resources/js/store/modules/property_type.js");
+/* harmony import */ var _modules_country__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/country */ "./resources/js/store/modules/country.js");
+/* harmony import */ var _modules_property_list__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/property_list */ "./resources/js/store/modules/property_list.js");
+/* harmony import */ var _modules_property_attribute__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/property_attribute */ "./resources/js/store/modules/property_attribute.js");
+/* harmony import */ var _modules_authentication__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/authentication */ "./resources/js/store/modules/authentication.js");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
 
 
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_5__["default"]);
-var store = new vuex__WEBPACK_IMPORTED_MODULE_5__["default"].Store({
+
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_8__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_9__["default"]);
+var store = new vuex__WEBPACK_IMPORTED_MODULE_9__["default"].Store({
+  plugins: [(0,vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    storage: {
+      getItem: function getItem(key) {
+        return js_cookie__WEBPACK_IMPORTED_MODULE_7__["default"].get(key);
+      },
+      setItem: function setItem(key, value) {
+        return js_cookie__WEBPACK_IMPORTED_MODULE_7__["default"].set(key, value, {
+          expires: 1,
+          secure: "false"
+        });
+      },
+      removeItem: function removeItem(key) {
+        return js_cookie__WEBPACK_IMPORTED_MODULE_7__["default"].remove(key);
+      }
+    }
+  })],
   state: {},
   getters: {},
   mutations: {},
   actions: {},
   modules: {
-    search: _modules_search__WEBPACK_IMPORTED_MODULE_0__["default"],
-    property_type: _modules_property_type__WEBPACK_IMPORTED_MODULE_1__["default"],
-    country: _modules_country__WEBPACK_IMPORTED_MODULE_2__["default"],
-    property_list: _modules_property_list__WEBPACK_IMPORTED_MODULE_3__["default"]
+    search: _modules_search__WEBPACK_IMPORTED_MODULE_1__["default"],
+    property_type: _modules_property_type__WEBPACK_IMPORTED_MODULE_2__["default"],
+    country: _modules_country__WEBPACK_IMPORTED_MODULE_3__["default"],
+    property_list: _modules_property_list__WEBPACK_IMPORTED_MODULE_4__["default"],
+    property_attribute: _modules_property_attribute__WEBPACK_IMPORTED_MODULE_5__["default"],
+    authentication: _modules_authentication__WEBPACK_IMPORTED_MODULE_6__["default"]
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/authentication.js":
+/*!******************************************************!*\
+  !*** ./resources/js/store/modules/authentication.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _services_user_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/user-api */ "./resources/js/services/user-api.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: {
+    authenticated: false,
+    user: {},
+    error: {}
+  },
+  getters: {
+    authenticated: function authenticated(state) {
+      return state.authenticated;
+    },
+    user: function user(state) {
+      return state.user;
+    },
+    getError: function getError(state) {
+      return state.error;
+    }
+  },
+  mutations: {
+    SET_AUTHENTICATED: function SET_AUTHENTICATED(state, value) {
+      state.authenticated = value;
+    },
+    SET_USER: function SET_USER(state, data) {
+      state.user = data;
+    },
+    SET_ERROR: function SET_ERROR(state, data) {
+      state.error = _objectSpread({}, data);
+    }
+  },
+  actions: {
+    login: function login(_ref, payload) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var commit;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                commit = _ref.commit;
+                console.log(paylaod); // try {
+                //     await axios.get('/sanctum/csrf-cookie')
+                //     const data = await Api().post("/auth/login", payload);
+                //     console.log(data);
+                //     commit('SET_USER',data);
+                //     commit('SET_AUTHENTICATED',true);
+                // } catch (error) {
+                //     commit('SET_USER',{});
+                //     commit('SET_AUTHENTICATED',false);
+                //     commit('SET_ERROR',  {
+                //         error: error,
+                //         errorMessage: "An unexpected error occurred.",
+                //     });
+                // }
+                // return axios.get('/api/user').then(({data})=>{
+                //     commit('SET_USER',data)
+                //     commit('SET_AUTHENTICATED',true)
+                //     router.push({name:'super.dashboard'})
+                // }).catch(({response:{data}})=>{
+                //     commit('SET_USER',{})
+                //     commit('SET_AUTHENTICATED',false)
+                // })
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    logout: function logout(_ref2) {
+      var commit = _ref2.commit;
+      commit('SET_USER', {});
+      commit('SET_AUTHENTICATED', false);
+    }
+  }
+});
 
 /***/ }),
 
@@ -5711,6 +5895,148 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             }
           }
         }, _callee, null, [[1, 8]]);
+      }))();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/property_attribute.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/store/modules/property_attribute.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _services_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/api */ "./resources/js/services/api.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: {
+    property_attributes: [],
+    response: {},
+    error: {}
+  },
+  getters: {
+    getPropertyAttribute: function getPropertyAttribute(state) {
+      return state.property_attributes;
+    },
+    getError: function getError(state) {
+      return state.error;
+    },
+    getResponse: function getResponse(state) {
+      return state.response;
+    }
+  },
+  mutations: {
+    SET_PROPERTY_ATTRIBUTE: function SET_PROPERTY_ATTRIBUTE(state, data) {
+      state.property_attributes = _toConsumableArray(data);
+    },
+    SET_ERROR: function SET_ERROR(state, data) {
+      state.error = _objectSpread({}, data);
+    },
+    SET_RESPONSE: function SET_RESPONSE(state, data) {
+      state.response = _objectSpread({}, data);
+    }
+  },
+  actions: {
+    getAllPropertyAttribute: function getAllPropertyAttribute(_ref) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var commit, data;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                commit = _ref.commit;
+                _context.prev = 1;
+                _context.next = 4;
+                return (0,_services_api__WEBPACK_IMPORTED_MODULE_0__["default"])().get('/property_attributes');
+
+              case 4:
+                data = _context.sent;
+                commit('SET_PROPERTY_ATTRIBUTE', data.data.data);
+                _context.next = 11;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](1);
+                commit('SET_ERROR', {
+                  error: _context.t0,
+                  errorMessage: "An unexpected error occurred."
+                });
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 8]]);
+      }))();
+    },
+    savePropertyAttribute: function savePropertyAttribute(_ref2, payload) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var commit, data;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                commit = _ref2.commit;
+                _context2.prev = 1;
+                _context2.next = 4;
+                return (0,_services_api__WEBPACK_IMPORTED_MODULE_0__["default"])().post("/property_attributes", payload);
+
+              case 4:
+                data = _context2.sent;
+                commit("SET_RESPONSE", data);
+                _context2.next = 11;
+                break;
+
+              case 8:
+                _context2.prev = 8;
+                _context2.t0 = _context2["catch"](1);
+                commit("SET_ERROR", {
+                  error: _context2.t0,
+                  errorMessage: "An unexpected error occurred."
+                });
+
+              case 11:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[1, 8]]);
       }))();
     }
   }
@@ -43920,6 +44246,1508 @@ Vue.compile = compileToFunctions;
 
 /***/ }),
 
+/***/ "./node_modules/vuelidation/dist/vuelidation.js":
+/*!******************************************************!*\
+  !*** ./node_modules/vuelidation/dist/vuelidation.js ***!
+  \******************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+/**
+ * vuelidation v1.1.0
+ * (c) 2017 CJ Lazell
+ * @license MIT
+ */
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	0;
+}(this, (function () { 'use strict';
+
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof __webpack_require__.g !== 'undefined' ? __webpack_require__.g : typeof self !== 'undefined' ? self : {};
+
+
+
+
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var freeGlobal = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+var _freeGlobal = freeGlobal;
+
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+var root = _freeGlobal || freeSelf || Function('return this')();
+var _root = root;
+
+var Symbol = _root.Symbol;
+var _Symbol = Symbol;
+
+var objectProto$2 = Object.prototype;
+var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
+var nativeObjectToString = objectProto$2.toString;
+var symToStringTag$1 = _Symbol ? _Symbol.toStringTag : undefined;
+function getRawTag(value) {
+  var isOwn = hasOwnProperty$2.call(value, symToStringTag$1),
+      tag = value[symToStringTag$1];
+  try {
+    value[symToStringTag$1] = undefined;
+    var unmasked = true;
+  } catch (e) {}
+  var result = nativeObjectToString.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag$1] = tag;
+    } else {
+      delete value[symToStringTag$1];
+    }
+  }
+  return result;
+}
+var _getRawTag = getRawTag;
+
+var objectProto$3 = Object.prototype;
+var nativeObjectToString$1 = objectProto$3.toString;
+function objectToString(value) {
+  return nativeObjectToString$1.call(value);
+}
+var _objectToString = objectToString;
+
+var nullTag = '[object Null]';
+var undefinedTag = '[object Undefined]';
+var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return (symToStringTag && symToStringTag in Object(value))
+    ? _getRawTag(value)
+    : _objectToString(value);
+}
+var _baseGetTag = baseGetTag;
+
+function isObject(value) {
+  var type = typeof value;
+  return value != null && (type == 'object' || type == 'function');
+}
+var isObject_1 = isObject;
+
+var asyncTag = '[object AsyncFunction]';
+var funcTag = '[object Function]';
+var genTag = '[object GeneratorFunction]';
+var proxyTag = '[object Proxy]';
+function isFunction(value) {
+  if (!isObject_1(value)) {
+    return false;
+  }
+  var tag = _baseGetTag(value);
+  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+}
+var isFunction_1 = isFunction;
+
+var coreJsData = _root['__core-js_shared__'];
+var _coreJsData = coreJsData;
+
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(_coreJsData && _coreJsData.keys && _coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+function isMasked(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
+}
+var _isMasked = isMasked;
+
+var funcProto$1 = Function.prototype;
+var funcToString$1 = funcProto$1.toString;
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString$1.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+var _toSource = toSource;
+
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+var funcProto = Function.prototype;
+var objectProto$1 = Object.prototype;
+var funcToString = funcProto.toString;
+var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
+var reIsNative = RegExp('^' +
+  funcToString.call(hasOwnProperty$1).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+function baseIsNative(value) {
+  if (!isObject_1(value) || _isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction_1(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(_toSource(value));
+}
+var _baseIsNative = baseIsNative;
+
+function getValue(object, key) {
+  return object == null ? undefined : object[key];
+}
+var _getValue = getValue;
+
+function getNative(object, key) {
+  var value = _getValue(object, key);
+  return _baseIsNative(value) ? value : undefined;
+}
+var _getNative = getNative;
+
+var defineProperty = (function() {
+  try {
+    var func = _getNative(Object, 'defineProperty');
+    func({}, '', {});
+    return func;
+  } catch (e) {}
+}());
+var _defineProperty = defineProperty;
+
+function baseAssignValue(object, key, value) {
+  if (key == '__proto__' && _defineProperty) {
+    _defineProperty(object, key, {
+      'configurable': true,
+      'enumerable': true,
+      'value': value,
+      'writable': true
+    });
+  } else {
+    object[key] = value;
+  }
+}
+var _baseAssignValue = baseAssignValue;
+
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+var eq_1 = eq;
+
+var objectProto = Object.prototype;
+var hasOwnProperty = objectProto.hasOwnProperty;
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty.call(object, key) && eq_1(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    _baseAssignValue(object, key, value);
+  }
+}
+var _assignValue = assignValue;
+
+function copyObject(source, props, object, customizer) {
+  var isNew = !object;
+  object || (object = {});
+  var index = -1,
+      length = props.length;
+  while (++index < length) {
+    var key = props[index];
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : undefined;
+    if (newValue === undefined) {
+      newValue = source[key];
+    }
+    if (isNew) {
+      _baseAssignValue(object, key, newValue);
+    } else {
+      _assignValue(object, key, newValue);
+    }
+  }
+  return object;
+}
+var _copyObject = copyObject;
+
+function identity(value) {
+  return value;
+}
+var identity_1 = identity;
+
+function apply(func, thisArg, args) {
+  switch (args.length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+var _apply = apply;
+
+var nativeMax = Math.max;
+function overRest(func, start, transform) {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        array = Array(length);
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    index = -1;
+    var otherArgs = Array(start + 1);
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = transform(array);
+    return _apply(func, this, otherArgs);
+  };
+}
+var _overRest = overRest;
+
+function constant(value) {
+  return function() {
+    return value;
+  };
+}
+var constant_1 = constant;
+
+var baseSetToString = !_defineProperty ? identity_1 : function(func, string) {
+  return _defineProperty(func, 'toString', {
+    'configurable': true,
+    'enumerable': false,
+    'value': constant_1(string),
+    'writable': true
+  });
+};
+var _baseSetToString = baseSetToString;
+
+var HOT_COUNT = 800;
+var HOT_SPAN = 16;
+var nativeNow = Date.now;
+function shortOut(func) {
+  var count = 0,
+      lastCalled = 0;
+  return function() {
+    var stamp = nativeNow(),
+        remaining = HOT_SPAN - (stamp - lastCalled);
+    lastCalled = stamp;
+    if (remaining > 0) {
+      if (++count >= HOT_COUNT) {
+        return arguments[0];
+      }
+    } else {
+      count = 0;
+    }
+    return func.apply(undefined, arguments);
+  };
+}
+var _shortOut = shortOut;
+
+var setToString = _shortOut(_baseSetToString);
+var _setToString = setToString;
+
+function baseRest(func, start) {
+  return _setToString(_overRest(func, start, identity_1), func + '');
+}
+var _baseRest = baseRest;
+
+var MAX_SAFE_INTEGER = 9007199254740991;
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+var isLength_1 = isLength;
+
+function isArrayLike(value) {
+  return value != null && isLength_1(value.length) && !isFunction_1(value);
+}
+var isArrayLike_1 = isArrayLike;
+
+var MAX_SAFE_INTEGER$1 = 9007199254740991;
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+function isIndex(value, length) {
+  length = length == null ? MAX_SAFE_INTEGER$1 : length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
+}
+var _isIndex = isIndex;
+
+function isIterateeCall(value, index, object) {
+  if (!isObject_1(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike_1(object) && _isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq_1(object[index], value);
+  }
+  return false;
+}
+var _isIterateeCall = isIterateeCall;
+
+function createAssigner(assigner) {
+  return _baseRest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+    customizer = (assigner.length > 3 && typeof customizer == 'function')
+      ? (length--, customizer)
+      : undefined;
+    if (guard && _isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, index, customizer);
+      }
+    }
+    return object;
+  });
+}
+var _createAssigner = createAssigner;
+
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+var _baseTimes = baseTimes;
+
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+var isObjectLike_1 = isObjectLike;
+
+var argsTag = '[object Arguments]';
+function baseIsArguments(value) {
+  return isObjectLike_1(value) && _baseGetTag(value) == argsTag;
+}
+var _baseIsArguments = baseIsArguments;
+
+var objectProto$5 = Object.prototype;
+var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
+var propertyIsEnumerable = objectProto$5.propertyIsEnumerable;
+var isArguments = _baseIsArguments(function() { return arguments; }()) ? _baseIsArguments : function(value) {
+  return isObjectLike_1(value) && hasOwnProperty$4.call(value, 'callee') &&
+    !propertyIsEnumerable.call(value, 'callee');
+};
+var isArguments_1 = isArguments;
+
+var isArray = Array.isArray;
+var isArray_1 = isArray;
+
+function stubFalse() {
+  return false;
+}
+var stubFalse_1 = stubFalse;
+
+var isBuffer_1 = createCommonjsModule(function (module, exports) {
+var freeExports =  true && exports && !exports.nodeType && exports;
+var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+var moduleExports = freeModule && freeModule.exports === freeExports;
+var Buffer = moduleExports ? _root.Buffer : undefined;
+var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+var isBuffer = nativeIsBuffer || stubFalse_1;
+module.exports = isBuffer;
+});
+
+var argsTag$1 = '[object Arguments]';
+var arrayTag = '[object Array]';
+var boolTag = '[object Boolean]';
+var dateTag = '[object Date]';
+var errorTag = '[object Error]';
+var funcTag$1 = '[object Function]';
+var mapTag = '[object Map]';
+var numberTag = '[object Number]';
+var objectTag = '[object Object]';
+var regexpTag = '[object RegExp]';
+var setTag = '[object Set]';
+var stringTag = '[object String]';
+var weakMapTag = '[object WeakMap]';
+var arrayBufferTag = '[object ArrayBuffer]';
+var dataViewTag = '[object DataView]';
+var float32Tag = '[object Float32Array]';
+var float64Tag = '[object Float64Array]';
+var int8Tag = '[object Int8Array]';
+var int16Tag = '[object Int16Array]';
+var int32Tag = '[object Int32Array]';
+var uint8Tag = '[object Uint8Array]';
+var uint8ClampedTag = '[object Uint8ClampedArray]';
+var uint16Tag = '[object Uint16Array]';
+var uint32Tag = '[object Uint32Array]';
+var typedArrayTags = {};
+typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+typedArrayTags[uint32Tag] = true;
+typedArrayTags[argsTag$1] = typedArrayTags[arrayTag] =
+typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+typedArrayTags[dataViewTag] = typedArrayTags[dateTag] =
+typedArrayTags[errorTag] = typedArrayTags[funcTag$1] =
+typedArrayTags[mapTag] = typedArrayTags[numberTag] =
+typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
+typedArrayTags[setTag] = typedArrayTags[stringTag] =
+typedArrayTags[weakMapTag] = false;
+function baseIsTypedArray(value) {
+  return isObjectLike_1(value) &&
+    isLength_1(value.length) && !!typedArrayTags[_baseGetTag(value)];
+}
+var _baseIsTypedArray = baseIsTypedArray;
+
+function baseUnary(func) {
+  return function(value) {
+    return func(value);
+  };
+}
+var _baseUnary = baseUnary;
+
+var _nodeUtil = createCommonjsModule(function (module, exports) {
+var freeExports =  true && exports && !exports.nodeType && exports;
+var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+var moduleExports = freeModule && freeModule.exports === freeExports;
+var freeProcess = moduleExports && _freeGlobal.process;
+var nodeUtil = (function() {
+  try {
+    return freeProcess && freeProcess.binding && freeProcess.binding('util');
+  } catch (e) {}
+}());
+module.exports = nodeUtil;
+});
+
+var nodeIsTypedArray = _nodeUtil && _nodeUtil.isTypedArray;
+var isTypedArray = nodeIsTypedArray ? _baseUnary(nodeIsTypedArray) : _baseIsTypedArray;
+var isTypedArray_1 = isTypedArray;
+
+var objectProto$4 = Object.prototype;
+var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
+function arrayLikeKeys(value, inherited) {
+  var isArr = isArray_1(value),
+      isArg = !isArr && isArguments_1(value),
+      isBuff = !isArr && !isArg && isBuffer_1(value),
+      isType = !isArr && !isArg && !isBuff && isTypedArray_1(value),
+      skipIndexes = isArr || isArg || isBuff || isType,
+      result = skipIndexes ? _baseTimes(value.length, String) : [],
+      length = result.length;
+  for (var key in value) {
+    if ((inherited || hasOwnProperty$3.call(value, key)) &&
+        !(skipIndexes && (
+           key == 'length' ||
+           (isBuff && (key == 'offset' || key == 'parent')) ||
+           (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+           _isIndex(key, length)
+        ))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+var _arrayLikeKeys = arrayLikeKeys;
+
+var objectProto$7 = Object.prototype;
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$7;
+  return value === proto;
+}
+var _isPrototype = isPrototype;
+
+function nativeKeysIn(object) {
+  var result = [];
+  if (object != null) {
+    for (var key in Object(object)) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+var _nativeKeysIn = nativeKeysIn;
+
+var objectProto$6 = Object.prototype;
+var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
+function baseKeysIn(object) {
+  if (!isObject_1(object)) {
+    return _nativeKeysIn(object);
+  }
+  var isProto = _isPrototype(object),
+      result = [];
+  for (var key in object) {
+    if (!(key == 'constructor' && (isProto || !hasOwnProperty$5.call(object, key)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+var _baseKeysIn = baseKeysIn;
+
+function keysIn(object) {
+  return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
+}
+var keysIn_1 = keysIn;
+
+var assignInWith = _createAssigner(function(object, source, srcIndex, customizer) {
+  _copyObject(source, keysIn_1(source), object, customizer);
+});
+var assignInWith_1 = assignInWith;
+
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+var _overArg = overArg;
+
+var getPrototype = _overArg(Object.getPrototypeOf, Object);
+var _getPrototype = getPrototype;
+
+var objectTag$1 = '[object Object]';
+var funcProto$2 = Function.prototype;
+var objectProto$8 = Object.prototype;
+var funcToString$2 = funcProto$2.toString;
+var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
+var objectCtorString = funcToString$2.call(Object);
+function isPlainObject(value) {
+  if (!isObjectLike_1(value) || _baseGetTag(value) != objectTag$1) {
+    return false;
+  }
+  var proto = _getPrototype(value);
+  if (proto === null) {
+    return true;
+  }
+  var Ctor = hasOwnProperty$6.call(proto, 'constructor') && proto.constructor;
+  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+    funcToString$2.call(Ctor) == objectCtorString;
+}
+var isPlainObject_1 = isPlainObject;
+
+var domExcTag = '[object DOMException]';
+var errorTag$1 = '[object Error]';
+function isError(value) {
+  if (!isObjectLike_1(value)) {
+    return false;
+  }
+  var tag = _baseGetTag(value);
+  return tag == errorTag$1 || tag == domExcTag ||
+    (typeof value.message == 'string' && typeof value.name == 'string' && !isPlainObject_1(value));
+}
+var isError_1 = isError;
+
+var attempt = _baseRest(function(func, args) {
+  try {
+    return _apply(func, undefined, args);
+  } catch (e) {
+    return isError_1(e) ? e : new Error(e);
+  }
+});
+var attempt_1 = attempt;
+
+function arrayMap(array, iteratee) {
+  var index = -1,
+      length = array == null ? 0 : array.length,
+      result = Array(length);
+  while (++index < length) {
+    result[index] = iteratee(array[index], index, array);
+  }
+  return result;
+}
+var _arrayMap = arrayMap;
+
+function baseValues(object, props) {
+  return _arrayMap(props, function(key) {
+    return object[key];
+  });
+}
+var _baseValues = baseValues;
+
+var objectProto$9 = Object.prototype;
+var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
+function customDefaultsAssignIn(objValue, srcValue, key, object) {
+  if (objValue === undefined ||
+      (eq_1(objValue, objectProto$9[key]) && !hasOwnProperty$7.call(object, key))) {
+    return srcValue;
+  }
+  return objValue;
+}
+var _customDefaultsAssignIn = customDefaultsAssignIn;
+
+var stringEscapes = {
+  '\\': '\\',
+  "'": "'",
+  '\n': 'n',
+  '\r': 'r',
+  '\u2028': 'u2028',
+  '\u2029': 'u2029'
+};
+function escapeStringChar(chr) {
+  return '\\' + stringEscapes[chr];
+}
+var _escapeStringChar = escapeStringChar;
+
+var nativeKeys = _overArg(Object.keys, Object);
+var _nativeKeys = nativeKeys;
+
+var objectProto$10 = Object.prototype;
+var hasOwnProperty$8 = objectProto$10.hasOwnProperty;
+function baseKeys(object) {
+  if (!_isPrototype(object)) {
+    return _nativeKeys(object);
+  }
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty$8.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result;
+}
+var _baseKeys = baseKeys;
+
+function keys(object) {
+  return isArrayLike_1(object) ? _arrayLikeKeys(object) : _baseKeys(object);
+}
+var keys_1 = keys;
+
+var reInterpolate = /<%=([\s\S]+?)%>/g;
+var _reInterpolate = reInterpolate;
+
+function basePropertyOf(object) {
+  return function(key) {
+    return object == null ? undefined : object[key];
+  };
+}
+var _basePropertyOf = basePropertyOf;
+
+var htmlEscapes = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;'
+};
+var escapeHtmlChar = _basePropertyOf(htmlEscapes);
+var _escapeHtmlChar = escapeHtmlChar;
+
+var symbolTag = '[object Symbol]';
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike_1(value) && _baseGetTag(value) == symbolTag);
+}
+var isSymbol_1 = isSymbol;
+
+var INFINITY = 1 / 0;
+var symbolProto = _Symbol ? _Symbol.prototype : undefined;
+var symbolToString = symbolProto ? symbolProto.toString : undefined;
+function baseToString(value) {
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isArray_1(value)) {
+    return _arrayMap(value, baseToString) + '';
+  }
+  if (isSymbol_1(value)) {
+    return symbolToString ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+var _baseToString = baseToString;
+
+function toString(value) {
+  return value == null ? '' : _baseToString(value);
+}
+var toString_1 = toString;
+
+var reUnescapedHtml = /[&<>"']/g;
+var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
+function escape(string) {
+  string = toString_1(string);
+  return (string && reHasUnescapedHtml.test(string))
+    ? string.replace(reUnescapedHtml, _escapeHtmlChar)
+    : string;
+}
+var _escape = escape;
+
+var reEscape = /<%-([\s\S]+?)%>/g;
+var _reEscape = reEscape;
+
+var reEvaluate = /<%([\s\S]+?)%>/g;
+var _reEvaluate = reEvaluate;
+
+var templateSettings = {
+  'escape': _reEscape,
+  'evaluate': _reEvaluate,
+  'interpolate': _reInterpolate,
+  'variable': '',
+  'imports': {
+    '_': { 'escape': _escape }
+  }
+};
+var templateSettings_1 = templateSettings;
+
+var reEmptyStringLeading = /\b__p \+= '';/g;
+var reEmptyStringMiddle = /\b(__p \+=) '' \+/g;
+var reEmptyStringTrailing = /(__e\(.*?\)|\b__t\)) \+\n'';/g;
+var reEsTemplate = /\$\{([^\\}]*(?:\\.[^\\}]*)*)\}/g;
+var reNoMatch = /($^)/;
+var reUnescapedString = /['\n\r\u2028\u2029\\]/g;
+function template(string, options, guard) {
+  var settings = templateSettings_1.imports._.templateSettings || templateSettings_1;
+  if (guard && _isIterateeCall(string, options, guard)) {
+    options = undefined;
+  }
+  string = toString_1(string);
+  options = assignInWith_1({}, options, settings, _customDefaultsAssignIn);
+  var imports = assignInWith_1({}, options.imports, settings.imports, _customDefaultsAssignIn),
+      importsKeys = keys_1(imports),
+      importsValues = _baseValues(imports, importsKeys);
+  var isEscaping,
+      isEvaluating,
+      index = 0,
+      interpolate = options.interpolate || reNoMatch,
+      source = "__p += '";
+  var reDelimiters = RegExp(
+    (options.escape || reNoMatch).source + '|' +
+    interpolate.source + '|' +
+    (interpolate === _reInterpolate ? reEsTemplate : reNoMatch).source + '|' +
+    (options.evaluate || reNoMatch).source + '|$'
+  , 'g');
+  var sourceURL = 'sourceURL' in options ? '//# sourceURL=' + options.sourceURL + '\n' : '';
+  string.replace(reDelimiters, function(match, escapeValue, interpolateValue, esTemplateValue, evaluateValue, offset) {
+    interpolateValue || (interpolateValue = esTemplateValue);
+    source += string.slice(index, offset).replace(reUnescapedString, _escapeStringChar);
+    if (escapeValue) {
+      isEscaping = true;
+      source += "' +\n__e(" + escapeValue + ") +\n'";
+    }
+    if (evaluateValue) {
+      isEvaluating = true;
+      source += "';\n" + evaluateValue + ";\n__p += '";
+    }
+    if (interpolateValue) {
+      source += "' +\n((__t = (" + interpolateValue + ")) == null ? '' : __t) +\n'";
+    }
+    index = offset + match.length;
+    return match;
+  });
+  source += "';\n";
+  var variable = options.variable;
+  if (!variable) {
+    source = 'with (obj) {\n' + source + '\n}\n';
+  }
+  source = (isEvaluating ? source.replace(reEmptyStringLeading, '') : source)
+    .replace(reEmptyStringMiddle, '$1')
+    .replace(reEmptyStringTrailing, '$1;');
+  source = 'function(' + (variable || 'obj') + ') {\n' +
+    (variable
+      ? ''
+      : 'obj || (obj = {});\n'
+    ) +
+    "var __t, __p = ''" +
+    (isEscaping
+       ? ', __e = _.escape'
+       : ''
+    ) +
+    (isEvaluating
+      ? ', __j = Array.prototype.join;\n' +
+        "function print() { __p += __j.call(arguments, '') }\n"
+      : ';\n'
+    ) +
+    source +
+    'return __p\n}';
+  var result = attempt_1(function() {
+    return Function(importsKeys, sourceURL + 'return ' + source)
+      .apply(undefined, importsValues);
+  });
+  result.source = source;
+  if (isError_1(result)) {
+    throw result;
+  }
+  return result;
+}
+var template_1 = template;
+
+var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/;
+var reIsPlainProp = /^\w*$/;
+function isKey(value, object) {
+  if (isArray_1(value)) {
+    return false;
+  }
+  var type = typeof value;
+  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
+      value == null || isSymbol_1(value)) {
+    return true;
+  }
+  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+    (object != null && value in Object(object));
+}
+var _isKey = isKey;
+
+var nativeCreate = _getNative(Object, 'create');
+var _nativeCreate = nativeCreate;
+
+function hashClear() {
+  this.__data__ = _nativeCreate ? _nativeCreate(null) : {};
+  this.size = 0;
+}
+var _hashClear = hashClear;
+
+function hashDelete(key) {
+  var result = this.has(key) && delete this.__data__[key];
+  this.size -= result ? 1 : 0;
+  return result;
+}
+var _hashDelete = hashDelete;
+
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
+var objectProto$11 = Object.prototype;
+var hasOwnProperty$9 = objectProto$11.hasOwnProperty;
+function hashGet(key) {
+  var data = this.__data__;
+  if (_nativeCreate) {
+    var result = data[key];
+    return result === HASH_UNDEFINED ? undefined : result;
+  }
+  return hasOwnProperty$9.call(data, key) ? data[key] : undefined;
+}
+var _hashGet = hashGet;
+
+var objectProto$12 = Object.prototype;
+var hasOwnProperty$10 = objectProto$12.hasOwnProperty;
+function hashHas(key) {
+  var data = this.__data__;
+  return _nativeCreate ? (data[key] !== undefined) : hasOwnProperty$10.call(data, key);
+}
+var _hashHas = hashHas;
+
+var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
+function hashSet(key, value) {
+  var data = this.__data__;
+  this.size += this.has(key) ? 0 : 1;
+  data[key] = (_nativeCreate && value === undefined) ? HASH_UNDEFINED$1 : value;
+  return this;
+}
+var _hashSet = hashSet;
+
+function Hash(entries) {
+  var this$1 = this;
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this$1.set(entry[0], entry[1]);
+  }
+}
+Hash.prototype.clear = _hashClear;
+Hash.prototype['delete'] = _hashDelete;
+Hash.prototype.get = _hashGet;
+Hash.prototype.has = _hashHas;
+Hash.prototype.set = _hashSet;
+var _Hash = Hash;
+
+function listCacheClear() {
+  this.__data__ = [];
+  this.size = 0;
+}
+var _listCacheClear = listCacheClear;
+
+function assocIndexOf(array, key) {
+  var length = array.length;
+  while (length--) {
+    if (eq_1(array[length][0], key)) {
+      return length;
+    }
+  }
+  return -1;
+}
+var _assocIndexOf = assocIndexOf;
+
+var arrayProto = Array.prototype;
+var splice = arrayProto.splice;
+function listCacheDelete(key) {
+  var data = this.__data__,
+      index = _assocIndexOf(data, key);
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data.length - 1;
+  if (index == lastIndex) {
+    data.pop();
+  } else {
+    splice.call(data, index, 1);
+  }
+  --this.size;
+  return true;
+}
+var _listCacheDelete = listCacheDelete;
+
+function listCacheGet(key) {
+  var data = this.__data__,
+      index = _assocIndexOf(data, key);
+  return index < 0 ? undefined : data[index][1];
+}
+var _listCacheGet = listCacheGet;
+
+function listCacheHas(key) {
+  return _assocIndexOf(this.__data__, key) > -1;
+}
+var _listCacheHas = listCacheHas;
+
+function listCacheSet(key, value) {
+  var data = this.__data__,
+      index = _assocIndexOf(data, key);
+  if (index < 0) {
+    ++this.size;
+    data.push([key, value]);
+  } else {
+    data[index][1] = value;
+  }
+  return this;
+}
+var _listCacheSet = listCacheSet;
+
+function ListCache(entries) {
+  var this$1 = this;
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this$1.set(entry[0], entry[1]);
+  }
+}
+ListCache.prototype.clear = _listCacheClear;
+ListCache.prototype['delete'] = _listCacheDelete;
+ListCache.prototype.get = _listCacheGet;
+ListCache.prototype.has = _listCacheHas;
+ListCache.prototype.set = _listCacheSet;
+var _ListCache = ListCache;
+
+var Map = _getNative(_root, 'Map');
+var _Map = Map;
+
+function mapCacheClear() {
+  this.size = 0;
+  this.__data__ = {
+    'hash': new _Hash,
+    'map': new (_Map || _ListCache),
+    'string': new _Hash
+  };
+}
+var _mapCacheClear = mapCacheClear;
+
+function isKeyable(value) {
+  var type = typeof value;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
+}
+var _isKeyable = isKeyable;
+
+function getMapData(map, key) {
+  var data = map.__data__;
+  return _isKeyable(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
+}
+var _getMapData = getMapData;
+
+function mapCacheDelete(key) {
+  var result = _getMapData(this, key)['delete'](key);
+  this.size -= result ? 1 : 0;
+  return result;
+}
+var _mapCacheDelete = mapCacheDelete;
+
+function mapCacheGet(key) {
+  return _getMapData(this, key).get(key);
+}
+var _mapCacheGet = mapCacheGet;
+
+function mapCacheHas(key) {
+  return _getMapData(this, key).has(key);
+}
+var _mapCacheHas = mapCacheHas;
+
+function mapCacheSet(key, value) {
+  var data = _getMapData(this, key),
+      size = data.size;
+  data.set(key, value);
+  this.size += data.size == size ? 0 : 1;
+  return this;
+}
+var _mapCacheSet = mapCacheSet;
+
+function MapCache(entries) {
+  var this$1 = this;
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this$1.set(entry[0], entry[1]);
+  }
+}
+MapCache.prototype.clear = _mapCacheClear;
+MapCache.prototype['delete'] = _mapCacheDelete;
+MapCache.prototype.get = _mapCacheGet;
+MapCache.prototype.has = _mapCacheHas;
+MapCache.prototype.set = _mapCacheSet;
+var _MapCache = MapCache;
+
+var FUNC_ERROR_TEXT = 'Expected a function';
+function memoize(func, resolver) {
+  if (typeof func != 'function' || (resolver != null && typeof resolver != 'function')) {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  var memoized = function() {
+    var args = arguments,
+        key = resolver ? resolver.apply(this, args) : args[0],
+        cache = memoized.cache;
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    var result = func.apply(this, args);
+    memoized.cache = cache.set(key, result) || cache;
+    return result;
+  };
+  memoized.cache = new (memoize.Cache || _MapCache);
+  return memoized;
+}
+memoize.Cache = _MapCache;
+var memoize_1 = memoize;
+
+var MAX_MEMOIZE_SIZE = 500;
+function memoizeCapped(func) {
+  var result = memoize_1(func, function(key) {
+    if (cache.size === MAX_MEMOIZE_SIZE) {
+      cache.clear();
+    }
+    return key;
+  });
+  var cache = result.cache;
+  return result;
+}
+var _memoizeCapped = memoizeCapped;
+
+var reLeadingDot = /^\./;
+var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+var reEscapeChar = /\\(\\)?/g;
+var stringToPath = _memoizeCapped(function(string) {
+  var result = [];
+  if (reLeadingDot.test(string)) {
+    result.push('');
+  }
+  string.replace(rePropName, function(match, number, quote, string) {
+    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+  });
+  return result;
+});
+var _stringToPath = stringToPath;
+
+function castPath(value, object) {
+  if (isArray_1(value)) {
+    return value;
+  }
+  return _isKey(value, object) ? [value] : _stringToPath(toString_1(value));
+}
+var _castPath = castPath;
+
+var INFINITY$1 = 1 / 0;
+function toKey(value) {
+  if (typeof value == 'string' || isSymbol_1(value)) {
+    return value;
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY$1) ? '-0' : result;
+}
+var _toKey = toKey;
+
+function baseGet(object, path) {
+  path = _castPath(path, object);
+  var index = 0,
+      length = path.length;
+  while (object != null && index < length) {
+    object = object[_toKey(path[index++])];
+  }
+  return (index && index == length) ? object : undefined;
+}
+var _baseGet = baseGet;
+
+function get(object, path, defaultValue) {
+  var result = object == null ? undefined : _baseGet(object, path);
+  return result === undefined ? defaultValue : result;
+}
+var get_1 = get;
+
+var DataView = _getNative(_root, 'DataView');
+var _DataView = DataView;
+
+var Promise = _getNative(_root, 'Promise');
+var _Promise = Promise;
+
+var Set = _getNative(_root, 'Set');
+var _Set = Set;
+
+var WeakMap = _getNative(_root, 'WeakMap');
+var _WeakMap = WeakMap;
+
+var mapTag$2 = '[object Map]';
+var objectTag$2 = '[object Object]';
+var promiseTag = '[object Promise]';
+var setTag$2 = '[object Set]';
+var weakMapTag$1 = '[object WeakMap]';
+var dataViewTag$1 = '[object DataView]';
+var dataViewCtorString = _toSource(_DataView);
+var mapCtorString = _toSource(_Map);
+var promiseCtorString = _toSource(_Promise);
+var setCtorString = _toSource(_Set);
+var weakMapCtorString = _toSource(_WeakMap);
+var getTag = _baseGetTag;
+if ((_DataView && getTag(new _DataView(new ArrayBuffer(1))) != dataViewTag$1) ||
+    (_Map && getTag(new _Map) != mapTag$2) ||
+    (_Promise && getTag(_Promise.resolve()) != promiseTag) ||
+    (_Set && getTag(new _Set) != setTag$2) ||
+    (_WeakMap && getTag(new _WeakMap) != weakMapTag$1)) {
+  getTag = function(value) {
+    var result = _baseGetTag(value),
+        Ctor = result == objectTag$2 ? value.constructor : undefined,
+        ctorString = Ctor ? _toSource(Ctor) : '';
+    if (ctorString) {
+      switch (ctorString) {
+        case dataViewCtorString: return dataViewTag$1;
+        case mapCtorString: return mapTag$2;
+        case promiseCtorString: return promiseTag;
+        case setCtorString: return setTag$2;
+        case weakMapCtorString: return weakMapTag$1;
+      }
+    }
+    return result;
+  };
+}
+var _getTag = getTag;
+
+var mapTag$1 = '[object Map]';
+var setTag$1 = '[object Set]';
+var objectProto$13 = Object.prototype;
+var hasOwnProperty$11 = objectProto$13.hasOwnProperty;
+function isEmpty(value) {
+  if (value == null) {
+    return true;
+  }
+  if (isArrayLike_1(value) &&
+      (isArray_1(value) || typeof value == 'string' || typeof value.splice == 'function' ||
+        isBuffer_1(value) || isTypedArray_1(value) || isArguments_1(value))) {
+    return !value.length;
+  }
+  var tag = _getTag(value);
+  if (tag == mapTag$1 || tag == setTag$1) {
+    return !value.size;
+  }
+  if (_isPrototype(value)) {
+    return !_baseKeys(value).length;
+  }
+  for (var key in value) {
+    if (hasOwnProperty$11.call(value, key)) {
+      return false;
+    }
+  }
+  return true;
+}
+var isEmpty_1 = isEmpty;
+
+var stringTag$1 = '[object String]';
+function isString(value) {
+  return typeof value == 'string' ||
+    (!isArray_1(value) && isObjectLike_1(value) && _baseGetTag(value) == stringTag$1);
+}
+var isString_1 = isString;
+
+var validations = {
+  alphabetic: function alphabetic (value) {
+    var msg   = 'Must be a alphabetic value';
+    var valid = !Array.isArray(value) && /^[a-zA-Z]*$/.test(value);
+    return [valid, msg]
+  },
+  alpha: function alpha (value) {
+    var msg   = 'Must only contain letters and numbers';
+    var valid = !Array.isArray(value) && /^[a-zA-Z0-9]*$/.test(value);
+    return [valid, msg]
+  },
+  alphaDash: function alphaDash (value) {
+    var msg   = 'Must only contain letters, numbers, underscores or dashes';
+    var valid = !Array.isArray(value) && /^[a-zA-Z0-9_-]*$/.test(value);
+    return [valid, msg]
+  },
+  alphaSpace: function alphaSpace (value) {
+    var msg   = 'Must only contain letters, numbers or spaces';
+    var valid = !Array.isArray(value) && /^[a-zA-Z0-9\s]*$/.test(value);
+    return [valid, msg]
+  },
+  length: function length (value, totalLength) {
+    var msg   = "Must be " + totalLength + " character(s)";
+    var valid = !!value && value.length === Number(totalLength);
+    return [valid, msg]
+  },
+  between: function between (value, args) {
+    var msg   = 'Must be between {{ min }} and {{ max }}';
+    var valid = Number(args.min) <= value && Number(args.max) >= value;
+    return [valid, msg]
+  },
+  betweenLength: function betweenLength (value, args) {
+    var msg   = 'Must have between {{ min }} and {{ max }} characters';
+    var valid = Number(args.min) <= value.length && Number(args.max) >= value.length;
+    return [valid, msg]
+  },
+  decimal: function decimal (value, args) {
+    if ( args === void 0 ) args = {};
+    var points = args.points || (args.points = '*');
+    var msg    = 'Must be a decimal<% if (points && points !== "*") { %> with {{ points }} points<% } %>';
+    if (value === null || value === undefined || value === '') {
+      return [false, msg]
+    }
+    var regexPart = points === '*' ? '*' : ("{" + points + "," + points + "}");
+    var regex = new RegExp(("^[0-9]*.?[0-9]" + regexPart + "$"));
+    if (!regex.test(value)) {
+      return [false, msg]
+    }
+    return [!Number.isNaN(parseFloat(value)), msg]
+  },
+  email: function email (value) {
+    var msg   = 'Not a valid email';
+    var valid = /^(([^<>()[\]\\.,;:#\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,6}))$/.test(value);
+    return [valid, msg]
+  },
+  includes: function includes (value, args) {
+    args.value = value;
+    var values = args.values;
+    var msg  = '{{ value }} is not one of the following: {{ values.join(", ") }}';
+    return [!!values.filter(function (option) { return option === value; }).length, msg]
+  },
+  numeric: function numeric (value) {
+    var msg = 'Must be a numeric value';
+    return [!Array.isArray(value) && /^[0-9]*$/.test(value), msg]
+  },
+  required: function required (value) {
+    var msg = 'Required';
+    if (value !== null && value !== undefined) {
+      value = value.toString();
+    }
+    if (isString_1(value)) {
+      value = value.trim();
+    }
+    return [!isEmpty_1(value), msg]
+  },
+};
+
+var isObject$2 = function (item) {
+  return !!(item && typeof item === 'object' && !Array.isArray(item) && item !== null)
+};
+var flatten = function (source, flatKey) {
+  var newSource = {};
+  Object.keys(source).forEach(function (key) {
+    var value = source[key];
+    var currentFlatKey = flatKey ? (flatKey + "." + key) : key;
+    if (isObject$2(value)) {
+      newSource = Object.assign(newSource, flatten(value, currentFlatKey));
+    } else {
+      newSource[currentFlatKey] = value;
+    }
+  });
+  return newSource
+};
+
+var defaultOptions = {
+  msg: {},
+  methods: {},
+};
+function renderMsg (msg, args) {
+  msg = args.msg || msg;
+  if (typeof msg === 'function') {
+    msg = msg.call(this);
+  }
+  return template_1(msg, { interpolate: /{{([\s\S]+?)}}/g })(args)
+}
+function valid (path) {
+  var this$1 = this;
+  var data        = this.$options.vuelidation.data;
+  var validations$$1 = get_1(data, path, data);
+  Object.entries(validations$$1).forEach(function (ref) {
+    var dataName = ref[0];
+    var dataValidations = ref[1];
+    var dataPath = path ? (path + "." + dataName) : dataName;
+    validate.call(this$1, dataPath, get_1(this$1, dataPath), dataValidations);
+  });
+  return !this.vuelidationErrors
+}
+function error (dataName) {
+  var errors = this.vuelidationErrors || {};
+  var error    = errors[dataName];
+  return error ? error[0] : null
+}
+function setErrors (newErrors) {
+  var this$1 = this;
+  var errors = this.vuelidationErrors = this.vuelidationErrors || {};
+  Object.entries(newErrors).forEach(function (ref) {
+    var dataName = ref[0];
+    var dataValidations = ref[1];
+    errors[dataName] = [];
+    if (!Array.isArray(dataValidations)) {
+      dataValidations = Array(dataValidations);
+    }
+    dataValidations.forEach(function (msg) {
+      var validation    = this$1.$vuelidation.methods[msg] || {};
+      var validationMsg = this$1.$vuelidation.options.msg[msg] || msg;
+      validation.field = validation.field || dataName;
+      errors[dataName].push(renderMsg.call(this$1, validationMsg, validation));
+    });
+  });
+}
+function validate (path, value, dataValidations) {
+  var this$1 = this;
+  var errors = [];
+  if (dataValidations.if && !dataValidations.if.call(this)) {
+    return
+  }
+  if (dataValidations.unless && !!dataValidations.unless.call(this)) {
+    return
+  }
+  if (typeof dataValidations === 'string') {
+    return
+  }
+  Object.entries(dataValidations).forEach(function (ref) {
+    var name = ref[0];
+    var args = ref[1];
+    var validation = this$1.$vuelidation.methods[name];
+    var msgArgs = dataValidations;
+    var dataArgs = dataValidations[name];
+    msgArgs.field = msgArgs.field || path;
+    if (typeof dataArgs === 'object') {
+      Object.assign(msgArgs, dataValidations[name]);
+    }
+    if (validation) {
+      var ref$1 = validation(value, args);
+      var valid = ref$1[0];
+      var msg = ref$1[1];
+      if (!valid) {
+        errors.push(renderMsg.call(this$1, msg, msgArgs));
+      }
+    }
+  });
+  if (errors.length) {
+    this.vuelidationErrors = this.vuelidationErrors || {};
+    this.vuelidationErrors[path] = errors;
+  } else if (this.vuelidationErrors) {
+    if (this.vuelidationErrors[path]) {
+      delete this.vuelidationErrors[path];
+    }
+    if (Object.keys(this.vuelidationErrors).length === 0) {
+      this.vuelidationErrors = null;
+    }
+  }
+}
+var install = function (Vue, options) {
+  if ( options === void 0 ) options = {};
+  options = Object.assign({}, defaultOptions, options);
+  Vue.mixin({
+    created: function created () {
+      var this$1 = this;
+      var vuelidation = this.$options.vuelidation;
+      if (vuelidation && vuelidation.data) {
+        Object.entries(flatten(this.$data)).forEach(function (ref) {
+          var path = ref[0];
+          var _ = ref[1];
+          var validations$$1 = get_1(vuelidation.data, path);
+          if (validations$$1) {
+            this$1.$watch(path, function (value) {
+              validate.call(this$1, path, value, validations$$1);
+            });
+          }
+        });
+      }
+    },
+    computed: {
+      $vuelidation: function $vuelidation () {
+        var this$1 = this;
+        if (this.$options.vuelidation !== undefined) {
+          return {
+            error: function (dataName) {
+              return error.call(this$1, dataName)
+            },
+            errors: function (path) {
+              return get_1(this$1.vuelidationErrors, path, this$1.vuelidationErrors)
+            },
+            setErrors: function (errors) {
+              return setErrors.call(this$1, errors)
+            },
+            reset: function (callback) {
+              this$1.vuelidationErrors = null;
+              this$1.$nextTick(function () {
+                this$1.vuelidationErrors = null;
+                if (callback) {
+                  callback.call(this$1);
+                }
+              });
+            },
+            valid: function (dataName) {
+              return valid.call(this$1, dataName)
+            },
+            options: Object.assign({}, options,
+              this.$options.vuelidation),
+            methods: Object.assign({}, validations,
+              options.methods,
+              (this.$options.vuelidation.methods)),
+          }
+        } else {
+          return undefined
+        }
+      },
+    },
+    data: function data () {
+      return {
+        vuelidationErrors: null,
+      }
+    },
+  });
+};
+var index = {
+  install: install,
+  renderMsg: renderMsg,
+  defaultOptions: defaultOptions,
+  version: '1.1.0',
+};
+
+return index;
+
+})));
+
+
+/***/ }),
+
+/***/ "./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var r=function(r){return function(r){return!!r&&"object"==typeof r}(r)&&!function(r){var t=Object.prototype.toString.call(r);return"[object RegExp]"===t||"[object Date]"===t||function(r){return r.$$typeof===e}(r)}(r)},e="function"==typeof Symbol&&Symbol.for?Symbol.for("react.element"):60103;function t(r,e){return!1!==e.clone&&e.isMergeableObject(r)?u(Array.isArray(r)?[]:{},r,e):r}function n(r,e,n){return r.concat(e).map(function(r){return t(r,n)})}function o(r){return Object.keys(r).concat(function(r){return Object.getOwnPropertySymbols?Object.getOwnPropertySymbols(r).filter(function(e){return r.propertyIsEnumerable(e)}):[]}(r))}function c(r,e){try{return e in r}catch(r){return!1}}function u(e,i,a){(a=a||{}).arrayMerge=a.arrayMerge||n,a.isMergeableObject=a.isMergeableObject||r,a.cloneUnlessOtherwiseSpecified=t;var f=Array.isArray(i);return f===Array.isArray(e)?f?a.arrayMerge(e,i,a):function(r,e,n){var i={};return n.isMergeableObject(r)&&o(r).forEach(function(e){i[e]=t(r[e],n)}),o(e).forEach(function(o){(function(r,e){return c(r,e)&&!(Object.hasOwnProperty.call(r,e)&&Object.propertyIsEnumerable.call(r,e))})(r,o)||(i[o]=c(r,o)&&n.isMergeableObject(e[o])?function(r,e){if(!e.customMerge)return u;var t=e.customMerge(r);return"function"==typeof t?t:u}(o,n)(r[o],e[o],n):t(e[o],n))}),i}(e,i,a):t(i,a)}u.all=function(r,e){if(!Array.isArray(r))throw new Error("first argument should be an array");return r.reduce(function(r,t){return u(r,t,e)},{})};var i=u;function a(r){var e=(r=r||{}).storage||window&&window.localStorage,t=r.key||"vuex";function n(r,e){var t=e.getItem(r);try{return"string"==typeof t?JSON.parse(t):"object"==typeof t?t:void 0}catch(r){}}function o(){return!0}function c(r,e,t){return t.setItem(r,JSON.stringify(e))}function u(r,e){return Array.isArray(e)?e.reduce(function(e,t){return function(r,e,t,n){return!/^(__proto__|constructor|prototype)$/.test(e)&&((e=e.split?e.split("."):e.slice(0)).slice(0,-1).reduce(function(r,e){return r[e]=r[e]||{}},r)[e.pop()]=t),r}(e,t,(n=r,void 0===(n=((o=t).split?o.split("."):o).reduce(function(r,e){return r&&r[e]},n))?void 0:n));var n,o},{}):r}function a(r){return function(e){return r.subscribe(e)}}(r.assertStorage||function(){e.setItem("@@",1),e.removeItem("@@")})(e);var f,s=function(){return(r.getState||n)(t,e)};return r.fetchBeforeUse&&(f=s()),function(n){r.fetchBeforeUse||(f=s()),"object"==typeof f&&null!==f&&(n.replaceState(r.overwrite?f:i(n.state,f,{arrayMerge:r.arrayMerger||function(r,e){return e},clone:!1})),(r.rehydrated||function(){})(n)),(r.subscriber||a)(n)(function(n,i){(r.filter||o)(n)&&(r.setState||c)(t,(r.reducer||u)(i,r.paths),e)})}}/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (a);
+//# sourceMappingURL=vuex-persistedstate.es.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/vuex/dist/vuex.esm.js":
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
@@ -45184,6 +47012,155 @@ var index = {
 
 
 
+/***/ }),
+
+/***/ "./node_modules/js-cookie/dist/js.cookie.mjs":
+/*!***************************************************!*\
+  !*** ./node_modules/js-cookie/dist/js.cookie.mjs ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/*! js-cookie v3.0.1 | MIT */
+/* eslint-disable no-var */
+function assign (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+    for (var key in source) {
+      target[key] = source[key];
+    }
+  }
+  return target
+}
+/* eslint-enable no-var */
+
+/* eslint-disable no-var */
+var defaultConverter = {
+  read: function (value) {
+    if (value[0] === '"') {
+      value = value.slice(1, -1);
+    }
+    return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent)
+  },
+  write: function (value) {
+    return encodeURIComponent(value).replace(
+      /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
+      decodeURIComponent
+    )
+  }
+};
+/* eslint-enable no-var */
+
+/* eslint-disable no-var */
+
+function init (converter, defaultAttributes) {
+  function set (key, value, attributes) {
+    if (typeof document === 'undefined') {
+      return
+    }
+
+    attributes = assign({}, defaultAttributes, attributes);
+
+    if (typeof attributes.expires === 'number') {
+      attributes.expires = new Date(Date.now() + attributes.expires * 864e5);
+    }
+    if (attributes.expires) {
+      attributes.expires = attributes.expires.toUTCString();
+    }
+
+    key = encodeURIComponent(key)
+      .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent)
+      .replace(/[()]/g, escape);
+
+    var stringifiedAttributes = '';
+    for (var attributeName in attributes) {
+      if (!attributes[attributeName]) {
+        continue
+      }
+
+      stringifiedAttributes += '; ' + attributeName;
+
+      if (attributes[attributeName] === true) {
+        continue
+      }
+
+      // Considers RFC 6265 section 5.2:
+      // ...
+      // 3.  If the remaining unparsed-attributes contains a %x3B (";")
+      //     character:
+      // Consume the characters of the unparsed-attributes up to,
+      // not including, the first %x3B (";") character.
+      // ...
+      stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+    }
+
+    return (document.cookie =
+      key + '=' + converter.write(value, key) + stringifiedAttributes)
+  }
+
+  function get (key) {
+    if (typeof document === 'undefined' || (arguments.length && !key)) {
+      return
+    }
+
+    // To prevent the for loop in the first place assign an empty array
+    // in case there are no cookies at all.
+    var cookies = document.cookie ? document.cookie.split('; ') : [];
+    var jar = {};
+    for (var i = 0; i < cookies.length; i++) {
+      var parts = cookies[i].split('=');
+      var value = parts.slice(1).join('=');
+
+      try {
+        var foundKey = decodeURIComponent(parts[0]);
+        jar[foundKey] = converter.read(value, foundKey);
+
+        if (key === foundKey) {
+          break
+        }
+      } catch (e) {}
+    }
+
+    return key ? jar[key] : jar
+  }
+
+  return Object.create(
+    {
+      set: set,
+      get: get,
+      remove: function (key, attributes) {
+        set(
+          key,
+          '',
+          assign({}, attributes, {
+            expires: -1
+          })
+        );
+      },
+      withAttributes: function (attributes) {
+        return init(this.converter, assign({}, this.attributes, attributes))
+      },
+      withConverter: function (converter) {
+        return init(assign({}, this.converter, converter), this.attributes)
+      }
+    },
+    {
+      attributes: { value: Object.freeze(defaultAttributes) },
+      converter: { value: Object.freeze(converter) }
+    }
+  )
+}
+
+var api = init(defaultConverter, { path: '/' });
+/* eslint-enable no-var */
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (api);
+
+
 /***/ })
 
 /******/ 	});
@@ -45261,7 +47238,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"users":1,"super":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"users":1,"super":1,"private":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
@@ -45468,17 +47445,20 @@ var __webpack_exports__ = {};
   !*** ./resources/js/super_app.js ***!
   \***********************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router/index */ "./resources/js/router/index.js");
-/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
-/* harmony import */ var _TheSuperApp_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TheSuperApp.vue */ "./resources/js/TheSuperApp.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vuelidation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidation */ "./node_modules/vuelidation/dist/vuelidation.js");
+/* harmony import */ var vuelidation__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidation__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _router_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router/index */ "./resources/js/router/index.js");
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
+/* harmony import */ var _TheSuperApp_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TheSuperApp.vue */ "./resources/js/TheSuperApp.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
  // window.Vue = require('vue').default; /// I commentted this
@@ -45503,13 +47483,14 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]);
-var app = new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].use((vuelidation__WEBPACK_IMPORTED_MODULE_0___default()));
+var app = new vue__WEBPACK_IMPORTED_MODULE_4__["default"]({
   el: '#app',
-  router: _router_index__WEBPACK_IMPORTED_MODULE_0__["default"],
-  store: _store_index__WEBPACK_IMPORTED_MODULE_1__["default"],
+  router: _router_index__WEBPACK_IMPORTED_MODULE_1__["default"],
+  store: _store_index__WEBPACK_IMPORTED_MODULE_2__["default"],
   components: {
-    TheSuperApp: _TheSuperApp_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    TheSuperApp: _TheSuperApp_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 });
 })();

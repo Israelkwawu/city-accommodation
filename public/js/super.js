@@ -370,10 +370,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_admin_common_TheMobileHeader_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/admin/common/TheMobileHeader.vue */ "./resources/js/components/admin/common/TheMobileHeader.vue");
 /* harmony import */ var _components_admin_common_TheDesktopHeader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/admin/common/TheDesktopHeader.vue */ "./resources/js/components/admin/common/TheDesktopHeader.vue");
 /* harmony import */ var _components_admin_common_TheSideBar_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/admin/common/TheSideBar.vue */ "./resources/js/components/admin/common/TheSideBar.vue");
 /* harmony import */ var _components_admin_common_TheFooter_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/admin/common/TheFooter.vue */ "./resources/js/components/admin/common/TheFooter.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -708,19 +727,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -748,9 +755,100 @@ __webpack_require__.r(__webpack_exports__);
       country: "",
       state: "",
       city: "",
-      attributes: "",
-      description: ""
+      attributes: [],
+      description: "",
+      states: [],
+      cities: []
     };
+  },
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)("country", ["getCountries", "getError"])), (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)("property_type", ["getPropertyTypes", "getError"])),
+  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)("country", ["getAllCountries"])), (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)("property_type", ["getAllPropertyTypes"])), {}, {
+    ucfirst: function ucfirst(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+    strToObject: function strToObject(string) {
+      return JSON.parse(string);
+    },
+    extractState: function extractState(country) {
+      var selectedCountry = this.getCountries.find(function (countryObj) {
+        return countryObj.country == country;
+      });
+      this.currency = selectedCountry.currency_name;
+      this.currency_symbol = selectedCountry.currency_symbol;
+      this.states = _toConsumableArray(this.strToObject(selectedCountry.states_cities));
+      this.selectedCountry = selectedCountry.country;
+    },
+    extractCity: function extractCity(state) {
+      var selectedState = this.states.find(function (stateObj) {
+        return stateObj.name == state;
+      });
+      this.cities = _toConsumableArray(selectedState.cities);
+      this.state = selectedState.name;
+    },
+    getSelectedCity: function getSelectedCity(city) {
+      this.city = city;
+    },
+    extractSubPropertyType: function extractSubPropertyType(property_type) {
+      var selectedProperty = this.getPropertyTypes.find(function (properTypeObj) {
+        return properTypeObj.category == property_type;
+      });
+      this.subPropertyTypes = _toConsumableArray(this.strToObject(selectedProperty.subcategories));
+      this.selectedProperty = selectedProperty.category;
+    },
+    submit: function submit() {
+      if (this.$vuelidation.valid()) {
+        console.log("Hello, ".concat(this.name, "!"));
+      }
+    }
+  }),
+  created: function created() {},
+  mounted: function mounted() {
+    this.getAllCountries();
+    this.getAllPropertyTypes();
+  },
+  vuelidation: {
+    data: {
+      name: {
+        required: true
+      },
+      property_type: {
+        required: true
+      },
+      sub_property_type: {
+        required: true
+      },
+      status: {
+        required: true
+      },
+      currency: {
+        required: true
+      },
+      currency_symbol: {
+        required: true
+      },
+      price: {
+        required: true,
+        decimal: true
+      },
+      address: {
+        required: true
+      },
+      country: {
+        required: true
+      },
+      state: {
+        required: true
+      },
+      city: {
+        required: true
+      },
+      attributes: {
+        required: true
+      },
+      description: {
+        required: true
+      }
+    }
   }
 });
 
@@ -1042,10 +1140,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_admin_common_TheMobileHeader_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/admin/common/TheMobileHeader.vue */ "./resources/js/components/admin/common/TheMobileHeader.vue");
 /* harmony import */ var _components_admin_common_TheDesktopHeader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/admin/common/TheDesktopHeader.vue */ "./resources/js/components/admin/common/TheDesktopHeader.vue");
 /* harmony import */ var _components_admin_common_TheSideBar_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/admin/common/TheSideBar.vue */ "./resources/js/components/admin/common/TheSideBar.vue");
 /* harmony import */ var _components_admin_common_TheFooter_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/admin/common/TheFooter.vue */ "./resources/js/components/admin/common/TheFooter.vue");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -1155,141 +1268,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -1301,12 +1280,56 @@ __webpack_require__.r(__webpack_exports__);
     TheSideBar: _components_admin_common_TheSideBar_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     TheFooter: _components_admin_common_TheFooter_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  name: "PropertyTypeView",
+  name: "AttributesView",
   data: function data() {
     return {
       app_name: "City Accommodation",
-      year: new Date().getFullYear()
+      year: new Date().getFullYear(),
+      name: ''
     };
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)("property_attribute", ["getPropertyAttribute", "getResponse", "getError"])),
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)("property_attribute", ["getAllPropertyAttribute", "savePropertyAttribute"])), {}, {
+    save: function save() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!_this.$vuelidation.valid()) {
+                  _context.next = 3;
+                  break;
+                }
+
+                _context.next = 3;
+                return _this.savePropertyAttribute({
+                  name: _this.name
+                });
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    submit: function submit() {
+      // this.$refs.form.$el.submit();
+      console.log(this.$refs.form.submit());
+    }
+  }),
+  mounted: function mounted() {
+    this.getAllPropertyAttribute();
+  },
+  vuelidation: {
+    data: {
+      name: {
+        required: true
+      }
+    }
   }
 });
 
@@ -3445,14 +3468,14 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("li", [
           _c("a", { attrs: { href: "/super/attributes" } }, [
-            _c("i", { staticClass: "far fa-info-circle" }),
+            _c("i", { staticClass: "fa fa-info-circle" }),
             _vm._v("Property Features"),
           ]),
         ]),
         _vm._v(" "),
         _c("li", [
           _c("a", { attrs: { href: "/super/settings" } }, [
-            _c("i", { staticClass: "far fa-gear" }),
+            _c("i", { staticClass: "fa fa-gear" }),
             _vm._v("Settings"),
           ]),
         ]),
@@ -3568,7 +3591,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("a", { attrs: { href: "/super/attributes" } }, [
-      _c("i", { staticClass: "far fa-info" }),
+      _c("i", { staticClass: "fa fa-info-circle" }),
       _vm._v("Property Features"),
     ])
   },
@@ -3577,7 +3600,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("a", { attrs: { href: "/super/settings" } }, [
-      _c("i", { staticClass: "far fa-gears" }),
+      _c("i", { staticClass: "fa fa-gear" }),
       _vm._v("Settings"),
     ])
   },
@@ -3650,9 +3673,891 @@ var render = function () {
         1
       ),
       _vm._v(" "),
-      _vm._m(2),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addListing",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "addListingLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-lg",
+              attrs: { role: "document" },
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "card" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body card-block" }, [
+                      _c("form", { staticClass: "form-horizontal" }, [
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(4),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.name,
+                                  expression: "name",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", id: "text-input" },
+                              domProps: { value: _vm.name },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.name = $event.target.value
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("name")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.$vuelidation.error("name"))
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(5),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.property_type,
+                                    expression: "property_type",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.property_type = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                },
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      selected: "",
+                                      hidden: "",
+                                      disabled: "",
+                                      value: "0",
+                                    },
+                                  },
+                                  [_vm._v("Please select")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(
+                                  _vm.getPropertyTypes,
+                                  function (property_type, index) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: index,
+                                        domProps: {
+                                          value: property_type.category,
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.ucfirst(property_type.category)
+                                          )
+                                        ),
+                                      ]
+                                    )
+                                  }
+                                ),
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("property_type")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.$vuelidation.error("property_type")
+                                      )
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(6),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.sub_property_type,
+                                    expression: "sub_property_type",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.sub_property_type = $event.target
+                                      .multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                },
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      selected: "",
+                                      hidden: "",
+                                      disabled: "",
+                                    },
+                                  },
+                                  [_vm._v("Please select")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(
+                                  _vm.getPropertyTypes,
+                                  function (property_type, index) {
+                                    return _c(
+                                      "optgroup",
+                                      {
+                                        key: index,
+                                        attrs: {
+                                          label: _vm.ucfirst(
+                                            property_type.category
+                                          ),
+                                        },
+                                      },
+                                      _vm._l(
+                                        _vm.strToObject(
+                                          property_type.subcategories
+                                        ),
+                                        function (sub_property_type, ind) {
+                                          return _c(
+                                            "option",
+                                            {
+                                              key: ind,
+                                              domProps: {
+                                                value: sub_property_type,
+                                              },
+                                            },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  _vm.ucfirst(sub_property_type)
+                                                )
+                                              ),
+                                            ]
+                                          )
+                                        }
+                                      ),
+                                      0
+                                    )
+                                  }
+                                ),
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("sub_property_type")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.$vuelidation.error(
+                                          "sub_property_type"
+                                        )
+                                      )
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(7),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col col-md-9" }, [
+                            _c(
+                              "div",
+                              { staticClass: "form-check-inline form-check" },
+                              [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass: "form-check-label ",
+                                    attrs: { for: "inline-radio1" },
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.status,
+                                          expression: "status",
+                                        },
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "radio",
+                                        id: "inline-radio1",
+                                        value: "buy",
+                                      },
+                                      domProps: {
+                                        checked: _vm._q(_vm.status, "buy"),
+                                      },
+                                      on: {
+                                        change: function ($event) {
+                                          _vm.status = "buy"
+                                        },
+                                      },
+                                    }),
+                                    _vm._v(
+                                      " Buy  \n                                                        "
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass: "form-check-label ",
+                                    attrs: { for: "inline-radio2" },
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.status,
+                                          expression: "status",
+                                        },
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "radio",
+                                        id: "inline-radio2",
+                                        value: "sell",
+                                      },
+                                      domProps: {
+                                        checked: _vm._q(_vm.status, "sell"),
+                                      },
+                                      on: {
+                                        change: function ($event) {
+                                          _vm.status = "sell"
+                                        },
+                                      },
+                                    }),
+                                    _vm._v(
+                                      " Sell  \n                                                        "
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass: "form-check-label ",
+                                    attrs: { for: "inline-radio3" },
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.status,
+                                          expression: "status",
+                                        },
+                                      ],
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "radio",
+                                        id: "inline-radio3",
+                                        value: "rent",
+                                      },
+                                      domProps: {
+                                        checked: _vm._q(_vm.status, "rent"),
+                                      },
+                                      on: {
+                                        change: function ($event) {
+                                          _vm.status = "rent"
+                                        },
+                                      },
+                                    }),
+                                    _vm._v(
+                                      " Rent  \n                                                        "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("status")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.$vuelidation.error("status"))
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(8),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.price,
+                                  expression: "price",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.price },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.price = $event.target.value
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("price")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.$vuelidation.error("price"))
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(9),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.country,
+                                    expression: "country",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                on: {
+                                  change: [
+                                    function ($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call(
+                                          $event.target.options,
+                                          function (o) {
+                                            return o.selected
+                                          }
+                                        )
+                                        .map(function (o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.country = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    function ($event) {
+                                      return _vm.extractState(
+                                        $event.target.value
+                                      )
+                                    },
+                                  ],
+                                },
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      selected: "",
+                                      hidden: "",
+                                      disabled: "",
+                                    },
+                                  },
+                                  [_vm._v("Please select")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(
+                                  _vm.getCountries,
+                                  function (country, index) {
+                                    return _c(
+                                      "option",
+                                      {
+                                        key: index,
+                                        domProps: { value: country.country },
+                                      },
+                                      [_vm._v(_vm._s(country.country))]
+                                    )
+                                  }
+                                ),
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("country")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.$vuelidation.error("country"))
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(10),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.state,
+                                    expression: "state",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                on: {
+                                  change: [
+                                    function ($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call(
+                                          $event.target.options,
+                                          function (o) {
+                                            return o.selected
+                                          }
+                                        )
+                                        .map(function (o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.state = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    function ($event) {
+                                      return _vm.extractCity(
+                                        $event.target.value
+                                      )
+                                    },
+                                  ],
+                                },
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      selected: "",
+                                      hidden: "",
+                                      disabled: "",
+                                    },
+                                  },
+                                  [_vm._v("Please select")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.states, function (state, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: state.name },
+                                    },
+                                    [_vm._v(_vm._s(_vm.ucfirst(state.name)))]
+                                  )
+                                }),
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("state")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.$vuelidation.error("state"))
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(11),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.city,
+                                    expression: "city",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.city = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                },
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      selected: "",
+                                      hidden: "",
+                                      disabled: "",
+                                    },
+                                  },
+                                  [_vm._v("Please select")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.cities, function (city, index) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: index,
+                                      domProps: { value: city.name },
+                                    },
+                                    [_vm._v(_vm._s(_vm.ucfirst(city.name)))]
+                                  )
+                                }),
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("city")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.$vuelidation.error("city"))
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(12),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.address,
+                                  expression: "address",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", id: "text-input" },
+                              domProps: { value: _vm.address },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.address = $event.target.value
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("address")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(_vm.$vuelidation.error("address"))
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(13),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col col-md-9" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.attributes,
+                                    expression: "attributes",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: { id: "multiple-select", multiple: "" },
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.attributes = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                },
+                              },
+                              [
+                                _c("option", { attrs: { value: "1" } }, [
+                                  _vm._v("Option #1"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "2" } }, [
+                                  _vm._v("Option #2"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "3" } }, [
+                                  _vm._v("Option #3"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "4" } }, [
+                                  _vm._v("Option #4"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "5" } }, [
+                                  _vm._v("Option #5"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "6" } }, [
+                                  _vm._v("Option #6"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "7" } }, [
+                                  _vm._v("Option #7"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "8" } }, [
+                                  _vm._v("Option #8"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "9" } }, [
+                                  _vm._v("Option #9"),
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "10" } }, [
+                                  _vm._v("Option #10"),
+                                ]),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("attributes")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.$vuelidation.error("attributes")
+                                      )
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row form-group" }, [
+                          _vm._m(14),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-12 col-md-9" }, [
+                            _c("textarea", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.description,
+                                  expression: "description",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "textarea-input", rows: "4" },
+                              domProps: { value: _vm.description },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.description = $event.target.value
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _vm.$vuelidation.error("description")
+                              ? _c(
+                                  "small",
+                                  { staticClass: "form-text  text-danger" },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.$vuelidation.error("description")
+                                      )
+                                    ),
+                                  ]
+                                )
+                              : _vm._e(),
+                          ]),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _vm._m(15),
+              ]),
+            ]
+          ),
+        ]
+      ),
       _vm._v(" "),
-      _vm._m(3),
+      _vm._m(16),
     ],
     1
   )
@@ -3861,633 +4766,191 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "addListing",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "addListingLabel",
-          "aria-hidden": "true",
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "addListingLabel" } },
+        [_vm._v("Add Listing")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close",
+          },
         },
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c(
-                  "h5",
-                  {
-                    staticClass: "modal-title",
-                    attrs: { id: "addListingLabel" },
-                  },
-                  [_vm._v("Add Listing")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close",
-                    },
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×"),
-                    ]),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "card" }, [
-                  _c("div", { staticClass: "card-header" }, [
-                    _c("strong", [_vm._v("Add Listing Form")]),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-body card-block" }, [
-                    _c(
-                      "form",
-                      {
-                        staticClass: "form-horizontal",
-                        attrs: { action: "", method: "post" },
-                      },
-                      [
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "text-input" },
-                              },
-                              [_vm._v("Property Name")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c("input", {
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                id: "text-input",
-                                name: "name",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "small",
-                              { staticClass: "form-text text-muted" },
-                              [_vm._v("This is a help text")]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "select" },
-                              },
-                              [_vm._v("Property Type")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c(
-                              "select",
-                              {
-                                staticClass: "form-control",
-                                attrs: { name: "property_type" },
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  {
-                                    attrs: {
-                                      selected: "",
-                                      hidden: "",
-                                      disabled: "",
-                                      value: "0",
-                                    },
-                                  },
-                                  [_vm._v("Please select")]
-                                ),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "1" } }, [
-                                  _vm._v("Option #1"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
-                                  _vm._v("Option #2"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
-                                  _vm._v("Option #3"),
-                                ]),
-                              ]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "select" },
-                              },
-                              [_vm._v("Sub Property Type")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c(
-                              "select",
-                              {
-                                staticClass: "form-control",
-                                attrs: { name: "sub_property_type" },
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  {
-                                    attrs: {
-                                      selected: "",
-                                      hidden: "",
-                                      disabled: "",
-                                    },
-                                  },
-                                  [_vm._v("Please select")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "optgroup",
-                                  { attrs: { label: "Resident" } },
-                                  [
-                                    _c("option", { attrs: { value: "1" } }, [
-                                      _vm._v("Option #1"),
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("option", { attrs: { value: "2" } }, [
-                                      _vm._v("Option #2"),
-                                    ]),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("optgroup", { attrs: { label: "Land" } }, [
-                                  _c("option", { attrs: { value: "3" } }, [
-                                    _vm._v("Option #3"),
-                                  ]),
-                                ]),
-                              ]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              { staticClass: " form-control-label" },
-                              [_vm._v("Property Status")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col col-md-9" }, [
-                            _c(
-                              "div",
-                              { staticClass: "form-check-inline form-check" },
-                              [
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "form-check-label ",
-                                    attrs: { for: "inline-radio1" },
-                                  },
-                                  [
-                                    _c("input", {
-                                      staticClass: "form-check-input",
-                                      attrs: {
-                                        type: "radio",
-                                        id: "inline-radio1",
-                                        name: "status",
-                                        value: "buy",
-                                      },
-                                    }),
-                                    _vm._v(
-                                      " Buy  \n                                                        "
-                                    ),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "form-check-label ",
-                                    attrs: { for: "inline-radio2" },
-                                  },
-                                  [
-                                    _c("input", {
-                                      staticClass: "form-check-input",
-                                      attrs: {
-                                        type: "radio",
-                                        id: "inline-radio2",
-                                        name: "status",
-                                        value: "sell",
-                                      },
-                                    }),
-                                    _vm._v(
-                                      " Sell  \n                                                        "
-                                    ),
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "form-check-label ",
-                                    attrs: { for: "inline-radio3" },
-                                  },
-                                  [
-                                    _c("input", {
-                                      staticClass: "form-check-input",
-                                      attrs: {
-                                        type: "radio",
-                                        id: "inline-radio3",
-                                        name: "status",
-                                        value: "rent",
-                                      },
-                                    }),
-                                    _vm._v(
-                                      " Rent  \n                                                        "
-                                    ),
-                                  ]
-                                ),
-                              ]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "text-input" },
-                              },
-                              [_vm._v("Property Price")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c("input", {
-                              staticClass: "form-control",
-                              attrs: { type: "number", name: "price" },
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "small",
-                              { staticClass: "form-text text-muted" },
-                              [_vm._v("This is a help text")]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "select" },
-                              },
-                              [_vm._v("Country")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c(
-                              "select",
-                              {
-                                staticClass: "form-control",
-                                attrs: { name: "sub_property_type" },
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  {
-                                    attrs: {
-                                      selected: "",
-                                      hidden: "",
-                                      disabled: "",
-                                    },
-                                  },
-                                  [_vm._v("Please select")]
-                                ),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "1" } }, [
-                                  _vm._v("Option #1"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
-                                  _vm._v("Option #2"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
-                                  _vm._v("Option #3"),
-                                ]),
-                              ]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "select" },
-                              },
-                              [_vm._v("State/Region")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c(
-                              "select",
-                              {
-                                staticClass: "form-control",
-                                attrs: { name: "sub_property_type" },
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  {
-                                    attrs: {
-                                      selected: "",
-                                      hidden: "",
-                                      disabled: "",
-                                    },
-                                  },
-                                  [_vm._v("Please select")]
-                                ),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "1" } }, [
-                                  _vm._v("Option #1"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
-                                  _vm._v("Option #2"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
-                                  _vm._v("Option #3"),
-                                ]),
-                              ]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "select" },
-                              },
-                              [_vm._v("City")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c(
-                              "select",
-                              {
-                                staticClass: "form-control",
-                                attrs: { name: "sub_property_type" },
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  {
-                                    attrs: {
-                                      selected: "",
-                                      hidden: "",
-                                      disabled: "",
-                                    },
-                                  },
-                                  [_vm._v("Please select")]
-                                ),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "1" } }, [
-                                  _vm._v("Option #1"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
-                                  _vm._v("Option #2"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
-                                  _vm._v("Option #3"),
-                                ]),
-                              ]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "text-input" },
-                              },
-                              [_vm._v("Property Address")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c("input", {
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                id: "text-input",
-                                name: "address",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "small",
-                              { staticClass: "form-text text-muted" },
-                              [_vm._v("This is a help text")]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "multiple-select" },
-                              },
-                              [_vm._v("Attributes/Features")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col col-md-9" }, [
-                            _c(
-                              "select",
-                              {
-                                staticClass: "form-control",
-                                attrs: {
-                                  name: "multiple-select",
-                                  id: "multiple-select",
-                                  multiple: "",
-                                },
-                              },
-                              [
-                                _c("option", { attrs: { value: "1" } }, [
-                                  _vm._v("Option #1"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "2" } }, [
-                                  _vm._v("Option #2"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "3" } }, [
-                                  _vm._v("Option #3"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "4" } }, [
-                                  _vm._v("Option #4"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "5" } }, [
-                                  _vm._v("Option #5"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "6" } }, [
-                                  _vm._v("Option #6"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "7" } }, [
-                                  _vm._v("Option #7"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "8" } }, [
-                                  _vm._v("Option #8"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "9" } }, [
-                                  _vm._v("Option #9"),
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "10" } }, [
-                                  _vm._v("Option #10"),
-                                ]),
-                              ]
-                            ),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "row form-group" }, [
-                          _c("div", { staticClass: "col col-md-3" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: " form-control-label",
-                                attrs: { for: "textarea-input" },
-                              },
-                              [_vm._v("Property Description")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-12 col-md-9" }, [
-                            _c("textarea", {
-                              staticClass: "form-control",
-                              attrs: {
-                                name: "description",
-                                id: "textarea-input",
-                                rows: "4",
-                              },
-                            }),
-                          ]),
-                        ]),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-footer" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary btn-sm",
-                        attrs: { type: "submit" },
-                      },
-                      [
-                        _c("i", { staticClass: "fa fa-dot-circle-o" }),
-                        _vm._v(
-                          " Submit\n                                        "
-                        ),
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger btn-sm",
-                        attrs: { type: "reset" },
-                      },
-                      [
-                        _c("i", { staticClass: "fa fa-ban" }),
-                        _vm._v(
-                          " Reset\n                                        "
-                        ),
-                      ]
-                    ),
-                  ]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" },
-                  },
-                  [_vm._v("Cancel")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
-                  [_vm._v("Confirm")]
-                ),
-              ]),
-            ]),
-          ]
-        ),
-      ]
-    )
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("strong", [_vm._v("Add Listing Form")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "text-input" } },
+        [_vm._v("Property Name")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "select" } },
+        [_vm._v("Property Type")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "select" } },
+        [_vm._v("Sub Property Type")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c("label", { staticClass: " form-control-label" }, [
+        _vm._v("Property Status"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "text-input" } },
+        [_vm._v("Property Price")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "select" } },
+        [_vm._v("Country")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "select" } },
+        [_vm._v("State/Region")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "select" } },
+        [_vm._v("City")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "text-input" } },
+        [_vm._v("Property Address")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        {
+          staticClass: " form-control-label",
+          attrs: { for: "multiple-select" },
+        },
+        [_vm._v("Attributes/Features")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        {
+          staticClass: " form-control-label",
+          attrs: { for: "textarea-input" },
+        },
+        [_vm._v("Property Description")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" },
+        },
+        [_vm._v("Cancel")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Submit")]
+      ),
+    ])
   },
   function () {
     var _vm = this
@@ -5174,7 +5637,38 @@ var render = function () {
                 _c("div", { staticClass: "container-fluid" }, [
                   _vm._m(0),
                   _vm._v(" "),
-                  _vm._m(1),
+                  _c("div", { staticClass: "row m-t-30" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card" }, [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "card-body" },
+                          _vm._l(
+                            _vm.getPropertyAttribute,
+                            function (attribute, index) {
+                              return _c(
+                                "button",
+                                {
+                                  key: index,
+                                  staticClass: "btn btn-secondary btn-sm",
+                                  attrs: { type: "button" },
+                                },
+                                [
+                                  _c("i", { staticClass: "fa fa-lightbulb-o" }),
+                                  _vm._v("  " + _vm._s(attribute.name)),
+                                ]
+                              )
+                            }
+                          ),
+                          0
+                        ),
+                      ]),
+                    ]),
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "col-md-12" }, [
@@ -5197,6 +5691,118 @@ var render = function () {
           ]),
         ],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "viewListing",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "viewListingLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-lg",
+              attrs: { role: "document" },
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "card" }, [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body card-block" }, [
+                      _c(
+                        "form",
+                        {
+                          ref: "form",
+                          staticClass: "form-horizontal",
+                          on: {
+                            submit: function ($event) {
+                              $event.preventDefault()
+                              return _vm.save.apply(null, arguments)
+                            },
+                          },
+                        },
+                        [
+                          _c("div", { staticClass: "row form-group" }, [
+                            _vm._m(5),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-12 col-md-9" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.name,
+                                    expression: "name",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "text", id: "text-input" },
+                                domProps: { value: _vm.name },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.name = $event.target.value
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _vm.$vuelidation.error("name")
+                                ? _c(
+                                    "small",
+                                    { staticClass: "form-text  text-danger" },
+                                    [
+                                      _vm._v(
+                                        _vm._s(_vm.$vuelidation.error("name"))
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
+                            ]),
+                          ]),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" },
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" },
+                      on: { click: _vm.submit },
+                    },
+                    [_vm._v("Submit")]
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+        ]
       ),
     ],
     1
@@ -5221,476 +5827,72 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row m-t-30" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "table-data__tool" }, [
-          _c("div", { staticClass: "table-data__tool-left" }, [
-            _c("div", { staticClass: "rs-select2--light rs-select2--md" }, [
-              _c(
-                "select",
-                { staticClass: "js-select2", attrs: { name: "property" } },
-                [
-                  _c("option", { attrs: { selected: "selected" } }, [
-                    _vm._v("All Properties"),
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [_vm._v("Option 1")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [_vm._v("Option 2")]),
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropDownSelect2" }),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "rs-select2--light rs-select2--sm" }, [
-              _c(
-                "select",
-                { staticClass: "js-select2", attrs: { name: "time" } },
-                [
-                  _c("option", { attrs: { selected: "selected" } }, [
-                    _vm._v("Today"),
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [_vm._v("3 Days")]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "" } }, [_vm._v("1 Week")]),
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropDownSelect2" }),
-            ]),
-            _vm._v(" "),
-            _c("button", { staticClass: "au-btn-filter" }, [
-              _c("i", { staticClass: "zmdi zmdi-filter-list" }),
-              _vm._v("filters"),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "table-data__tool-right" }, [
-            _c(
-              "button",
-              { staticClass: "au-btn au-btn-icon au-btn--green au-btn--small" },
-              [_c("i", { staticClass: "zmdi zmdi-plus" }), _vm._v("add item")]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "rs-select2--dark rs-select2--sm rs-select2--dark2",
-              },
-              [
-                _c(
-                  "select",
-                  { staticClass: "js-select2", attrs: { name: "type" } },
-                  [
-                    _c("option", { attrs: { selected: "selected" } }, [
-                      _vm._v("Export"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v("Option 1"),
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v("Option 2"),
-                    ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "dropDownSelect2" }),
-              ]
-            ),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "table-responsive table-responsive-data2" }, [
-          _c("table", { staticClass: "table table-data2" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [
-                  _c("label", { staticClass: "au-checkbox" }, [
-                    _c("input", { attrs: { type: "checkbox" } }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "au-checkmark" }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("th", [_vm._v("name")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("email")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("description")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("date")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("status")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("price")]),
-                _vm._v(" "),
-                _c("th"),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", { staticClass: "tr-shadow" }, [
-                _c("td", [
-                  _c("label", { staticClass: "au-checkbox" }, [
-                    _c("input", { attrs: { type: "checkbox" } }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "au-checkmark" }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Lori Lynch")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "block-email" }, [
-                    _vm._v("lori@example.com"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "desc" }, [_vm._v("Samsung S8 Black")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2018-09-27 02:12")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "status--process" }, [
-                    _vm._v("Processed"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("$679.00")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "table-data-feature" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Send",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-mail-send" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Edit",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-edit" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Delete",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-delete" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "More",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-more" })]
-                    ),
-                  ]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("tr", { staticClass: "spacer" }),
-              _vm._v(" "),
-              _c("tr", { staticClass: "tr-shadow" }, [
-                _c("td", [
-                  _c("label", { staticClass: "au-checkbox" }, [
-                    _c("input", { attrs: { type: "checkbox" } }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "au-checkmark" }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Lori Lynch")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "block-email" }, [
-                    _vm._v("john@example.com"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "desc" }, [
-                  _vm._v("iPhone X 64Gb Grey"),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2018-09-29 05:57")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "status--process" }, [
-                    _vm._v("Processed"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("$999.00")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "table-data-feature" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Send",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-mail-send" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Edit",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-edit" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Delete",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-delete" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "More",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-more" })]
-                    ),
-                  ]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("tr", { staticClass: "spacer" }),
-              _vm._v(" "),
-              _c("tr", { staticClass: "tr-shadow" }, [
-                _c("td", [
-                  _c("label", { staticClass: "au-checkbox" }, [
-                    _c("input", { attrs: { type: "checkbox" } }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "au-checkmark" }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Lori Lynch")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "block-email" }, [
-                    _vm._v("lyn@example.com"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "desc" }, [
-                  _vm._v("iPhone X 256Gb Black"),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2018-09-25 19:03")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "status--denied" }, [
-                    _vm._v("Denied"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("$1199.00")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "table-data-feature" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Send",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-mail-send" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Edit",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-edit" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Delete",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-delete" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "More",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-more" })]
-                    ),
-                  ]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("tr", { staticClass: "spacer" }),
-              _vm._v(" "),
-              _c("tr", { staticClass: "tr-shadow" }, [
-                _c("td", [
-                  _c("label", { staticClass: "au-checkbox" }, [
-                    _c("input", { attrs: { type: "checkbox" } }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "au-checkmark" }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Lori Lynch")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "block-email" }, [
-                    _vm._v("doe@example.com"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "desc" }, [_vm._v("Camera C430W 4k")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2018-09-24 19:10")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "status--process" }, [
-                    _vm._v("Processed"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("$699.00")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "table-data-feature" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Send",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-mail-send" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Edit",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-edit" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "Delete",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-delete" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "item",
-                        attrs: {
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          title: "More",
-                        },
-                      },
-                      [_c("i", { staticClass: "zmdi zmdi-more" })]
-                    ),
-                  ]),
-                ]),
-              ]),
-            ]),
-          ]),
-        ]),
+    return _c("div", { staticClass: "table-data__tool" }, [
+      _c("div", { staticClass: "table-data__tool-left" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-data__tool-right" }, [
+        _c(
+          "button",
+          {
+            staticClass: "au-btn au-btn-icon au-btn--green au-btn--small",
+            attrs: { "data-toggle": "modal", "data-target": "#viewListing" },
+          },
+          [_c("i", { staticClass: "zmdi zmdi-plus" }), _vm._v("add attribute")]
+        ),
       ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("strong", [_vm._v("Attributes & Features ")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "viewListingLabel" } },
+        [_vm._v("Attribute/Feature")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close",
+          },
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("strong", [_vm._v("Add Attribute Form")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-md-3" }, [
+      _c(
+        "label",
+        { staticClass: " form-control-label", attrs: { for: "text-input" } },
+        [_vm._v("Attribute/Feature Name")]
+      ),
     ])
   },
 ]
