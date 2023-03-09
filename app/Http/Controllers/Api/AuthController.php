@@ -101,7 +101,8 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Admin Logged In Successfully',
-                'token' => $admin->createToken("API TOKEN")->plainTextToken
+                'token' => $admin->createToken("API TOKEN")->plainTextToken,
+                'admin' => $admin
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -110,4 +111,14 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    public function logoutAdmin(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'Admin Logged Out Successfully'
+        ], 200);
+    }
+
 }

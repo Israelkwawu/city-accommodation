@@ -154,13 +154,9 @@
                                             <a href="#">
                                                 <i class="zmdi zmdi-settings"></i>Setting</a>
                                         </div>
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                        </div>
                                     </div>
                                     <div class="account-dropdown__footer">
-                                        <a href="#">
+                                        <a @click="signOut" href="#">
                                             <i class="zmdi zmdi-power"></i>Logout</a>
                                     </div>
                                 </div>
@@ -175,6 +171,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 export default {
     name: "TheDesktopHeader",
     data() {
@@ -182,6 +179,19 @@ export default {
             app_name: process.env.MIX_APP_NAME,
             toggleProfileDropdown: false,
         }
-    }
+    },
+    computed: {
+        ...mapGetters("authentication", ["authenticated", "user","getAuthToken", "getError"]),
+    },
+    methods: {
+        ...mapActions("authentication", ["logout"]),  
+        async signOut() {
+            await this.logout();
+
+            if (!this.authenticated) {
+                this.$router.push({name:'private.login'})
+            }
+        }
+    },
 }
 </script>
