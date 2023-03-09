@@ -42,10 +42,9 @@ export default {
                 commit('SET_PROPERTY_LISTS', data.data.data);
                 commit('SET_NEXT_PAGE_URL', data.data.next_page_url);
                 commit('SET_NEXT_CURSOR', data.data.next_cursor);
-            } catch (error) {
+            } catch ( { response } ) {
                 commit('SET_ERROR',  {
-                    error: error,
-                    errorMessage: "An unexpected error occurred.",
+                    error: response,
                 })
             }
         

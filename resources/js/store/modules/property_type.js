@@ -26,10 +26,9 @@ export default {
             try {
                const data = await Api().get('/property_types');
                commit('SET_PROPERTY_TYPES', data.data)
-            } catch (error) {
+            } catch ( { response } ) {
                 commit('SET_ERROR',  {
-                    error: error,
-                    errorMessage: "An unexpected error occurred.",
+                    error: response,
                 })
             }
            

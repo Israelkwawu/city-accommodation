@@ -26,10 +26,9 @@ export default {
             try {
                 const data = await Api().get('/countries');
                 commit('SET_COUNTRIES', data.data)
-            } catch (error) {
+            } catch ( { response } ) {
                 commit('SET_ERROR',  {
-                    error: error,
-                    errorMessage: "An unexpected error occurred.",
+                    error: response,
                 })
             }
         
