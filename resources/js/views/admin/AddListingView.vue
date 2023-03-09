@@ -143,7 +143,7 @@
                                         <strong>Add Listing Form</strong>
                                     </div>
                                     <div class="card-body card-block">
-                                        <form action="" method="post" class="form-horizontal">
+                                        <form class="form-horizontal">
                                         
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
@@ -151,7 +151,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <input type="text" id="text-input" v-model="name" class="form-control">
-                                                    <small class="form-text text-muted">This is a help text</small>
+                                                    <small v-if='$vuelidation.error("name")' class="form-text  text-danger">{{ $vuelidation.error('name') }}</small>
                                                 </div>
                                             </div>
                                             
@@ -164,6 +164,7 @@
                                                         <option selected hidden disabled value="0">Please select</option>
                                                         <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
                                                     </select>
+                                                    <small v-if='$vuelidation.error("property_type")' class="form-text  text-danger">{{ $vuelidation.error('property_type') }}</small>
                                                 </div>
                                             </div>
                                             
@@ -174,15 +175,11 @@
                                                 <div class="col-12 col-md-9">
                                                     <select v-model="sub_property_type" class="form-control">
                                                         <option selected hidden disabled>Please select</option>
-                                                        <optgroup label="Resident">
-                                                            <option value="1">Option #1</option>
-                                                            <option value="2">Option #2</option>
+                                                        <optgroup  v-for="(property_type, index) in getPropertyTypes" :key="index" :label="ucfirst(property_type.category)">
+                                                            <option v-for="(sub_property_type, ind) in strToObject(property_type.subcategories)" :key="ind" :value="sub_property_type" >{{ ucfirst(sub_property_type) }}</option>
                                                         </optgroup>
-                                                        <optgroup label="Land">
-                                                            <option value="3">Option #3</option>
-                                                        </optgroup>
-                                                        
                                                     </select>
+                                                    <small v-if='$vuelidation.error("sub_property_type")' class="form-text  text-danger">{{ $vuelidation.error('sub_property_type') }}</small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -201,6 +198,7 @@
                                                             <input type="radio" id="inline-radio3" v-model="status" value="rent" class="form-check-input"> Rent &nbsp;
                                                         </label>
                                                     </div>
+                                                    <small v-if='$vuelidation.error("status")' class="form-text  text-danger">{{ $vuelidation.error('status') }}</small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -209,7 +207,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <input type="number" v-model="price" class="form-control">
-                                                    <small class="form-text text-muted">This is a help text</small>
+                                                    <small v-if='$vuelidation.error("price")' class="form-text  text-danger">{{ $vuelidation.error('price') }}</small>
                                                 </div>
                                             </div>
                                             
@@ -222,6 +220,7 @@
                                                         <option selected hidden disabled>Please select</option>
                                                         <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
                                                     </select>
+                                                    <small v-if='$vuelidation.error("country")' class="form-text  text-danger">{{ $vuelidation.error('country') }}</small>
                                                 </div>
                                             </div>
 
@@ -234,6 +233,7 @@
                                                         <option selected hidden disabled>Please select</option>
                                                         <option v-for="(state, index) in states" :key="index" :value="state.name">{{ ucfirst(state.name) }}</option>
                                                     </select>
+                                                    <small v-if='$vuelidation.error("state")' class="form-text  text-danger">{{ $vuelidation.error('state') }}</small>
                                                 </div>
                                             </div>
 
@@ -246,6 +246,7 @@
                                                         <option selected hidden disabled>Please select</option>
                                                         <option v-for="(city, index) in cities" :key="index" :value="city.name">{{ ucfirst(city.name) }}</option>
                                                     </select>
+                                                    <small v-if='$vuelidation.error("city")' class="form-text  text-danger">{{ $vuelidation.error('city') }}</small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -254,7 +255,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <input type="text" id="text-input" v-model="address" class="form-control">
-                                                    <small class="form-text text-muted">This is a help text</small>
+                                                    <small v-if='$vuelidation.error("address")' class="form-text  text-danger">{{ $vuelidation.error('address') }}</small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -263,17 +264,9 @@
                                                 </div>
                                                 <div class="col col-md-9">
                                                     <select v-model="attributes" id="multiple-select" multiple class="form-control">
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                        <option value="4">Option #4</option>
-                                                        <option value="5">Option #5</option>
-                                                        <option value="6">Option #6</option>
-                                                        <option value="7">Option #7</option>
-                                                        <option value="8">Option #8</option>
-                                                        <option value="9">Option #9</option>
-                                                        <option value="10">Option #10</option>
+                                                        <option v-for="(attribute, index) in getPropertyAttribute" :key="index" :value="attribute.name">{{ attribute.name }}</option>
                                                     </select>
+                                                    <small v-if='$vuelidation.error("attributes")' class="form-text  text-danger">{{ $vuelidation.error('attributes') }}</small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -282,6 +275,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <textarea v-model="description" id="textarea-input" rows="4" class="form-control"></textarea>
+                                                    <small v-if='$vuelidation.error("description")' class="form-text  text-danger">{{ $vuelidation.error('description') }}</small>
                                                 </div>
                                             </div>
                                             
@@ -367,10 +361,12 @@ export default {
     computed: {
         ...mapGetters("country", ["getCountries", "getError"]),
         ...mapGetters("property_type", ["getPropertyTypes", "getError"]),
+        ...mapGetters("property_attribute", ["getPropertyAttribute", "getError"]),
     },
     methods: {
         ...mapActions("country", ["getAllCountries"]),
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
+        ...mapActions("property_attribute", ["getAllPropertyAttribute"]),
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
@@ -379,6 +375,8 @@ export default {
         },
         extractState(country) {
             let selectedCountry = this.getCountries.find(countryObj => countryObj.country == country);
+            this.currency = selectedCountry.currency_name;
+            this.currency_symbol = selectedCountry.currency_symbol;
             this.states = [ ...this.strToObject(selectedCountry.states_cities) ];
             this.selectedCountry = selectedCountry.country;
         },
@@ -395,6 +393,11 @@ export default {
             this.subPropertyTypes = [ ...this.strToObject(selectedProperty.subcategories) ];
             this.selectedProperty = selectedProperty.category;
         },
+        submit() {
+            if (this.$vuelidation.valid()) {
+                console.log(`Hello, ${this.name}!`)
+            }
+        },
     
     },
     created() {
@@ -403,6 +406,51 @@ export default {
     mounted() {
         this.getAllCountries();
         this.getAllPropertyTypes();
-    }
+        this.getAllPropertyAttribute();
+    },
+    vuelidation: {
+        data: {
+            name: {
+                required: true,
+            },
+            property_type: {
+                required: true,
+            },
+            sub_property_type: {
+                required: true,
+            },
+            status: {
+                required: true,
+            },
+            currency: {
+                required: true,
+            },
+            currency_symbol: {
+                required: true,
+            },
+            price: {
+                required: true,
+                decimal: true,
+            },
+            address: {
+                required: true,
+            },
+            country: {
+                required: true,
+            },
+            state: {
+                required: true,
+            },
+            city: {
+                required: true,
+            },
+            attributes: {
+                required: true,
+            },
+            description:{
+                required: true,
+            },
+        },
+    },
 }
 </script>
