@@ -31,4 +31,5 @@ window.Echo = new Echo({
     wsPort: 443,
     disableStats: true,
     encrypted: true,
+    cluster: 'eu',
 });
