@@ -143,7 +143,14 @@
                                         <strong>Add Listing Form</strong>
                                     </div>
                                     <div class="card-body card-block">
-                                        <form class="form-horizontal">
+                                        <div :style="{ display: display }" :class="[ display == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
+                                            
+                                            {{ message }}
+                                            <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form @submit.prevent="save" class="form-horizontal">
                                         
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
@@ -278,7 +285,7 @@
                                                     <small v-if='$vuelidation.error("description")' class="form-text  text-danger">{{ $vuelidation.error('description') }}</small>
                                                 </div>
                                             </div>
-                                            
+                                            <button type="submit" ref="submitBtn" hidden class="btn btn-primary">Submit</button>
                                     
                                         </form>
                                     </div>
@@ -286,7 +293,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-primary">Submit</button>
+							<button type="button"  @click="triggerSubmit" :disabled="processing || $vuelidation.errors()" class="btn btn-primary">{{ processing ? "Processing..." : "Submit" }}</button>
 						</div>
 					</div>
 				</div>
@@ -356,17 +363,23 @@ export default {
             description:"",
             states: [],
             cities: [],
+            message: '',
+            alertType: '',
+            display: 'none',
+            processing:false,
         }
     },
     computed: {
         ...mapGetters("country", ["getCountries", "getError"]),
         ...mapGetters("property_type", ["getPropertyTypes", "getError"]),
-        ...mapGetters("property_attribute", ["getPropertyAttribute", "getError"]),
+        ...mapGetters("super_property_attribute", ["getPropertyAttribute", "getError"]),
+        ...mapGetters("super_property_list", ["getPropertyList", "getResponse", "getError"]),
     },
     methods: {
         ...mapActions("country", ["getAllCountries"]),
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
-        ...mapActions("property_attribute", ["getAllPropertyAttribute"]),
+        ...mapActions("super_property_attribute", ["getAllPropertyAttribute"]),
+        ...mapActions("super_property_list", ["getAllPropertyList",  "savePropertyList"]),
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
@@ -393,11 +406,59 @@ export default {
             this.subPropertyTypes = [ ...this.strToObject(selectedProperty.subcategories) ];
             this.selectedProperty = selectedProperty.category;
         },
-        submit() {
+        async save() {
             if (this.$vuelidation.valid()) {
-                console.log(`Hello, ${this.name}!`)
+                this.processing = true;
+                try {
+                    await this.savePropertyList({
+                        name: this.name,
+                        property_type: this.property_type,
+                        sub_property_type: this.sub_property_type,
+                        status: this.status,
+                        currency: this.currency,
+                        currency_symbol: this.currency_symbol,
+                        price: Number(this.price).toFixed(2),
+                        address: this.address,
+                        country: this.country,
+                        state: this.state,
+                        city: this.city,
+                        attributes: JSON.stringify(this.attributes),
+                        description:this.description,
+                        active: false,
+                    });
+                    this.alertType = "alert-success";
+                    this.message = this.getResponse.data.message;
+                    this.display = 'block';
+
+                    this.name = '';
+                    this.property_type = '';
+                    this.sub_property_type = '';
+                    this.status = '';
+                    this.currency = '';
+                    this.currency_symbol = '';
+                    this.price = '';
+                    this.address = '';
+                    this.country = '';
+                    this.state = '';
+                    this.city = '';
+                    this.attributes = [];
+                    this.description = '';
+                        
+
+                } catch ({ response }) {
+                    this.alertType = "alert-danger";
+                    this.message = response;
+                    this.display = 'block';
+                } finally {
+                    this.processing = false;
+                }
+                
             }
         },
+
+        triggerSubmit() {
+            this.$refs.submitBtn.click();
+        }
     
     },
     created() {
@@ -430,7 +491,7 @@ export default {
             },
             price: {
                 required: true,
-                decimal: true,
+                // decimal: true,
             },
             address: {
                 required: true,

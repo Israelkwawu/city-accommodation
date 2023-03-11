@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('property_type');
             $table->string('sub_property_type');
             $table->string('status');
-            $table->char('currency', 3)->default('GHS');
-            $table->char('currency_symbol', 5)->default('GH₵');
+            $table->string('currency')->default('GHS');
+            $table->char('currency_symbol', 10)->default('GH₵');
             $table->decimal('price', 11, 2)->default(0);
             $table->string('address');
             $table->string('country');
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('city');
             $table->json('attributes');
             $table->text('description');
+            $table->boolean('active')->default(false);
             $table->softDeletes()->nullable();
             $table->timestamps();
         });

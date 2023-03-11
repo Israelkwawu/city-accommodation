@@ -30,5 +30,6 @@ class Listing extends Model
         'city',
         'attributes',
         'description',
+        'active',
     ];
 }

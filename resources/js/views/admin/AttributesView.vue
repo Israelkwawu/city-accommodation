@@ -140,11 +140,11 @@ export default {
         }
     },
     computed: {
-        ...mapGetters("property_attribute", ["getPropertyAttribute", "getResponse", "getError"]),
+        ...mapGetters("super_property_attribute", ["getPropertyAttribute", "getResponse", "getError"]),
     },
 
     methods: {
-        ...mapActions("property_attribute", ["getAllPropertyAttribute", "savePropertyAttribute"]),  
+        ...mapActions("super_property_attribute", ["getAllPropertyAttribute", "savePropertyAttribute"]),  
         async save() {
             if (this.$vuelidation.valid()) {
                 this.processing = true;

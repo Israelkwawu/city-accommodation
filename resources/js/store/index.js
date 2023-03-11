@@ -5,7 +5,8 @@ import search from './modules/search';
 import property_type from './modules/property_type';
 import country from './modules/country';
 import property_list from './modules/property_list';
-import property_attribute from "./modules/property_attribute";
+import super_property_attribute from "./modules/super_property_attribute";
+import super_property_list from './modules/super_property_list';
 import authentication from "./modules/authentication";
 import Cookies from 'js-cookie';
 
@@ -32,7 +33,8 @@ const store = new Vuex.Store({
     property_type,
     country,
     property_list,
-    property_attribute,
+    super_property_attribute,
+    super_property_list,
     authentication,
   }
 })

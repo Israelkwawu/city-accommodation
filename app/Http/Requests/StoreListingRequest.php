@@ -36,6 +36,7 @@ class StoreListingRequest extends FormRequest
             'state' => 'required',
             'attributes' => 'required',
             'description' => 'required',
+            'active' => 'required',
         ];
     }
 
@@ -54,7 +55,8 @@ class StoreListingRequest extends FormRequest
             'country.required' => 'Country is required!',
             'state.required' => 'State/Region/Province is required!',
             'attributes.required' => 'Attributes is required!',
-            'description.required' => 'Description is required!',       
+            'description.required' => 'Description is required!',
+            'active.required' => 'Active is required!',
         ];
     }
 
@@ -78,6 +80,7 @@ class StoreListingRequest extends FormRequest
             'state' => 'trim|lowercase',
             'attributes' => 'trim|lowercase',
             'description' => 'trim|lowercase',
+            'active' => 'trim',
         ];
     }
 }

@@ -2,13 +2,13 @@ import Api from "../../services/api";
 export default {
     namespaced: true,
     state: {
-        property_attributes: [],
+        property_lists: [],
         response: {},
         error: {},
     },
     getters: {
-        getPropertyAttribute(state) {
-            return state.property_attributes;
+        getPropertyList(state) {
+            return state.property_lists;
         },
         getError(state) {
             return state.error;
@@ -18,8 +18,8 @@ export default {
         }
     },
     mutations: {
-        SET_PROPERTY_ATTRIBUTE(state, data) {
-            state.property_attributes = [ ...data ];
+        SET_PROPERTY_LIST(state, data) {
+            state.property_lists = [ ...data ];
         },
         SET_ERROR(state, data) {
             state.error = { ...data };
@@ -29,11 +29,11 @@ export default {
         },
     },
     actions: {
-        async getAllPropertyAttribute({ commit }) {
+        async getAllPropertyList({ commit }) {
             
             try {
-                const data = await Api().get('/property_attributes');
-                commit('SET_PROPERTY_ATTRIBUTE', data.data);
+                const data = await Api().get('/listings');
+                commit('SET_PROPERTY_LIST', data.data);
                 commit('SET_ERROR',  {});
             } catch ({ response }) {
                 commit('SET_ERROR',  response);
@@ -42,10 +42,9 @@ export default {
         
         },
 
-        async savePropertyAttribute({ commit }, payload) {
+        async savePropertyList({ commit }, payload) {
             try {
-                const data = await Api().post("/property_attributes", payload);
-                console.log('save',data);
+                const data = await Api().post("/listings", payload);
                 commit("SET_RESPONSE", data);
                 commit("SET_ERROR", {});
             } catch ( { response } ) {
