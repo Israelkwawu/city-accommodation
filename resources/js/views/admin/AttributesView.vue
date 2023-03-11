@@ -156,7 +156,7 @@ export default {
 
                 } catch ({ response }) {
                     this.alertType = "alert-danger";
-                    this.message = response.statusText;
+                    this.message = response;
                     this.display = 'block';
                 } finally {
                     this.processing = false;

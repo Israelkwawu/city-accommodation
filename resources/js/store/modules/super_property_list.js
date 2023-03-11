@@ -2,7 +2,7 @@ import Api from "../../services/api";
 export default {
     namespaced: true,
     state: {
-        property_lists: [],
+        property_lists: {},
         response: {},
         error: {},
     },
@@ -19,7 +19,7 @@ export default {
     },
     mutations: {
         SET_PROPERTY_LIST(state, data) {
-            state.property_lists = [ ...data ];
+            state.property_lists = { ...data };
         },
         SET_ERROR(state, data) {
             state.error = { ...data };
@@ -33,11 +33,12 @@ export default {
             
             try {
                 const data = await Api().get('/listings');
+                
                 commit('SET_PROPERTY_LIST', data.data);
                 commit('SET_ERROR',  {});
             } catch ({ response }) {
                 commit('SET_ERROR',  response);
-                commit('SET_PROPERTY_ATTRIBUTE', []);
+                commit('SET_PROPERTY_LIST', {});
             }
         
         },

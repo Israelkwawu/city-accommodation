@@ -67,26 +67,34 @@
                                                 <th>country</th>
                                                 <th>status</th>
                                                 <th>price</th>
+                                                <th>active</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="tr-shadow">
+                                            <tr class="tr-shadow" v-for="(property , index) in getPropertyList.data" :key="index">
                                                 <td>
                                                     <label class="au-checkbox">
                                                         <input type="checkbox">
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </td>
-                                                <td>Lori Lynch</td>
+                                                <td>{{ property.name }}</td>
                                                 <td>
-                                                    dtdrthdthrtyftydrf
+                                                    {{ property.property_type }}
                                                 </td>
-                                                <td>Ghana</td>
                                                 <td>
-                                                    <span class="status--process">Processed</span>
+                                                    {{ property.country }}
                                                 </td>
-                                                <td>$679.00</td>
+                                                <td>
+                                                    {{ property.status }}
+                                                </td>
+                                                <td>
+                                                    {{ property.currency_symbol }}{{ property.price }}
+                                                </td>
+                                                <td>
+                                                    <span :class="property.active?'status--process':'status--denied'">{{ !!property.active }}</span>
+                                                </td>
                                                 <td>
                                                     <div class="table-data-feature">
                                                         <button class="item"  data-toggle="modal" data-target="#viewListing"  data-placement="top" title="View">
@@ -468,6 +476,7 @@ export default {
         this.getAllCountries();
         this.getAllPropertyTypes();
         this.getAllPropertyAttribute();
+        this.getAllPropertyList();
     },
     vuelidation: {
         data: {
