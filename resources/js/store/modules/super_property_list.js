@@ -6,6 +6,7 @@ export default {
         response: {},
         error: {},
         one_property_list: {},
+        upload_response: {},
     },
     getters: {
         getPropertyList(state) {
@@ -20,6 +21,9 @@ export default {
         getOnePropertyList(state) {
             return state.one_property_list;
         },
+        getUploadResponse(state) {
+            return state.upload_response;
+        }
     },
     mutations: {
         SET_PROPERTY_LIST(state, data) {
@@ -33,6 +37,9 @@ export default {
         },
         SET_ONE_PROPERTY_LIST(state, data) {
             state.one_property_list = { ...data };
+        },
+        SET_UPLOAD_RESPONSE(state, data) {
+            state.upload_response = { ...data };
         },
     },
     actions: {
@@ -70,6 +77,22 @@ export default {
             } catch ( { response } ) {
                 commit("SET_ERROR", response);
                 commit("SET_RESPONSE", {});
+            }
+        },
+
+        
+        async saveImage({ commit }, payload) {
+            try {
+                const data = await Api().post("/image", payload, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                commit("SET_UPLOAD_RESPONSE", data);
+                commit("SET_ERROR", {});
+            } catch ( { response } ) {
+                commit("SET_ERROR", response);
+                commit("SET_UPLOAD_RESPONSE", {});
             }
         }
     },

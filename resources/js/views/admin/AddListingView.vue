@@ -103,7 +103,7 @@
                                                         <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Upload">
+                                                        <button class="item"  data-toggle="modal" @click="propertyID = property.id" data-target="#upload" data-placement="top" title="Upload">
                                                             <i class="zmdi zmdi-upload"></i>
                                                         </button>
                                                         <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Delete">
@@ -146,158 +146,152 @@
 							</button>
 						</div>
 						<div class="modal-body">
-                            <div class="card">
-                                    <div class="card-header">
-                                        <strong>Add Listing Form</strong>
+                            <div :style="{ display: display }" :class="[ display == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
+                                
+                                {{ message }}
+                                <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form @submit.prevent="save" class="form-horizontal">
+                            
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Property Name</label>
                                     </div>
-                                    <div class="card-body card-block">
-                                        <div :style="{ display: display }" :class="[ display == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
-                                            
-                                            {{ message }}
-                                            <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form @submit.prevent="save" class="form-horizontal">
-                                        
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label">Property Name</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="text-input" v-model="name" class="form-control">
-                                                    <small v-if='$vuelidation.error("name")' class="form-text  text-danger">{{ $vuelidation.error('name') }}</small>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="select" class=" form-control-label">Property Type</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select v-model="property_type" class="form-control">
-                                                        <option selected hidden disabled value="0">Please select</option>
-                                                        <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
-                                                    </select>
-                                                    <small v-if='$vuelidation.error("property_type")' class="form-text  text-danger">{{ $vuelidation.error('property_type') }}</small>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="select" class=" form-control-label">Sub Property Type</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select v-model="sub_property_type" class="form-control">
-                                                        <option selected hidden disabled>Please select</option>
-                                                        <optgroup  v-for="(property_type, index) in getPropertyTypes" :key="index" :label="ucfirst(property_type.category)">
-                                                            <option v-for="(sub_property_type, ind) in strToObject(property_type.subcategories)" :key="ind" :value="sub_property_type" >{{ ucfirst(sub_property_type) }}</option>
-                                                        </optgroup>
-                                                    </select>
-                                                    <small v-if='$vuelidation.error("sub_property_type")' class="form-text  text-danger">{{ $vuelidation.error('sub_property_type') }}</small>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Property Status</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check-inline form-check">
-                                                        <label for="inline-radio1" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio1" v-model="status" value="buy" class="form-check-input"> Buy &nbsp;
-                                                        </label>
-                                                        <label for="inline-radio2" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio2" v-model="status" value="sell" class="form-check-input"> Sell &nbsp;
-                                                        </label>
-                                                        <label for="inline-radio3" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio3" v-model="status" value="rent" class="form-check-input"> Rent &nbsp;
-                                                        </label>
-                                                    </div>
-                                                    <small v-if='$vuelidation.error("status")' class="form-text  text-danger">{{ $vuelidation.error('status') }}</small>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label">Property Price</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="number" v-model="price" class="form-control">
-                                                    <small v-if='$vuelidation.error("price")' class="form-text  text-danger">{{ $vuelidation.error('price') }}</small>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="select" class=" form-control-label">Country</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select @change="extractState($event.target.value)" v-model="country" class="form-control">
-                                                        <option selected hidden disabled>Please select</option>
-                                                        <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
-                                                    </select>
-                                                    <small v-if='$vuelidation.error("country")' class="form-text  text-danger">{{ $vuelidation.error('country') }}</small>
-                                                </div>
-                                            </div>
-
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="select" class=" form-control-label">State/Region</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select  @change="extractCity($event.target.value)" v-model="state" class="form-control">
-                                                        <option selected hidden disabled>Please select</option>
-                                                        <option v-for="(state, index) in states" :key="index" :value="state.name">{{ ucfirst(state.name) }}</option>
-                                                    </select>
-                                                    <small v-if='$vuelidation.error("state")' class="form-text  text-danger">{{ $vuelidation.error('state') }}</small>
-                                                </div>
-                                            </div>
-
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="select" class=" form-control-label">City</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select v-model="city" class="form-control">
-                                                        <option selected hidden disabled>Please select</option>
-                                                        <option v-for="(city, index) in cities" :key="index" :value="city.name">{{ ucfirst(city.name) }}</option>
-                                                    </select>
-                                                    <small v-if='$vuelidation.error("city")' class="form-text  text-danger">{{ $vuelidation.error('city') }}</small>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label">Property Address</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="text-input" v-model="address" class="form-control">
-                                                    <small v-if='$vuelidation.error("address")' class="form-text  text-danger">{{ $vuelidation.error('address') }}</small>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="multiple-select" class=" form-control-label">Attributes/Features</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <select v-model="attributes" id="multiple-select" multiple class="form-control">
-                                                        <option v-for="(attribute, index) in getPropertyAttribute" :key="index" :value="attribute.name">{{ attribute.name }}</option>
-                                                    </select>
-                                                    <small v-if='$vuelidation.error("attributes")' class="form-text  text-danger">{{ $vuelidation.error('attributes') }}</small>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="textarea-input" class=" form-control-label">Property Description</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <textarea v-model="description" id="textarea-input" rows="4" class="form-control"></textarea>
-                                                    <small v-if='$vuelidation.error("description")' class="form-text  text-danger">{{ $vuelidation.error('description') }}</small>
-                                                </div>
-                                            </div>
-                                            <button type="submit" ref="submitBtn" hidden class="btn btn-primary">Submit</button>
-                                    
-                                        </form>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="text-input" v-model="name" class="form-control">
+                                        <small v-if='$vuelidation.error("name")' class="form-text  text-danger">{{ $vuelidation.error('name') }}</small>
                                     </div>
                                 </div>
+                                
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Property Type</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select v-model="property_type" class="form-control">
+                                            <option selected hidden disabled value="0">Please select</option>
+                                            <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("property_type")' class="form-text  text-danger">{{ $vuelidation.error('property_type') }}</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Sub Property Type</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select v-model="sub_property_type" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <optgroup  v-for="(property_type, index) in getPropertyTypes" :key="index" :label="ucfirst(property_type.category)">
+                                                <option v-for="(sub_property_type, ind) in strToObject(property_type.subcategories)" :key="ind" :value="sub_property_type" >{{ ucfirst(sub_property_type) }}</option>
+                                            </optgroup>
+                                        </select>
+                                        <small v-if='$vuelidation.error("sub_property_type")' class="form-text  text-danger">{{ $vuelidation.error('sub_property_type') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label class=" form-control-label">Property Status</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <div class="form-check-inline form-check">
+                                            <label for="inline-radio1" class="form-check-label ">
+                                                <input type="radio" id="inline-radio1" v-model="status" value="buy" class="form-check-input"> Buy &nbsp;
+                                            </label>
+                                            <label for="inline-radio2" class="form-check-label ">
+                                                <input type="radio" id="inline-radio2" v-model="status" value="sell" class="form-check-input"> Sell &nbsp;
+                                            </label>
+                                            <label for="inline-radio3" class="form-check-label ">
+                                                <input type="radio" id="inline-radio3" v-model="status" value="rent" class="form-check-input"> Rent &nbsp;
+                                            </label>
+                                        </div>
+                                        <small v-if='$vuelidation.error("status")' class="form-text  text-danger">{{ $vuelidation.error('status') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Property Price</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="number" v-model="price" class="form-control">
+                                        <small v-if='$vuelidation.error("price")' class="form-text  text-danger">{{ $vuelidation.error('price') }}</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Country</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select @change="extractState($event.target.value)" v-model="country" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("country")' class="form-text  text-danger">{{ $vuelidation.error('country') }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">State/Region</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select  @change="extractCity($event.target.value)" v-model="state" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <option v-for="(state, index) in states" :key="index" :value="state.name">{{ ucfirst(state.name) }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("state")' class="form-text  text-danger">{{ $vuelidation.error('state') }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">City</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select v-model="city" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <option v-for="(city, index) in cities" :key="index" :value="city.name">{{ ucfirst(city.name) }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("city")' class="form-text  text-danger">{{ $vuelidation.error('city') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Property Address</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="text-input" v-model="address" class="form-control">
+                                        <small v-if='$vuelidation.error("address")' class="form-text  text-danger">{{ $vuelidation.error('address') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="multiple-select" class=" form-control-label">Attributes/Features</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <select v-model="attributes" id="multiple-select" multiple class="form-control">
+                                            <option v-for="(attribute, index) in getPropertyAttribute" :key="index" :value="attribute.name">{{ attribute.name }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("attributes")' class="form-text  text-danger">{{ $vuelidation.error('attributes') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="textarea-input" class=" form-control-label">Property Description</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <textarea v-model="description" id="textarea-input" rows="4" class="form-control"></textarea>
+                                        <small v-if='$vuelidation.error("description")' class="form-text  text-danger">{{ $vuelidation.error('description') }}</small>
+                                    </div>
+                                </div>
+                                <button type="submit" ref="submitBtn" hidden class="btn btn-primary">Submit</button>
+                        
+                            </form>
+                        
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -326,13 +320,11 @@
                             <form v-else action="javascript:void(0)" class="form-horizontal">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <carousel :autoplay="true" :per-page="2" :centerMode="true">
-                                            <slide>
-                                                <img src="https://images.unsplash.com/photo-1669146275340-1fb2a4103ba5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDE5fHhIeFlUTUhMZ09jfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="rsre">
+                                        <carousel :autoplay="true" :per-page="2" :center-mode="true">
+                                            <slide v-for="(image, index) in view_gallery" :key="index">
+                                                <img :src="image" alt="gallery">
                                             </slide>
-                                            <slide>
-                                                <img src="https://images.unsplash.com/photo-1669231755087-108a29565903?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDIwfHhIeFlUTUhMZ09jfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="rtg">
-                                            </slide>
+                                
                                         </carousel>
                                     </div>
                                 </div>
@@ -473,6 +465,51 @@
 			</div>
 			<!-- end modal medium -->
 
+            <!-- modal small -->
+			<div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="uploadLabel" aria-hidden="true">
+				<div class="modal-dialog modal-md" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="uploadLabel">Upload Image</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+                            <div :style="{ display: displayUpload }" :class="[ displayUpload == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
+                                
+                                {{ message }}
+                                <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+							<form @submit.prevent="upload" class="form-horizontal">
+                               
+                                <div class="row">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-9"><small class="form-text  text-danger">Image should be less or equal to 10MB</small><br></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="file-input" class=" form-control-label">Select Image</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="file" ref="file" accept="image/*" @change="selectFile" name="file-input" class="form-control-file">
+                                        <small v-if="wrongImage" class="form-text  text-danger">Wrong image format</small>
+                                    </div>
+                                </div>
+                                <button ref="uploadBtn" hidden type="submit">Upload</button>
+                            </form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button @click="triggerUpload" type="button" :disabled="processing" class="btn btn-primary">{{ processing ? "Processing..." : "Upload" }}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal small -->
+
     </div>
 </template>
 
@@ -497,6 +534,9 @@ export default {
         return {
             app_name: process.env.MIX_APP_NAME,
             year: new Date().getFullYear(),
+            file: '',
+            wrongImage: '',
+            propertyID: 0,
             name: "",
             property_type: "",
             sub_property_type: "",
@@ -515,10 +555,11 @@ export default {
             message: '',
             alertType: '',
             display: 'none',
-            displayView: 'none',
+            displayUpload: 'none',
             processing:false,
             loading: false,
             view_name: "",
+            view_gallery: [],
             view_property_type: "",
             view_sub_property_type: "",
             view_status: "",
@@ -538,13 +579,13 @@ export default {
         ...mapGetters("country", ["getCountries", "getError"]),
         ...mapGetters("property_type", ["getPropertyTypes", "getError"]),
         ...mapGetters("super_property_attribute", ["getPropertyAttribute", "getError"]),
-        ...mapGetters("super_property_list", ["getPropertyList", "getOnePropertyList", "getResponse", "getError"]),
+        ...mapGetters("super_property_list", ["getPropertyList", "getOnePropertyList", "getResponse", "getUploadResponse", "getError"]),
     },
     methods: {
         ...mapActions("country", ["getAllCountries"]),
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
         ...mapActions("super_property_attribute", ["getAllPropertyAttribute"]),
-        ...mapActions("super_property_list", ["getAllPropertyList", "getOneList",  "savePropertyList"]),
+        ...mapActions("super_property_list", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage"]),
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
@@ -625,12 +666,48 @@ export default {
             this.$refs.submitBtn.click();
         },
 
+        triggerUpload() {
+            this.$refs.uploadBtn.click();
+        },
+
+        async upload() {
+            this.processing = true;
+            try {
+                let formData = new FormData();
+                formData.append('image', this.file);
+                formData.append('id', this.propertyID);
+
+                await this.saveImage(formData);
+                this.alertType = "alert-success";
+                this.message = this.getUploadResponse.data.message;
+                this.displayUpload = 'block';
+            } catch ({ response }) {
+                this.alertType = "alert-danger";
+                this.message = response.message;
+                this.displayUpload = 'block';
+            } finally {
+                this.processing = false;
+            }
+            
+        },
+
+        selectFile() {
+            
+            if (this.$refs.file.files[0].type.search(/image/i) !== -1) {
+                this.file = this.$refs.file.files[0];
+                this.wrongImage = false;
+            }else{
+                this.wrongImage = true;
+            }
+        },
+
         async getOneProperty(id) {
 
             try {
                 this.loading = true;
                 await this.getOneList(id);
                 this.view_name = this.getOnePropertyList.name;
+                this.view_gallery = this.strToObject(this.getOnePropertyList.gallery);
                 this.view_property_type = this.getOnePropertyList.property_type;
                 this.view_sub_property_type = this.getOnePropertyList.sub_property_type;
                 this.view_status = this.getOnePropertyList.status;

@@ -25,7 +25,7 @@ class ImageUploadRequest extends FormRequest
     {
         return [
             'id' => 'required|numeric', 
-            'image' => 'image|mimes:png,jpg,jpeg,bmp,gif,svg,webp|max:2048',
+            'image' => 'image|mimes:png,jpg,jpeg,bmp,gif,svg,webp|max:10240',
         ];
     }
 
@@ -36,7 +36,7 @@ class ImageUploadRequest extends FormRequest
             'id.numeric' => 'Listing ID should be a number!',
             'image.required' => 'Image is required!',
             'image.image' => 'Image format should be jpg, jpeg, png, bmp, gif, svg, or webp!',
-            'image.max' => 'Image should be <= 2MB!',
+            'image.max' => 'Image should be <= 10MB!',
         ];
     }
 }
