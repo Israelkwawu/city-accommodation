@@ -97,7 +97,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <button class="item"  data-toggle="modal" data-target="#viewListing"  data-placement="top" title="View">
+                                                        <button class="item"  data-toggle="modal" @click="getOneProperty(property.id)" data-target="#viewListing"  data-placement="top" title="View">
                                                             <i class="zmdi zmdi-eye"></i>
                                                         </button>
                                                         <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Edit">
@@ -319,16 +319,154 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<p>
-								There are three species of zebras: the plains zebra, the mountain zebra and the Grévy's zebra. The plains zebra and the mountain
-								zebra belong to the subgenus Hippotigris, but Grévy's zebra is the sole species of subgenus Dolichohippus. The latter
-								resembles an ass, to which it is closely related, while the former two are more horse-like. All three belong to the
-								genus Equus, along with other living equids.
-							</p>
+                            <div v-if="loading" class="progress mb-3">
+                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <form v-else action="javascript:void(0)" class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <carousel :autoplay="true" :per-page="2" :centerMode="true">
+                                            <slide>
+                                                <img src="https://images.unsplash.com/photo-1669146275340-1fb2a4103ba5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDE5fHhIeFlUTUhMZ09jfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="rsre">
+                                            </slide>
+                                            <slide>
+                                                <img src="https://images.unsplash.com/photo-1669231755087-108a29565903?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDIwfHhIeFlUTUhMZ09jfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="rtg">
+                                            </slide>
+                                        </carousel>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class=" form-control-label">Property Name</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_name }}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class=" form-control-label">Property Type</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_property_type }}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class=" form-control-label">Sub Property Type</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_sub_property_type }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label class=" form-control-label">Property Status</label>
+                                            </div>
+                                            <div class="col col-md-9">
+                                                <p class="form-control-static">{{ view_state }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class=" form-control-label">Property Price</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_price }}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class=" form-control-label">Country</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_country }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        
+                                    <div class="col-md-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class=" form-control-label">Currency</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_currency }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class=" form-control-label">Currency Symbol</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_currency_symbol }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class=" form-control-label">State/Region</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_state }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class=" form-control-label">City</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_city }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class=" form-control-label">Property Address</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ view_address }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class=" form-control-label">Active</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ !!view_active }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="multiple-select" class=" form-control-label">Attributes/Features</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <p class="form-control-static">{{ view_attributes }}</p>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="textarea-input" class=" form-control-label">Property Description</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <p class="form-control-static">{{  view_description }}</p>
+                                    </div>
+                                </div>
+                        
+                            </form>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-primary">Confirm</button>
 						</div>
 					</div>
 				</div>
@@ -344,12 +482,15 @@ import TheMobileHeader from '../../components/admin/common/TheMobileHeader.vue';
 import TheDesktopHeader from '../../components/admin/common/TheDesktopHeader.vue';
 import TheSideBar from '../../components/admin/common/TheSideBar.vue';
 import TheFooter from '../../components/admin/common/TheFooter.vue';
+import { Carousel, Slide } from 'vue-carousel';
 export default {
     components: {
         TheMobileHeader,
         TheDesktopHeader,
         TheSideBar,
         TheFooter,
+        Carousel,
+        Slide,
     },
     name: "AddListingView",
     data() {
@@ -374,20 +515,36 @@ export default {
             message: '',
             alertType: '',
             display: 'none',
+            displayView: 'none',
             processing:false,
+            loading: false,
+            view_name: "",
+            view_property_type: "",
+            view_sub_property_type: "",
+            view_status: "",
+            view_currency: "",
+            view_currency_symbol: "",
+            view_price: "",
+            view_address: "",
+            view_country: "",
+            view_state: "",
+            view_city: "",
+            view_attributes: "",
+            view_description:"",
+            view_active:"",
         }
     },
     computed: {
         ...mapGetters("country", ["getCountries", "getError"]),
         ...mapGetters("property_type", ["getPropertyTypes", "getError"]),
         ...mapGetters("super_property_attribute", ["getPropertyAttribute", "getError"]),
-        ...mapGetters("super_property_list", ["getPropertyList", "getResponse", "getError"]),
+        ...mapGetters("super_property_list", ["getPropertyList", "getOnePropertyList", "getResponse", "getError"]),
     },
     methods: {
         ...mapActions("country", ["getAllCountries"]),
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
         ...mapActions("super_property_attribute", ["getAllPropertyAttribute"]),
-        ...mapActions("super_property_list", ["getAllPropertyList",  "savePropertyList"]),
+        ...mapActions("super_property_list", ["getAllPropertyList", "getOneList",  "savePropertyList"]),
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
@@ -466,6 +623,32 @@ export default {
 
         triggerSubmit() {
             this.$refs.submitBtn.click();
+        },
+
+        async getOneProperty(id) {
+
+            try {
+                this.loading = true;
+                await this.getOneList(id);
+                this.view_name = this.getOnePropertyList.name;
+                this.view_property_type = this.getOnePropertyList.property_type;
+                this.view_sub_property_type = this.getOnePropertyList.sub_property_type;
+                this.view_status = this.getOnePropertyList.status;
+                this.view_currency = this.getOnePropertyList.currency;
+                this.view_currency_symbol = this.getOnePropertyList.currency_symbol;
+                this.view_price  = this.getOnePropertyList.price;
+                this.view_address = this.getOnePropertyList.address;
+                this.view_country = this.getOnePropertyList.country;
+                this.view_state = this.getOnePropertyList.state;
+                this.view_city = this.getOnePropertyList.city;
+                this.view_attributes = this.getOnePropertyList.attributes;
+                this.view_description = this.getOnePropertyList.description;
+                this.view_active = this.getOnePropertyList.active;
+                this.loading = false;
+                
+            } catch (error) {
+                console.log(error);
+            }
         }
     
     },
