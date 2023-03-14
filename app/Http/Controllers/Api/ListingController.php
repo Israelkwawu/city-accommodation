@@ -28,9 +28,9 @@ class ListingController extends Controller
      */
     public function store(StoreListingRequest $request)
     {
-       
+    
         try {
-          
+        
             $listing = Listing::create($request->all());
     
             return response()->json([
@@ -97,7 +97,6 @@ class ListingController extends Controller
             'status' => true,
             'message' => "Listing Deleted Successfully!"
         ]);
-     
         
     }
 }

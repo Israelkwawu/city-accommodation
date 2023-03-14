@@ -32,12 +32,12 @@ class ImageUploadController extends Controller
             ], 500);
         }
         $gallery = null;
-        if(!$listing->gallery) {    
+        if(!$listing->gallery) {
             $listing->gallery = [$uploadedFileUrl];
         }else {
             $gallery = json_decode($listing->gallery);
             $gallery[] = $uploadedFileUrl;
-            $listing->gallery = $gallery;       
+            $listing->gallery = $gallery;
         }
         
         $listing->save();

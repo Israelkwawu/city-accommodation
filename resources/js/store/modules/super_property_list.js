@@ -94,6 +94,18 @@ export default {
                 commit("SET_ERROR", response);
                 commit("SET_UPLOAD_RESPONSE", {});
             }
+        },
+
+        async updatePropertyList({ commit }, payload) {
+        
+            try {
+                const data = await Api().put("/listings/"+ payload.id, payload.request);
+                commit("SET_RESPONSE", data);
+                commit("SET_ERROR", {});
+            } catch ( { response } ) {
+                commit("SET_ERROR", response);
+                commit("SET_RESPONSE", {});
+            }
         }
     },
 }

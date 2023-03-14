@@ -79,34 +79,34 @@
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </td>
-                                                <td>{{ property.name }}</td>
+                                                <td>{{  ucfirst(property.name) }}</td>
                                                 <td>
-                                                    {{ property.property_type }}
+                                                    {{  ucfirst(property.property_type) }}
                                                 </td>
                                                 <td>
-                                                    {{ property.country }}
+                                                    {{  ucfirst(property.country) }}
                                                 </td>
                                                 <td>
-                                                    {{ property.status }}
+                                                    {{  ucfirst(property.status) }}
                                                 </td>
                                                 <td>
                                                     {{ property.currency_symbol }}{{ property.price }}
                                                 </td>
                                                 <td>
-                                                    <span :class="property.active?'status--process':'status--denied'">{{ !!property.active }}</span>
+                                                    <span :class="property.active?'status--process':'status--denied'">{{  !!property.active }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
                                                         <button class="item"  data-toggle="modal" @click="getOneProperty(property.id)" data-target="#viewListing"  data-placement="top" title="View">
                                                             <i class="zmdi zmdi-eye"></i>
                                                         </button>
-                                                        <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Edit">
+                                                        <button class="item"  data-toggle="modal" @click="getOneToEditProperty(property.id)" data-target="#editListing" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
                                                         <button class="item"  data-toggle="modal" @click="propertyID = property.id" data-target="#upload" data-placement="top" title="Upload">
                                                             <i class="zmdi zmdi-upload"></i>
                                                         </button>
-                                                        <button class="item"  data-toggle="modal" data-target="#mediumModal" data-placement="top" title="Delete">
+                                                        <button class="item"  data-toggle="modal" @click="propertyID = property.id" data-target="#mediumModal" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
@@ -484,7 +484,7 @@
                                 </button>
                             </div>
 							<form @submit.prevent="upload" class="form-horizontal">
-                               
+                            
                                 <div class="row">
                                     <div class="col-md-3"></div>
                                     <div class="col-md-9"><small class="form-text  text-danger">Image should be less or equal to 10MB</small><br></div>
@@ -509,6 +509,202 @@
 				</div>
 			</div>
 			<!-- end modal small -->
+            <!-- modal medium -->
+			<div class="modal fade" id="editListing" tabindex="-1" role="dialog" aria-labelledby="editListingLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="editListingLabel">Edit Listing</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+                            <div :style="{ display: displayEdit }" :class="[ displayEdit == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
+                                
+                                {{ message }}
+                                <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div v-if="loading" class="progress mb-3">
+                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <form v-else @submit.prevent="edit" class="form-horizontal">
+                            
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Property Name</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="text-input" v-model="name" class="form-control">
+                                        <small v-if='$vuelidation.error("name")' class="form-text  text-danger">{{ $vuelidation.error('name') }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label class=" form-control-label">Property State</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <div class="form-check-inline form-check">
+                                            <label for="inline-radio1" class="form-check-label ">
+                                                <input type="checkbox"  v-model="active"  class="form-check-input"> Active &nbsp;
+                                            </label>
+                                        </div>
+                                        <small v-if='$vuelidation.error("status")' class="form-text  text-danger">{{ $vuelidation.error('status') }}</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Property Type</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select v-model="property_type" class="form-control">
+                                            <option selected hidden disabled value="0">Please select</option>
+                                            <option v-for="(property_type, index) in getPropertyTypes" :key="index" :value="property_type.category">{{ ucfirst(property_type.category) }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("property_type")' class="form-text  text-danger">{{ $vuelidation.error('property_type') }}</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Sub Property Type</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select v-model="sub_property_type" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <optgroup  v-for="(property_type, index) in getPropertyTypes" :key="index" :label="ucfirst(property_type.category)">
+                                                <option v-for="(sub_property_type, ind) in strToObject(property_type.subcategories)" :key="ind" :value="sub_property_type" >{{ ucfirst(sub_property_type) }}</option>
+                                            </optgroup>
+                                        </select>
+                                        <small v-if='$vuelidation.error("sub_property_type")' class="form-text  text-danger">{{ $vuelidation.error('sub_property_type') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label class=" form-control-label">Property Status</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <div class="form-check-inline form-check">
+                                            <label for="inline-radio1" class="form-check-label ">
+                                                <input type="radio" id="inline-radio1" v-model="status" value="buy" class="form-check-input"> Buy &nbsp;
+                                            </label>
+                                            <label for="inline-radio2" class="form-check-label ">
+                                                <input type="radio" id="inline-radio2" v-model="status" value="sell" class="form-check-input"> Sell &nbsp;
+                                            </label>
+                                            <label for="inline-radio3" class="form-check-label ">
+                                                <input type="radio" id="inline-radio3" v-model="status" value="rent" class="form-check-input"> Rent &nbsp;
+                                            </label>
+                                        </div>
+                                        <small v-if='$vuelidation.error("status")' class="form-text  text-danger">{{ $vuelidation.error('status') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Property Price</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="number" v-model="price" class="form-control">
+                                        <small v-if='$vuelidation.error("price")' class="form-text  text-danger">{{ $vuelidation.error('price') }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Country</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select @change="extractState($event.target.value)" v-model="country" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.country }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("country")' class="form-text  text-danger">{{ $vuelidation.error('country') }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">State/Region</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select  @change="extractCity($event.target.value)" v-model="state" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <option v-for="(state, index) in states" :key="index" :value="state.name">{{ ucfirst(state.name) }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("state")' class="form-text  text-danger">{{ $vuelidation.error('state') }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">City</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select v-model="city" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <option v-for="(city, index) in cities" :key="index" :value="city.name">{{ ucfirst(city.name) }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("city")' class="form-text  text-danger">{{ $vuelidation.error('city') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Property Address</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="text-input" v-model="address" class="form-control">
+                                        <small v-if='$vuelidation.error("address")' class="form-text  text-danger">{{ $vuelidation.error('address') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Currency</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select @change="extractCurrencySymbol($event.target.value)" class="form-control">
+                                            <option selected hidden disabled>Please select</option>
+                                            <option v-for="(country, index) in getCountries" :key="index" :value="country.country">{{ country.currency_name }} ({{ country.currency_symbol }})</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("currency")' class="form-text  text-danger">{{ $vuelidation.error('currency') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="multiple-select" class=" form-control-label">Attributes/Features</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <select v-model="attributes" id="multiple-select" multiple class="form-control">
+                                            <option v-for="(attribute, index) in getPropertyAttribute" :key="index" :value="attribute.name">{{ attribute.name }}</option>
+                                        </select>
+                                        <small v-if='$vuelidation.error("attributes")' class="form-text  text-danger">{{ $vuelidation.error('attributes') }}</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="textarea-input" class=" form-control-label">Property Description</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <textarea v-model="description" id="textarea-input" rows="4" class="form-control"></textarea>
+                                        <small v-if='$vuelidation.error("description")' class="form-text  text-danger">{{ $vuelidation.error('description') }}</small>
+                                    </div>
+                                </div>
+                                <button type="submit" ref="editBtn" hidden class="btn btn-primary">Edit</button>
+                        
+                            </form>
+                        
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="button"  @click="triggerEdit" :disabled="processing || $vuelidation.errors()" class="btn btn-primary">{{ processing ? "Processing..." : "Edit" }}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal medium -->
 
     </div>
 </template>
@@ -550,12 +746,14 @@ export default {
             city: "",
             attributes: [],
             description:"",
+            active: "",
             states: [],
             cities: [],
             message: '',
             alertType: '',
             display: 'none',
             displayUpload: 'none',
+            displayEdit: 'none',
             processing:false,
             loading: false,
             view_name: "",
@@ -585,7 +783,7 @@ export default {
         ...mapActions("country", ["getAllCountries"]),
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
         ...mapActions("super_property_attribute", ["getAllPropertyAttribute"]),
-        ...mapActions("super_property_list", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage"]),
+        ...mapActions("super_property_list", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage", "updatePropertyList"]),
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
@@ -611,6 +809,12 @@ export default {
             let selectedProperty = this.getPropertyTypes.find(properTypeObj => properTypeObj.category == property_type);
             this.subPropertyTypes = [ ...this.strToObject(selectedProperty.subcategories) ];
             this.selectedProperty = selectedProperty.category;
+        },
+        extractCurrencySymbol(country) {
+            let selectedCountry = this.getCountries.find(countryObj => countryObj.country == country);
+            this.currency = selectedCountry.currency_name;
+            this.currency_symbol = selectedCountry.currency_symbol;
+        
         },
         async save() {
             if (this.$vuelidation.valid()) {
@@ -670,6 +874,10 @@ export default {
             this.$refs.uploadBtn.click();
         },
 
+        triggerEdit() {
+            this.$refs.editBtn.click();
+        },
+
         async upload() {
             this.processing = true;
             try {
@@ -726,7 +934,92 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        }
+        },
+
+        async getOneToEditProperty(id) {
+
+            try {
+                this.loading = true;
+                this.propertyID = id;
+                await this.getOneList(id);
+                this.name = this.getOnePropertyList.name;
+                this.property_type = this.getOnePropertyList.property_type;
+                this.sub_property_type = this.getOnePropertyList.sub_property_type;
+                this.status = this.getOnePropertyList.status;
+                this.currency = this.getOnePropertyList.currency;
+                this.currency_symbol = this.getOnePropertyList.currency_symbol;
+                this.price  = this.getOnePropertyList.price;
+                this.address = this.getOnePropertyList.address;
+                this.country = this.getOnePropertyList.country;
+                this.state = this.getOnePropertyList.state;
+                this.city = this.getOnePropertyList.city;
+                this.attributes = this.strToObject(this.getOnePropertyList.attributes);
+                this.description = this.getOnePropertyList.description;
+                this.active = this.getOnePropertyList.active;
+                this.loading = false;
+                
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        async edit() {
+
+            if (this.$vuelidation.valid()) {
+                this.processing = true;
+
+                try {
+                
+                    await this.updatePropertyList({
+                        id: this.propertyID, 
+                        request: {
+                                name: this.name,
+                                property_type: this.property_type,
+                                sub_property_type: this.sub_property_type,
+                                status: this.status,
+                                currency: this.currency,
+                                currency_symbol: this.currency_symbol,
+                                price: Number(this.price).toFixed(2),
+                                address: this.address,
+                                country: this.country,
+                                state: this.state,
+                                city: this.city,
+                                attributes: JSON.stringify(this.attributes),
+                                description:this.description,
+                                active: Number(this.active),
+                                _method: "PUT",
+                            }
+                        }
+                    );
+
+                    this.alertType = "alert-success";
+                    this.message = this.getResponse.data.message;
+                    this.displayEdit = 'block';
+
+                    this.name = '';
+                    this.property_type = '';
+                    this.sub_property_type = '';
+                    this.status = '';
+                    this.currency = '';
+                    this.currency_symbol = '';
+                    this.price = '';
+                    this.address = '';
+                    this.country = '';
+                    this.state = '';
+                    this.city = '';
+                    this.attributes = [];
+                    this.description = '';
+                    
+                } catch ({ response }) {
+                    this.alertType = "alert-danger";
+                    this.message = response;
+                    this.displayEdit = 'block';
+                } finally {
+                    this.processing = false;
+                }
+            }
+            
+        },
     
     },
     created() {

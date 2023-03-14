@@ -75,34 +75,27 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<div class="card">
-                                    <div class="card-header">
-                                        <strong>Add Attribute Form</strong>
+                            <div :style="{ display: display }" :class="[ display == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
+                    
+                                {{ message }}
+                                <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form @submit.prevent="save" ref="form" class="form-horizontal">
+                            
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Attribute Name</label>
                                     </div>
-                                    <div class="card-body card-block">
-                                        <div :style="{ display: display }" :class="[ display == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
-                                
-                                            {{ message }}
-                                            <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form @submit.prevent="save" ref="form" class="form-horizontal">
-                                        
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label">Attribute Name</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="text-input" v-model="name"  class="form-control">
-                                                    <small v-if='$vuelidation.error("name")' class="form-text  text-danger">{{ $vuelidation.error('name') }}</small>
-                                                </div>
-                                            </div>
-                                            <button type="submit" ref="submitBtn" hidden class="btn btn-primary">Submit</button>
-                                        </form>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text" id="text-input" v-model="name"  class="form-control">
+                                        <small v-if='$vuelidation.error("name")' class="form-text  text-danger">{{ $vuelidation.error('name') }}</small>
                                     </div>
-                                
                                 </div>
+                                <button type="submit" ref="submitBtn" hidden class="btn btn-primary">Submit</button>
+                            </form>
+                                
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
