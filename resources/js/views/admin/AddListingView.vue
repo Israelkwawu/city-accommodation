@@ -103,10 +103,10 @@
                                                         <button class="item"  data-toggle="modal" @click="getOneToEditProperty(property.id)" data-target="#editListing" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item"  data-toggle="modal" @click="propertyID = property.id" data-target="#upload" data-placement="top" title="Upload">
+                                                        <button class="item"  data-toggle="modal" @click="getPropertyId(property.id)" data-target="#upload" data-placement="top" title="Upload">
                                                             <i class="zmdi zmdi-upload"></i>
                                                         </button>
-                                                        <button class="item"  data-toggle="modal" @click="propertyID = property.id" data-target="#mediumModal" data-placement="top" title="Delete">
+                                                        <button class="item"  data-toggle="modal" @click="getPropertyId(property.id)" data-target="#deleteModal" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
@@ -705,6 +705,34 @@
 				</div>
 			</div>
 			<!-- end modal medium -->
+            <!-- modal static -->
+			<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="deleteModalLabel">Delete Property</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+                            <div :style="{ display: displayDelete }" :class="[ displayDelete == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
+                                
+                                {{ message }}
+                                <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+							Are you sure you want to delete this listing?
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="button" @click="deleteProperty" class="btn btn-danger" :disabled="processing">{{ processing ? "Processing..." : "Delete" }}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal static -->
 
     </div>
 </template>
@@ -754,6 +782,7 @@ export default {
             display: 'none',
             displayUpload: 'none',
             displayEdit: 'none',
+            displayDelete: 'none',
             processing:false,
             loading: false,
             view_name: "",
@@ -783,7 +812,7 @@ export default {
         ...mapActions("country", ["getAllCountries"]),
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
         ...mapActions("super_property_attribute", ["getAllPropertyAttribute"]),
-        ...mapActions("super_property_list", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage", "updatePropertyList"]),
+        ...mapActions("super_property_list", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage", "updatePropertyList", "deletePropertyList"]),
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
@@ -861,6 +890,7 @@ export default {
                     this.display = 'block';
                 } finally {
                     this.processing = false;
+                    let t = setTimeout(()=>{this.display ='none'},500);
                 }
                 
             }
@@ -895,6 +925,7 @@ export default {
                 this.displayUpload = 'block';
             } finally {
                 this.processing = false;
+                let t = setTimeout(()=>{this.displayUpload ='none'},500);
             }
             
         },
@@ -963,6 +994,10 @@ export default {
             }
         },
 
+        getPropertyId(id) {
+            this.propertyID = id;
+        },
+
         async edit() {
 
             if (this.$vuelidation.valid()) {
@@ -1016,7 +1051,29 @@ export default {
                     this.displayEdit = 'block';
                 } finally {
                     this.processing = false;
+                    let t = setTimeout(()=>{this.displayEdit ='none'},500);
+                    t = setTimeout(()=>{window.location.reload()},1000);
                 }
+            }
+            
+        },
+
+        async deleteProperty() {
+            this.processing = true;
+            try {
+                await this.deletePropertyList(this.propertyID);
+                this.alertType = "alert-success";
+                this.message = this.getResponse.data.message;
+                this.displayDelete = 'block';
+            } catch ({ response }) {
+                this.alertType = "alert-danger";
+                this.message = response;
+                this.displayDelete = 'block';
+            } finally {
+                this.processing = false;
+                let t = setTimeout(()=>{this.displayDelete ='none'},500);
+
+                t = setTimeout(()=>{window.location.reload()},800);
             }
             
         },

@@ -90,7 +90,6 @@ class ListingController extends Controller
     public function destroy($id)
     {
         $listing = Listing::findOrFail($id);
-        // var_dump($listing->delete());
         $listing->delete();
 
         return response()->json([

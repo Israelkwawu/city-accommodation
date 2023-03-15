@@ -106,6 +106,18 @@ export default {
                 commit("SET_ERROR", response);
                 commit("SET_RESPONSE", {});
             }
+        },
+
+        async deletePropertyList({ commit }, payload) {
+        
+            try {
+                const data = await Api().delete("/listings/"+ payload);
+                commit("SET_RESPONSE", data);
+                commit("SET_ERROR", {});
+            } catch ( { response } ) {
+                commit("SET_ERROR", response);
+                commit("SET_RESPONSE", {});
+            }
         }
     },
 }

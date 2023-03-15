@@ -25,7 +25,6 @@ class ImageUploadController extends Controller
             //code...
             $uploadedFileUrl = cloudinary()->upload($request->file('image')->getRealPath())->getSecurePath();
         } catch (\Throwable $th) {
-            //throw $th;
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage(),
@@ -40,6 +39,7 @@ class ImageUploadController extends Controller
             $listing->gallery = $gallery;
         }
         
+        $listing->active = true;
         $listing->save();
         return response()->json([
             'status' => true,
