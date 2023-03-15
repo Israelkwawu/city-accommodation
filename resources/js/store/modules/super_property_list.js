@@ -43,10 +43,10 @@ export default {
         },
     },
     actions: {
-        async getAllPropertyList({ commit }) {
-            
+        async getAllPropertyList({ commit },payload) {
+            let path = payload ?? "listings";
             try {
-                const data = await Api().get('/listings');
+                const data = await Api().get(`/${path}`);
                 
                 commit('SET_PROPERTY_LIST', data.data);
                 commit('SET_ERROR',  {});

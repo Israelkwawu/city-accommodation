@@ -117,6 +117,19 @@
                                     </table>
                                 </div>
                                 <!-- END DATA TABLE -->
+                                <br><br>
+                                <nav v-if="Object.keys(paginate).length != 0" aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li  :class="{'disabled':paginate.prev.active }" class="page-item">
+                                            <a class="page-link" @click="getAllPropertyList(paginate.prev.url)" href="#" tabindex="-1" aria-disabled="true">{{ paginate.prev.label }}</a>
+                                        </li>
+                                        <li v-for="(link , index) in paginate.inner" :key="index" :class="{'active': link.active}" :aria-current="link.active?'page':''" class="page-item"><a class="page-link" @click="getAllPropertyList(link.url)" href="#">{{ link.label }}</a></li>
+                                        <li  :class="{'disabled':paginate.next.active }" class="page-item">
+                                            <a class="page-link"  @click="getAllPropertyList(paginate.next.url)" href="#">{{ paginate.next.label }}</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <br><br>
                             </div>
                         </div>
                 
@@ -807,6 +820,27 @@ export default {
         ...mapGetters("property_type", ["getPropertyTypes", "getError"]),
         ...mapGetters("super_property_attribute", ["getPropertyAttribute", "getError"]),
         ...mapGetters("super_property_list", ["getPropertyList", "getOnePropertyList", "getResponse", "getUploadResponse", "getError"]),
+        paginate() {
+            let links = this.getPropertyList.links   ?? [];
+            let length = links.length;
+            if (length == 0) {
+                return {};
+            }
+            return {
+                prev: links[0],
+                next: links[length-1],
+                inner:links.splice(1,length-2)
+            };
+        },
+        getPath(){
+            let path = '/listings';
+            let url = this.getPropertyList.path ?? path;
+        
+            let index = url.lastIndexOf('/');
+            path = url.slice(index+1);
+            return path;
+        },
+        
     },
     methods: {
         ...mapActions("country", ["getAllCountries"]),
@@ -1086,7 +1120,7 @@ export default {
         this.getAllCountries();
         this.getAllPropertyTypes();
         this.getAllPropertyAttribute();
-        this.getAllPropertyList();
+        this.getAllPropertyList(null);
     },
     vuelidation: {
         data: {
