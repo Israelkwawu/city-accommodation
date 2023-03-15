@@ -121,11 +121,11 @@
                                 <nav v-if="Object.keys(paginate).length != 0" aria-label="Page navigation example">
                                     <ul class="pagination justify-content-center">
                                         <li  :class="{'disabled':paginate.prev.active }" class="page-item">
-                                            <a class="page-link" @click="getAllPropertyList(paginate.prev.url)" href="#" tabindex="-1" aria-disabled="true">{{ paginate.prev.label }}</a>
+                                            <a class="page-link" @click="getAllPropertyList(paginationPath(paginate.prev.url))" href="#" tabindex="-1" aria-disabled="true">{{ paginate.prev.label }}</a>
                                         </li>
-                                        <li v-for="(link , index) in paginate.inner" :key="index" :class="{'active': link.active}" :aria-current="link.active?'page':''" class="page-item"><a class="page-link" @click="getAllPropertyList(link.url)" href="#">{{ link.label }}</a></li>
+                                        <li v-for="(link , index) in paginate.inner" :key="index" :class="{'active': link.active}" :aria-current="link.active?'page':''" class="page-item"><a class="page-link" @click="getAllPropertyList(paginationPath(link.url))" href="#">{{ link.label }}</a></li>
                                         <li  :class="{'disabled':paginate.next.active }" class="page-item">
-                                            <a class="page-link"  @click="getAllPropertyList(paginate.next.url)" href="#">{{ paginate.next.label }}</a>
+                                            <a class="page-link"  @click="getAllPropertyList(paginationPath(paginate.next.url))" href="#">{{ paginate.next.label }}</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -832,8 +832,9 @@ export default {
                 inner:links.splice(1,length-2)
             };
         },
+        
         getPath(){
-            let path = '/listings';
+            let path = '/listings?page=1';
             let url = this.getPropertyList.path ?? path;
         
             let index = url.lastIndexOf('/');
@@ -1111,6 +1112,14 @@ export default {
             }
             
         },
+
+        paginationPath(fullURL) {
+        
+            let url = fullURL;
+            let index = url.lastIndexOf('/');
+            let path = url.slice(index+1);
+            return path;
+        },
     
     },
     created() {
@@ -1120,7 +1129,7 @@ export default {
         this.getAllCountries();
         this.getAllPropertyTypes();
         this.getAllPropertyAttribute();
-        this.getAllPropertyList(null);
+        this.getAllPropertyList('listings?page=1');
     },
     vuelidation: {
         data: {

@@ -44,7 +44,7 @@ export default {
     },
     actions: {
         async getAllPropertyList({ commit },payload) {
-            let path = payload ?? "listings";
+            let path = payload ?? "listings?page=1";
             try {
                 const data = await Api().get(`/${path}`);
                 
