@@ -7,6 +7,7 @@
 require('./bootstrap');
 import Vue from 'vue'
 import VueRouter from 'vue-router';
+import VueHead from 'vue-head';
 // window.Vue = require('vue').default; /// I commentted this
 import router from './router/index';
 import store from './store/index';
@@ -30,7 +31,7 @@ import App from './App.vue';
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+Vue.use(VueHead);
 Vue.use(VueRouter);
 
 const app = new Vue({

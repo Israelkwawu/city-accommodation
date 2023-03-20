@@ -84,53 +84,82 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "LoginView",
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)("authentication", ["authenticated", "user", "getError"])),
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)("authentication", ["authenticated", "user", "getAuthToken", "getError"])),
   data: function data() {
     return {
       processing: false,
       email: '',
       password: '',
-      message: ''
+      message: '',
+      alertType: '',
+      display: 'none'
     };
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)("authentication", ["login"])), {}, {
-    login: function login() {
+    signIn: function signIn() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                // if (this.$vuelidation.valid()) {
+                if (!_this.$vuelidation.valid()) {
+                  _context.next = 17;
+                  break;
+                }
+
                 _this.processing = true;
-                _context.prev = 1;
-                _context.next = 4;
+                _context.prev = 2;
+                _context.next = 5;
                 return _this.login({
                   email: _this.email,
                   password: _this.password
                 });
 
-              case 4:
-                _context.next = 9;
+              case 5:
+                if (_this.authenticated) {
+                  _this.alertType = "alert-success";
+                  _this.message = "Admin Logged In Successfully.";
+                  _this.display = 'block';
+                  setTimeout(_this.$router.push({
+                    name: 'super.dashboard'
+                  }), 500);
+                } else {
+                  if (_this.getError.status == 401) {
+                    _this.alertType = "alert-danger";
+                    _this.message = _this.getError.data.message;
+                    _this.display = 'block';
+                  } else {
+                    _this.alertType = "alert-danger";
+                    _this.message = _this.getError.statusText;
+                    _this.display = 'block';
+                  }
+                }
+
+                _context.next = 14;
                 break;
 
-              case 6:
-                _context.prev = 6;
-                _context.t0 = _context["catch"](1);
-                console.log(_context.t0);
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](2);
+                response = _context.t0.response;
+                _this.alertType = "alert-danger";
+                _this.message = response.statusText;
+                _this.display = 'block';
 
-              case 9:
-                _context.prev = 9;
+              case 14:
+                _context.prev = 14;
                 _this.processing = false;
-                return _context.finish(9);
+                return _context.finish(14);
 
-              case 12:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 6, 9, 12]]);
+        }, _callee, null, [[2, 8, 14, 17]]);
       }))();
     }
   }),
@@ -145,9 +174,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     }
   },
-  mounted: function mounted() {
-    this.$refs.close.click();
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -493,7 +520,9 @@ var render = function () {
                 "div",
                 {
                   staticClass:
-                    "sufee-alert alert with-close alert-danger alert-dismissible fade show",
+                    "sufee-alert alert with-close alert-dismissible fade show",
+                  class: [_vm.display == "block" ? _vm.alertType : ""],
+                  style: { display: _vm.display },
                 },
                 [
                   _vm._v(
@@ -528,7 +557,7 @@ var render = function () {
                   on: {
                     submit: function ($event) {
                       $event.preventDefault()
-                      return _vm.login.apply(null, arguments)
+                      return _vm.signIn.apply(null, arguments)
                     },
                   },
                 },

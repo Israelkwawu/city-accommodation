@@ -4,7 +4,7 @@
       <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
           <intro></intro>
           <div class="col-md-6 animated fadeIn">
-            <owl-carousel :key="getNumber"></owl-carousel>
+            <owl-carousel></owl-carousel>
           </div>
       </div>
   </div>

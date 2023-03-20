@@ -120,11 +120,11 @@
                                 <br><br>
                                 <nav v-if="Object.keys(paginate).length != 0" aria-label="Page navigation example">
                                     <ul class="pagination justify-content-center">
-                                        <li  :class="{'disabled':paginate.prev.active }" class="page-item">
+                                        <li  :class="{'disabled':paginate.prev.url==null }" class="page-item">
                                             <a class="page-link" @click="getAllPropertyList(paginationPath(paginate.prev.url))" href="#" tabindex="-1" aria-disabled="true">{{ paginate.prev.label }}</a>
                                         </li>
                                         <li v-for="(link , index) in paginate.inner" :key="index" :class="{'active': link.active}" :aria-current="link.active?'page':''" class="page-item"><a class="page-link" @click="getAllPropertyList(paginationPath(link.url))" href="#">{{ link.label }}</a></li>
-                                        <li  :class="{'disabled':paginate.next.active }" class="page-item">
+                                        <li  :class="{'disabled':paginate.next.url==null }" class="page-item">
                                             <a class="page-link"  @click="getAllPropertyList(paginationPath(paginate.next.url))" href="#">{{ paginate.next.label }}</a>
                                         </li>
                                     </ul>
@@ -1177,3 +1177,8 @@ export default {
     },
 }
 </script>
+<style scoped>
+.cursor {
+    cursor: not-allowed;
+}
+</style>

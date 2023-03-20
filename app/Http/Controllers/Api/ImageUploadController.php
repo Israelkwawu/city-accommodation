@@ -23,7 +23,19 @@ class ImageUploadController extends Controller
 
         try {
             //code...
-            $uploadedFileUrl = cloudinary()->upload($request->file('image')->getRealPath())->getSecurePath();
+            $uploadedFileUrl = cloudinary()->upload(
+                $request->file('image')->getRealPath(),
+                [
+                    'folder' => env('APP_NAME'),
+                    'transformation' => [
+                        'width' => 600,
+                        'height' => 400,
+                        'crop' => 'limit',
+                        'quality' => 'auto',
+                        'fetch_format' => 'auto',
+                    ],
+                ]
+            )->getSecurePath();
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
