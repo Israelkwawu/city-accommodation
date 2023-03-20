@@ -42,20 +42,20 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="tr-shadow">
+                                            <tr class="tr-shadow"  v-for="(agent , index) in getAgents.data" :key="index">
                                                 <td>
                                                     <label class="au-checkbox">
                                                         <input type="checkbox">
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </td>
-                                                <td>Lori Lynch</td>
+                                                <td>{{ ucfirst(agent.name) }}</td>
                                                 <td>
-                                                    <span class="block-email">lori@example.com</span>
+                                                    <span class="block-email">{{ agent.email }}</span>
                                                 </td>
-                                                <td class="desc">Samsung S8 Black</td>
+                                                <td class="desc">{{ ucfirst(agent.role) }}</td>
                                                 <td>
-                                                    <span class="status--process">Processed</span>
+                                                    <span  :class="agent.approved?'status--process':'status--denied'">{{ agent.approved?'Approved': 'Not Approved' }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
@@ -73,6 +73,19 @@
                                     </table>
                                 </div>
                                 <!-- END DATA TABLE -->
+                                <br><br>
+                                <nav v-if="Object.keys(paginate).length != 0" aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li  :class="{'disabled':paginate.prev.url==null }" class="page-item">
+                                            <a class="page-link" @click="getAllAgents(paginationPath(paginate.prev.url))" href="#" tabindex="-1" aria-disabled="true">{{ paginate.prev.label }}</a>
+                                        </li>
+                                        <li v-for="(link , index) in paginate.inner" :key="index" :class="{'active': link.active}" :aria-current="link.active?'page':''" class="page-item"><a class="page-link" @click="getAllAgents(paginationPath(link.url))" href="#">{{ link.label }}</a></li>
+                                        <li  :class="{'disabled':paginate.next.url==null }" class="page-item">
+                                            <a class="page-link"  @click="getAllAgents(paginationPath(paginate.next.url))" href="#">{{ paginate.next.label }}</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <br><br>
                             </div>
                         </div>
                         <div class="row">
@@ -92,6 +105,7 @@
     </div>
 </template>
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import TheMobileHeader from '../../components/admin/common/TheMobileHeader.vue';
 import TheDesktopHeader from '../../components/admin/common/TheDesktopHeader.vue';
 import TheSideBar from '../../components/admin/common/TheSideBar.vue';
@@ -109,6 +123,41 @@ export default {
             app_name: process.env.MIX_APP_NAME,
             year: new Date().getFullYear(),
         }
+    },
+    computed:{
+        ...mapGetters("super_agent", ["getAgents", "getAgent", "getResponse", "getError"]),
+        paginate() {
+            let links = this.getAgents.links   ?? [];
+            let length = links.length;
+            if (length == 0) {
+                return {};
+            }
+            return {
+                prev: links[0],
+                next: links[length-1],
+                inner:links.splice(1,length-2)
+            };
+        },
+        
+        getPath(){
+            let path = '/agent?page=1';
+            let url = this.getAgents.path ?? path;
+        
+            let index = url.lastIndexOf('/');
+            path = url.slice(index+1);
+            return path;
+        },
+    },
+    methods: {
+        
+        ...mapActions("super_agent", ["getAllAgents", "getOneAgent", "deleteAgent"]),
+        ucfirst(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+    },
+
+    mounted() {
+        this.getAllAgents('agent?page=1');
     }
 }
 </script>

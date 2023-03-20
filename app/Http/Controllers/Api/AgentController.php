@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Agent;
+use App\Models\Admin;
 
 class AgentController extends Controller
 {
@@ -12,18 +12,18 @@ class AgentController extends Controller
     public function index()
     {
         //
-        return response()->json(Agent::get());
+        return response()->json(Admin::paginate());
     }
 
     public function show($id)
     {
         //
-        return Agent::findOrFail($id);
+        return Admin::findOrFail($id);
     }
 
     public function destroy($id)
     {
-        $agent = Agent::findOrFail($id);
+        $agent = Admin::findOrFail($id);
         $agent->delete();
 
         return response()->json([
