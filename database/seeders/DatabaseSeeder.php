@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CountrySeeder::class,
             PropertyTypeSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }

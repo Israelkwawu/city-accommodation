@@ -103,7 +103,7 @@ export default {
         // ],
         link: [
             { rel: 'icon', href: require("../../../../public/img/icon-deal.png"), sizes: '16x16', type: 'image/png' },
-            { rel: 'stylesheet', href: require("../../../../public/lib/animate/animate.css").default },
+            { rel: 'stylesheet', href: require("../../../../public/lib/animate/animate.css") },
             { rel: 'stylesheet', href: require("../../../../public/lib/owlcarousel/assets/owl.carousel.min.css") },
             { rel: 'stylesheet', href: require("../../../../public/css/bootstrap.min.css") },
             { rel: 'stylesheet', href: require("../../../../public/css/style.css") },

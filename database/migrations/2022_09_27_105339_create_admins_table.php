@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('role')->enum(['admin','manager','agent'])->nullable();
+            $table->enum('role', ['admin','manager','agent'])->nullable();
+            $table->boolean('approved')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
