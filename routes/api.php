@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ImageUploadController;
 use App\Http\Controllers\Api\ListingController;
+use App\Http\Controllers\Api\ListingApprovalController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\PropertyListController;
@@ -35,6 +36,7 @@ Route::post('/auth/login', [AuthController::class, 'loginAdmin']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
   Route::apiResource('listings', ListingController::class);
+  Route::apiResource('approval', ListingApprovalController::class);
   Route::apiResource('image', ImageUploadController::class);
   Route::apiResource('property_attributes', PropertyAttributeController::class);
   Route::apiResource('agent', AgentController::class);

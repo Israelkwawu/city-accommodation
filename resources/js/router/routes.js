@@ -95,6 +95,15 @@ const routes = [
         }
     },
     {
+        path: '/super/approval',
+        component: () => import(/* webpackChunkName: "super" */'../views/admin/ApprovalView.vue'),
+        name: 'super.approval',
+        meta:{
+            middleware:"auth",
+            title:`Approval`
+        }
+    },
+    {
         path: '/super/agents',
         component: () => import(/* webpackChunkName: "super" */'../views/admin/AgentsView.vue'),
         name: 'super.agents',

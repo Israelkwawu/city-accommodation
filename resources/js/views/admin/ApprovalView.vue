@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">Listings</h2>
+                                    <h2 class="title-1">Approval</h2>
                                 
                                 </div>
                             </div>
@@ -26,31 +26,6 @@
                             <div class="col-md-12">
                                 <!-- DATA TABLE -->
                                 <div class="table-data__tool">
-                                    <div class="table-data__tool-left">
-                                        <div class="rs-select2--light rs-select2--md">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">All Properties</option>
-                                                <option value="">Option 1</option>
-                                                <option value="">Option 2</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <div class="rs-select2--light rs-select2--sm">
-                                            <select class="js-select2" name="time">
-                                                <option selected="selected">Today</option>
-                                                <option value="">3 Days</option>
-                                                <option value="">1 Week</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <button class="au-btn-filter">
-                                            <i class="zmdi zmdi-filter-list"></i>filters</button>
-                                    </div>
-                                    <div class="table-data__tool-right">
-                                        <button  data-toggle="modal" data-target="#addListing" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-plus"></i>add listing</button>
-                                    
-                                    </div>
                                 </div>
                                 <div class="table-responsive table-responsive-data2">
                                     <table class="table table-data2">
@@ -814,14 +789,14 @@ export default {
             view_attributes: "",
             view_description:"",
             view_active:"",
-            view_approved:"",
+            view_approved: "",
         }
     },
     computed: {
         ...mapGetters("country", ["getCountries", "getError"]),
         ...mapGetters("property_type", ["getPropertyTypes", "getError"]),
         ...mapGetters("super_property_attribute", ["getPropertyAttribute", "getError"]),
-        ...mapGetters("super_property_list", ["getPropertyList", "getOnePropertyList", "getResponse", "getUploadResponse", "getError"]),
+        ...mapGetters("super_property_approval", ["getPropertyList", "getOnePropertyList", "getResponse", "getUploadResponse", "getError"]),
         paginate() {
             let links = this.getPropertyList.links   ?? [];
             let length = links.length;
@@ -836,7 +811,7 @@ export default {
         },
         
         getPath(){
-            let path = '/listings?page=1';
+            let path = '/approval?page=1';
             let url = this.getPropertyList.path ?? path;
         
             let index = url.lastIndexOf('/');
@@ -849,7 +824,7 @@ export default {
         ...mapActions("country", ["getAllCountries"]),
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
         ...mapActions("super_property_attribute", ["getAllPropertyAttribute"]),
-        ...mapActions("super_property_list", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage", "updatePropertyList", "deletePropertyList"]),
+        ...mapActions("super_property_approval", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage", "updatePropertyList", "deletePropertyList"]),
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
@@ -901,6 +876,7 @@ export default {
                         attributes: JSON.stringify(this.attributes),
                         description:this.description,
                         active: false,
+                        approved: false,
                     });
                     this.alertType = "alert-success";
                     this.message = this.getResponse.data.message;
@@ -1134,7 +1110,7 @@ export default {
         this.getAllCountries();
         this.getAllPropertyTypes();
         this.getAllPropertyAttribute();
-        this.getAllPropertyList('listings?page=1');
+        this.getAllPropertyList('approval?page=1');
     },
     vuelidation: {
         data: {

@@ -31,5 +31,6 @@ class Listing extends Model
         'attributes',
         'description',
         'active',
+        'approval',
     ];
 }

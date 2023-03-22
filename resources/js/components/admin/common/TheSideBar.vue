@@ -21,6 +21,10 @@
                             <a href="/super/agents">
                                 <i class="fas fa-users"></i>Manage Agents</a>
                         </li>
+                        <li :class="{ active: activePage == 'super.approval' }">
+                            <a href="/super/approval">
+                                <i class="fas fa-check"></i>Approval</a>
+                        </li>
                         <li :class="{ active: activePage == 'super.property-type' }">
                             <a href="/super/property-type">
                                 <i class="far fa-check-square"></i>Property Types</a>

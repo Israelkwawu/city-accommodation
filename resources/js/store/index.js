@@ -7,6 +7,7 @@ import country from './modules/country';
 import property_list from './modules/property_list';
 import super_property_attribute from "./modules/super_property_attribute";
 import super_property_list from './modules/super_property_list';
+import super_property_approval from './modules/super_property_approval';
 import authentication from "./modules/authentication";
 import super_agent from "./modules/super_agent";
 import Cookies from 'js-cookie';
@@ -36,6 +37,7 @@ const store = new Vuex.Store({
     property_list,
     super_property_attribute,
     super_property_list,
+    super_property_approval,
     authentication,
     super_agent,
   }

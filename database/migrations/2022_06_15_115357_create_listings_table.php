@@ -30,6 +30,7 @@ return new class extends Migration
             $table->json('attributes');
             $table->text('description');
             $table->boolean('active')->default(false);
+            $table->boolean('approved')->default(false)->nullable();
             $table->softDeletes()->nullable();
             $table->timestamps();
         });

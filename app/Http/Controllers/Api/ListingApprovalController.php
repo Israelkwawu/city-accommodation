@@ -7,9 +7,9 @@ use App\Http\Requests\StoreListingRequest;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 
-class ListingController extends Controller
+class ListingApprovalController extends Controller
 {
-    /**
+      /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -20,7 +20,7 @@ class ListingController extends Controller
         try {
             //code...
             $this->authorize('viewAny', Listing::class);
-            return response()->json(Listing::where('approval','=',true)->paginate());
+            return response()->json(Listing::where('approval','=',false)->paginate());
         } catch (\Throwable $th) {
             //throw $th;
             return ['status' => false,'message'=>$th->getMessage()];
