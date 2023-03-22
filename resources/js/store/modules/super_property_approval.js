@@ -108,6 +108,18 @@ export default {
             }
         },
 
+        async updatePropertyListApproval({ commit }, payload) {
+        
+            try {
+                const data = await Api().patch("/approval/"+ payload.id, payload.request);
+                commit("SET_RESPONSE", data);
+                commit("SET_ERROR", {});
+            } catch ( { response } ) {
+                commit("SET_ERROR", response);
+                commit("SET_RESPONSE", {});
+            }
+        },
+
         async deletePropertyList({ commit }, payload) {
         
             try {

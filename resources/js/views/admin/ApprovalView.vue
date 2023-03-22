@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">Approval</h2>
+                                    <h2 class="title-1">Pending Approval</h2>
                                 
                                 </div>
                             </div>
@@ -43,6 +43,7 @@
                                                 <th>status</th>
                                                 <th>price</th>
                                                 <th>active</th>
+                                                <th>approved</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -68,7 +69,18 @@
                                                     {{ property.currency_symbol }}{{ property.price }}
                                                 </td>
                                                 <td>
-                                                    <span :class="property.active?'status--process':'status--denied'">{{  !!property.active }}</span>
+                    
+                                                    <label class="au-checkbox">
+                                                        <input type="checkbox" :checked="!!property.active">
+                                                        <span class="au-checkmark"></span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                    
+                                                    <label class="au-checkbox">
+                                                        <input type="checkbox" @change="approval($event, property.id)" :checked="!!property.approved">
+                                                        <span class="au-checkmark"></span>
+                                                    </label>
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
@@ -824,7 +836,7 @@ export default {
         ...mapActions("country", ["getAllCountries"]),
         ...mapActions("property_type", ["getAllPropertyTypes"]),  
         ...mapActions("super_property_attribute", ["getAllPropertyAttribute"]),
-        ...mapActions("super_property_approval", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage", "updatePropertyList", "deletePropertyList"]),
+        ...mapActions("super_property_approval", ["getAllPropertyList", "getOneList",  "savePropertyList", "saveImage", "updatePropertyList","updatePropertyListApproval", "deletePropertyList"]),
         ucfirst(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         },
@@ -1072,6 +1084,18 @@ export default {
                 }
             }
             
+        },
+
+        async approval(event, id) {
+            let value = event.target.checked;
+            await this.updatePropertyListApproval({
+                        id: id, 
+                        request: {
+                                approved: value,
+                                // _method: "PATCH",
+                            }
+                        }
+                    );
         },
 
         async deleteProperty() {

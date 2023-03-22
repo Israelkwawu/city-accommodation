@@ -23,7 +23,7 @@
                         </li>
                         <li :class="{ active: activePage == 'super.approval' }">
                             <a href="/super/approval">
-                                <i class="fas fa-check"></i>Approval</a>
+                                <i class="fas fa-check"></i>Pending Approval</a>
                         </li>
                         <li :class="{ active: activePage == 'super.property-type' }">
                             <a href="/super/property-type">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreListingRequest;
+use App\Http\Requests\UpdateListingRequest;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class ListingApprovalController extends Controller
         try {
             //code...
             $this->authorize('viewAny', Listing::class);
-            return response()->json(Listing::where('approval','=',false)->paginate());
+            return response()->json(Listing::where('approved','=',false)->paginate());
         } catch (\Throwable $th) {
             //throw $th;
             return ['status' => false,'message'=>$th->getMessage()];
@@ -84,7 +85,7 @@ class ListingApprovalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreListingRequest $request, $id)
+    public function update(UpdateListingRequest $request, $id)
     {
         //
         try {
@@ -101,7 +102,7 @@ class ListingApprovalController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return ['status' => false,'message'=>$th->getMessage()];
-        }      
+        }
     
     }
 
