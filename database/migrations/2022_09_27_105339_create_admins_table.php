@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->unique();
             $table->string('password');
             $table->enum('role', ['admin','manager','agent'])->nullable();
             $table->boolean('approved')->default(false);
             $table->rememberToken();
+            $table->softDeletes()->nullable();
             $table->timestamps();
         });
     }

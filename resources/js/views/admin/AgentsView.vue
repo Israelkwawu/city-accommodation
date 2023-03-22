@@ -36,6 +36,7 @@
                                                 </th>
                                                 <th>name</th>
                                                 <th>email</th>
+                                                <th>phone</th>
                                                 <th>role</th>
                                                 <th>status</th>
                                                 <th></th>
@@ -53,12 +54,21 @@
                                                 <td>
                                                     <span class="block-email">{{ agent.email }}</span>
                                                 </td>
+                                                <td>
+                                                    <span class="block-email">{{ agent.phone }}</span>
+                                                </td>
                                                 <td class="desc">{{ ucfirst(agent.role) }}</td>
                                                 <td>
                                                     <span  :class="agent.approved?'status--process':'status--denied'">{{ agent.approved?'Approved': 'Not Approved' }}</span>
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Upload">
+                                                            <i class="zmdi zmdi-upload"></i>
+                                                        </button>
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Role">
+                                                            <i class="zmdi zmdi-settings"></i>
+                                                        </button>
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="View">
                                                             <i class="zmdi zmdi-eye"></i>
                                                         </button>

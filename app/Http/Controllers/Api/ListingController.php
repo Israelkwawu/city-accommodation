@@ -16,8 +16,16 @@ class ListingController extends Controller
      */
     public function index()
     {
-        //   
-        return response()->json(Listing::paginate());
+        //
+        try {
+            //code...
+            $this->authorize('viewAny', Listing::class);
+            return response()->json(Listing::paginate());
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['status' => false,'message'=>$th->getMessage()];
+        }
+
     }
 
     /**
@@ -30,7 +38,8 @@ class ListingController extends Controller
     {
     
         try {
-        
+
+            $this->authorize('create', Listing::class);
             $listing = Listing::create($request->all());
     
             return response()->json([
@@ -57,7 +66,15 @@ class ListingController extends Controller
     public function show($id)
     {
         //
-        return Listing::findOrFail($id);   
+        try {
+            $listing = Listing::findOrFail($id);
+            $this->authorize('view', $listing);
+            return $listing;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['status' => false,'message'=>$th->getMessage()];
+        }
+        
     }
 
     /**
@@ -70,14 +87,21 @@ class ListingController extends Controller
     public function update(StoreListingRequest $request, $id)
     {
         //
-        $listing = Listing::findOrFail($id);
-        $listing->update($request->all());
+        try {
+            //code...
+            $listing = Listing::findOrFail($id);
+            $this->authorize('update', $listing);
+            $listing->update($request->all());
 
-        return response()->json([
-            'status' => true,
-            'message' => "Listing Updated Successfully!",
-            'listing' => $listing,
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => "Listing Updated Successfully!",
+                'listing' => $listing,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['status' => false,'message'=>$th->getMessage()];
+        }      
     
     }
 
@@ -89,13 +113,21 @@ class ListingController extends Controller
      */
     public function destroy($id)
     {
-        $listing = Listing::findOrFail($id);
-        $listing->delete();
+        try {
+            //code...
+            $listing = Listing::findOrFail($id);
+            $this->authorize('update', $listing);
+            $listing->delete();
 
-        return response()->json([
-            'status' => true,
-            'message' => "Listing Deleted Successfully!"
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => "Listing Deleted Successfully!"
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['status' => false,'message'=>$th->getMessage()];
+        }
+        
         
     }
 }

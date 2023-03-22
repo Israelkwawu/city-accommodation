@@ -25,6 +25,8 @@ class AuthController extends Controller
                 'email.required' => 'Please your email address is required!',
                 'email.email' => 'Please enter a valid email address!',
                 'email.unique' => 'Please enter a unique email address!',
+                'phone.required' => 'Please your email address is required!',
+                'phone.unique' => 'Please enter a unique phone number!',
                 'password.required' => 'Please your password is required!',
                 'password.min' => 'Please your password should contain minimum of 6 characters!',
                 'password.alpha_num' => 'Please your password should contain alpha-numeric characters!',
@@ -36,6 +38,7 @@ class AuthController extends Controller
                 [
                     'name' => 'required',
                     'email' => 'required|email|unique:admins,email',
+                    'phone' => 'required|unique:admins',
                     'password' => 'required|min:6|alpha_num|confirmed'
                 ] ,
                 $messages

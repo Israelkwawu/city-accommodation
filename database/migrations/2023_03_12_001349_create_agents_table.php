@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('role');
+            $table->bigInteger('admin_id');
+            $table->string('image');
+            $table->softDeletes()->nullable();
             $table->timestamps();
         });
     }

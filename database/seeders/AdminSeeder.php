@@ -20,6 +20,7 @@ class AdminSeeder extends Seeder
         Admin::create([
             "name" => "Israel",
             "email"=> "israel.kwawu@amalitech.com",
+            "phone"=> "0248865840",
             "password"=> Hash::make("1a2s3d4f5g6h"),
             "role"=> "admin",
             "approved" => true,
