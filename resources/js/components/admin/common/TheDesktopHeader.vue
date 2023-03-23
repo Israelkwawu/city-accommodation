@@ -11,8 +11,8 @@
                         </button>
                     </form>
                     <div class="header-button">
-                      <div class="noti-wrap">
-                           <!--   <div class="noti__item js-item-menu">
+                        <div class="noti-wrap">
+                          <!--  <div class="noti__item js-item-menu">
                                 <i class="zmdi zmdi-comment-more"></i>
                                 <span class="quantity">1</span>
                                 <div class="mess-dropdown js-dropdown">
@@ -82,8 +82,8 @@
                                         <a href="#">See all emails</a>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="noti__item js-item-menu">
+                            </div> -->
+                            <div  @click.stop="toggleNotificationDropdown = !toggleNotificationDropdown" :class="{ 'show-dropdown': toggleNotificationDropdown }" class="noti__item js-item-menu">
                                 <i class="zmdi zmdi-notifications"></i>
                                 <span class="quantity">3</span>
                                 <div class="notifi-dropdown js-dropdown">
@@ -121,7 +121,7 @@
                                         <a href="#">All notifications</a>
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
                         </div>
                         <div class="account-wrap">
                             <div @click.stop="toggleProfileDropdown = !toggleProfileDropdown" :class="{ 'show-dropdown': toggleProfileDropdown }" class="account-item clearfix js-item-menu">
@@ -178,6 +178,7 @@ export default {
         return {
             app_name: process.env.MIX_APP_NAME,
             toggleProfileDropdown: false,
+            toggleNotificationDropdown: false,
         }
     },
     computed: {
