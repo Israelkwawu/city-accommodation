@@ -748,6 +748,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import store from "../../store/index";
 import TheMobileHeader from '../../components/admin/common/TheMobileHeader.vue';
 import TheDesktopHeader from '../../components/admin/common/TheDesktopHeader.vue';
 import TheSideBar from '../../components/admin/common/TheSideBar.vue';
@@ -897,6 +898,7 @@ export default {
                         attributes: JSON.stringify(this.attributes),
                         description:this.description,
                         active: false,
+                        admin_id: store.getters['authentication/user'].id,
                     });
                     this.alertType = "alert-success";
                     this.message = this.getResponse.data.message;

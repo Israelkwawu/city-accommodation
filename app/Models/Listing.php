@@ -32,5 +32,11 @@ class Listing extends Model
         'description',
         'active',
         'approved',
+        'admin_id',
     ];
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
 }

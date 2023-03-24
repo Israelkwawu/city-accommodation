@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\StoreListingRequest;
 use App\Http\Requests\UpdateListingRequest;
+use App\Models\Admin;
+use App\Models\Agent;
+use App\Notifications\ListingApproved;
+use App\Notifications\ListingCreated;
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ListingApprovalController extends Controller
 {
@@ -42,6 +48,14 @@ class ListingApprovalController extends Controller
 
             $this->authorize('create', Listing::class);
             $listing = Listing::create($request->all());
+
+            $adminAndMangerToNotify = Admin::whereIn('role',['admin', 'manager'])->get();
+            $data = [
+                'listing_id' => $listing->id,
+                'title' => 'Listing Created',
+                'message' => 'The Listing "'.$listing->name.'" needs your review and approval.',
+            ];
+            Notification::send($adminAndMangerToNotify, new ListingCreated($data));
     
             return response()->json([
                 'status' => true,
@@ -93,6 +107,17 @@ class ListingApprovalController extends Controller
             $listing = Listing::findOrFail($id);
             $this->authorize('update', $listing);
             $listing->update($request->all());
+            if ($request->method() == 'PATCH') {
+                # code...
+                $adminToNotify = Admin::findOrFail($listing->admin_id);
+                $data = [
+                    'listing_id' => $listing->id,
+                    'title' => 'Listing Approved',
+                    'message' => 'Your Listing "'.$listing->name.'" has been approved.',
+                ];
+                //notify single admin
+                $adminToNotify->notify(new ListingApproved($data));
+            }
 
             return response()->json([
                 'status' => true,

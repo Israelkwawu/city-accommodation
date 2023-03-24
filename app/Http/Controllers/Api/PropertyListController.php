@@ -11,6 +11,10 @@ class PropertyListController extends Controller
 {
     public function index()
     {
-        return response()->json(Listing::where('active', '!=', false)->cursorPaginate(6));
+        return response()->json(
+            Listing::where('active', '!=', false)
+            ->where('approved', '!=', false)
+            ->cursorPaginate(12)
+        );
     }
 }

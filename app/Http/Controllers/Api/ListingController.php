@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\StoreListingRequest;
 use App\Http\Requests\UpdateListingRequest;
+use App\Models\Admin;
+use App\Notifications\ListingCreated;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 
@@ -42,6 +45,14 @@ class ListingController extends Controller
 
             $this->authorize('create', Listing::class);
             $listing = Listing::create($request->all());
+
+            $adminAndMangerToNotify = Admin::whereIn('role',['admin', 'manager'])->get();
+            $data = [
+                'listing_id' => $listing->id,
+                'title' => 'Listing Created',
+                'message' => 'The Listing "'.$listing->name.'" needs your review and approval.',
+            ];
+            Notification::send($adminAndMangerToNotify, new ListingCreated($data));
     
             return response()->json([
                 'status' => true,

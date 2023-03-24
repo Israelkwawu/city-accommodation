@@ -31,6 +31,7 @@ return new class extends Migration
             $table->text('description');
             $table->boolean('active')->default(false);
             $table->boolean('approved')->default(false)->nullable();
+            $table->bigInteger('admin_id');
             $table->softDeletes()->nullable();
             $table->timestamps();
         });

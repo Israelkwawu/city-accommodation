@@ -41,4 +41,9 @@ class Admin extends Authenticatable
     {
         return $this->hasOne(Agent::class);
     }
+
+    public function listing()
+    {
+        return $this->hasMany(Listing::class);
+    }
 }
