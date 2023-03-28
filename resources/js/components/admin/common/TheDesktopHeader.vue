@@ -85,40 +85,22 @@
                             </div> -->
                             <div  @click.stop="toggleNotificationDropdown = !toggleNotificationDropdown" :class="{ 'show-dropdown': toggleNotificationDropdown }" class="noti__item js-item-menu">
                                 <i class="zmdi zmdi-notifications"></i>
-                                <span class="quantity">3</span>
+                                <span class="quantity">{{ numberOfNotifications }}</span>
                                 <div class="notifi-dropdown js-dropdown">
                                     <div class="notifi__title">
-                                        <p>You have 3 Notifications</p>
+                                        <p>You have {{ numberOfNotifications }} Notifications</p>
                                     </div>
-                                    <div class="notifi__item">
+                                    <div @click="markAsRead({ id: notification.id, request:notification })" class="notifi__item" v-for="(notification, index) in getNotifications.slice(0,3)" :key="index">
                                         <div class="bg-c1 img-cir img-40">
                                             <i class="zmdi zmdi-email-open"></i>
                                         </div>
                                         <div class="content">
-                                            <p>You got a email notification</p>
-                                            <span class="date">April 12, 2018 06:50</span>
-                                        </div>
-                                    </div>
-                                    <div class="notifi__item">
-                                        <div class="bg-c2 img-cir img-40">
-                                            <i class="zmdi zmdi-account-box"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>Your account has been blocked</p>
-                                            <span class="date">April 12, 2018 06:50</span>
-                                        </div>
-                                    </div>
-                                    <div class="notifi__item">
-                                        <div class="bg-c3 img-cir img-40">
-                                            <i class="zmdi zmdi-file-text"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>You got a new file</p>
-                                            <span class="date">April 12, 2018 06:50</span>
+                                            <p>{{ notification.data.title }}</p>
+                                            <span class="date">{{ new Date(notification.data.datetime).toDateString() }}</span>
                                         </div>
                                     </div>
                                     <div class="notifi__footer">
-                                        <a href="#">All notifications</a>
+                                        <a href="/super/notifications">All notifications</a>
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +111,7 @@
                                     <img src="https://p.kindpng.com/picc/s/78-785904_block-chamber-of-commerce-avatar-white-avatar-icon.png" alt="John Doe" />
                                 </div>
                                 <div class="content">
-                                    <a class="js-acc-btn" href="#">john doe</a>
+                                    <a class="js-acc-btn" href="#">{{ user.name }}</a>
                                 </div>
                                 <div class="account-dropdown js-dropdown">
                                     <div class="info clearfix">
@@ -140,9 +122,9 @@
                                         </div>
                                         <div class="content">
                                             <h5 class="name">
-                                                <a href="#">john doe</a>
+                                                <a href="#">{{ user.name }}</a>
                                             </h5>
-                                            <span class="email">johndoe@example.com</span>
+                                            <span class="email">{{ user.email}}</span>
                                         </div>
                                     </div>
                                     <div class="account-dropdown__body">
@@ -172,6 +154,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import store from "../../../store/index";
 export default {
     name: "TheDesktopHeader",
     data() {
@@ -183,16 +166,31 @@ export default {
     },
     computed: {
         ...mapGetters("authentication", ["authenticated", "user","getAuthToken", "getError"]),
+        ...mapGetters("super_notification", ["getNotifications", "getResponse" , "getError"]),
+        numberOfNotifications() {
+            return this.getNotifications.length;
+        }
+
     },
     methods: {
-        ...mapActions("authentication", ["logout"]),  
+        ...mapActions("authentication", ["logout"]),
+        ...mapActions("super_notification", ["getAllNotification", "updateNotification"]),   
         async signOut() {
             await this.logout();
 
             if (!this.authenticated) {
                 this.$router.push({name:'private.login'})
             }
-        }
+        },
+
+        async markAsRead(payload) {
+            await this.updateNotification(payload);
+        },
+
     },
+
+    mounted() {
+        this.getAllNotification();
+    }
 }
 </script>

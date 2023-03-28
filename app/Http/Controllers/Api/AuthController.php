@@ -55,7 +55,8 @@ class AuthController extends Controller
             $admin = Admin::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password) 
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password)
             ]);
 
             return response()->json([

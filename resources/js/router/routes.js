@@ -167,6 +167,15 @@ const routes = [
         }
     },
     {
+        path: '/super/notifications',
+        component: () => import(/* webpackChunkName: "super" */'../views/admin/NotificationView.vue'),
+        name: 'super.notifications',
+        meta:{
+            middleware:"auth",
+            title:`Notification`
+        }
+    },
+    {
         path: '*',
         component: () => import(/* webpackChunkName: "users" */'../views/users/404View.vue'),
         name: 'not_found',

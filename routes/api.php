@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\PropertyListController;
 use App\Http\Controllers\Api\PropertyTypeController;
 use App\Http\Controllers\Api\PropertyAttributeController;
 use App\Http\Controllers\Api\AgentController;
+use App\Http\Controllers\Api\NotificationController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::apiResource('image', ImageUploadController::class);
   Route::apiResource('property_attributes', PropertyAttributeController::class);
   Route::apiResource('agent', AgentController::class);
+  Route::apiResource('notifications', NotificationController::class);
   Route::post('/auth/logout', [AuthController::class, 'logoutAdmin']);
 });
 

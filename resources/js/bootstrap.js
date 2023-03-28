@@ -23,6 +23,7 @@ window.axios.defaults.withCredentials = true;
  */
 
 import Echo from 'laravel-echo';
+import store from './store/index';
 
 window.Pusher = require('pusher-js');
 
@@ -34,4 +35,18 @@ window.Echo = new Echo({
     disableStats: true,
     encrypted: true,
     cluster: 'eu',
+    // authEndpoint: 'api/broadcasting/auth',
+    auth: {
+        headers: {
+            Accept: 'application/json',
+            Authorization: 'Bearer '+store.getters['authentication/getAuthToken'],
+            // 'X-CSRF-Token': "CSRF_TOKEN"
+        }
+    },
+});
+
+const admin_id = store.getters['authentication/user'].id;
+window.Echo.private('App.Models.Admin.' + admin_id)
+.notification((notification) => {
+    console.log(notification);
 });
