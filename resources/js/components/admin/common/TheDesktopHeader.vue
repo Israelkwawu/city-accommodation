@@ -185,6 +185,10 @@ export default {
 
         async markAsRead(payload) {
             await this.updateNotification(payload);
+
+            if (this.getResponse.data.status) {
+                this.$router.push({name:'super.notifications'})
+            }
         },
 
     },
