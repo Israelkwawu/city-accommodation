@@ -66,6 +66,7 @@ class ListingApproved extends Notification
             'listing_id' =>  $this->data['listing_id'],
             'title' => $this->data['title'],
             'message' => $this->data['message'],
+            'approved_by' => $this->data['approved_by'],
             'datetime' => Carbon::now(),
         ]);
     }
@@ -92,6 +93,7 @@ class ListingApproved extends Notification
             'listing_id' => $this->data['listing_id'],
             'title' => $this->data['title'],
             'message' => $this->data['message'],
+            'approved_by' => $this->data['approved_by'],
             'datetime' => Carbon::now(),
         ];
     }

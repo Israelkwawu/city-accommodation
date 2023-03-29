@@ -85,12 +85,12 @@
                             </div> -->
                             <div  @click.stop="toggleNotificationDropdown = !toggleNotificationDropdown" :class="{ 'show-dropdown': toggleNotificationDropdown }" class="noti__item js-item-menu">
                                 <i class="zmdi zmdi-notifications"></i>
-                                <span class="quantity">{{ numberOfNotifications }}</span>
+                                <span class="quantity">{{ numberOfNotifications + broadcastCount }}</span>
                                 <div class="notifi-dropdown js-dropdown">
                                     <div class="notifi__title">
-                                        <p>You have {{ numberOfNotifications }} Notifications</p>
+                                        <p>You have {{ numberOfNotifications + broadcastCount }} Notifications</p>
                                     </div>
-                                    <div @click="markAsRead({ id: notification.id, request:notification })" class="notifi__item" v-for="(notification, index) in getNotifications.slice(0,3)" :key="index">
+                                    <div @click="markAsRead({ id: notification.id, request:notification }, index)" class="notifi__item" v-for="(notification, index) in getNotifications.slice(0,3)" :key="index">
                                         <div class="bg-c1 img-cir img-40">
                                             <i class="zmdi zmdi-email-open"></i>
                                         </div>
@@ -162,6 +162,7 @@ export default {
             app_name: process.env.MIX_APP_NAME,
             toggleProfileDropdown: false,
             toggleNotificationDropdown: false,
+            broadcastCount: 0,
         }
     },
     computed: {
@@ -183,18 +184,30 @@ export default {
             }
         },
 
-        async markAsRead(payload) {
+        async markAsRead(payload, index) {
             await this.updateNotification(payload);
 
             if (this.getResponse.data.status) {
-                this.$router.push({name:'super.notifications'})
+                this.$router.push({name:'super.notifications'}).catch(() => {
+                    this.getNotifications.splice(index, 1);
+                });
             }
+        },
+
+        notificationBroadcast() {
+            const admin_id = store.getters['authentication/user'].id;
+            window.Echo.private('App.Models.Admin.' + admin_id)
+            .notification((notification) => {
+                this.broadcastCount++;
+                // console.log(notification);
+            });
         },
 
     },
 
     mounted() {
         this.getAllNotification();
+        this.notificationBroadcast();
     }
 }
 </script>

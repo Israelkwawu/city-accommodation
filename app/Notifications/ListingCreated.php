@@ -66,6 +66,7 @@ class ListingCreated extends Notification
             'listing_id' =>  $this->data['listing_id'],
             'title' => $this->data['title'],
             'message' => $this->data['message'],
+            'listed_by' => $this->data['listed_by'],
             'datetime' => Carbon::now(),
         ]);
     }
@@ -92,6 +93,7 @@ class ListingCreated extends Notification
             'listing_id' =>  $this->data['listing_id'],
             'title' => $this->data['title'],
             'message' => $this->data['message'],
+            'listed_by' => $this->data['listed_by'],
             'datetime' => Carbon::now(),
         ];
     }

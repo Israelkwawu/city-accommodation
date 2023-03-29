@@ -54,6 +54,7 @@ class ListingApprovalController extends Controller
                 'listing_id' => $listing->id,
                 'title' => 'Listing Created',
                 'message' => 'The Listing "'.$listing->name.'" needs your review and approval.',
+                'listed_by' => Auth::user()->name,
             ];
             Notification::send($adminAndMangerToNotify, new ListingCreated($data));
     
@@ -114,6 +115,7 @@ class ListingApprovalController extends Controller
                     'listing_id' => $listing->id,
                     'title' => 'Listing Approved',
                     'message' => 'Your Listing "'.$listing->name.'" has been approved.',
+                    'approved_by' => Auth::user()->name,
                 ];
                 //notify single admin
                 $adminToNotify->notify(new ListingApproved($data));

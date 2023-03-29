@@ -10,6 +10,7 @@ use App\Models\Admin;
 use App\Notifications\ListingCreated;
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ListingController extends Controller
 {
@@ -51,6 +52,7 @@ class ListingController extends Controller
                 'listing_id' => $listing->id,
                 'title' => 'Listing Created',
                 'message' => 'The Listing "'.$listing->name.'" needs your review and approval.',
+                'listed_by' => Auth::user()->name,
             ];
             Notification::send($adminAndMangerToNotify, new ListingCreated($data));
     

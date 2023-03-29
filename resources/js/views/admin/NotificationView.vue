@@ -45,6 +45,7 @@
                                                 </th>
                                                 <th>title</th>
                                                 <th>message</th>
+                                                <th>listed by</th>
                                                 <th>status</th>
                                                 
                                             </tr>
@@ -60,6 +61,7 @@
                                                 <td>{{ notification.data.title }}</td>
                                             
                                                 <td class="desc">{{ notification.data.message }}</td>
+                                                <td class="desc">{{ notification.data.listed_by }}</td>
                                                 <td>
                                                     <span class="status--process">{{ !notification.read_at ? "Not Read" : "Read" }}</span>
                                                 </td>
@@ -90,6 +92,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import store from '../../store/index';
 import TheMobileHeader from '../../components/admin/common/TheMobileHeader.vue';
 import TheDesktopHeader from '../../components/admin/common/TheDesktopHeader.vue';
 import TheSideBar from '../../components/admin/common/TheSideBar.vue';

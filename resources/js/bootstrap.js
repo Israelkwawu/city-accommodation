@@ -45,8 +45,8 @@ window.Echo = new Echo({
     },
 });
 
-const admin_id = store.getters['authentication/user'].id;
-window.Echo.private('App.Models.Admin.' + admin_id)
-.notification((notification) => {
-    console.log(notification);
-});
+// const admin_id = store.getters['authentication/user'].id;
+// window.Echo.private('App.Models.Admin.' + admin_id)
+// .notification((notification) => {
+//     console.log(notification);
+// });
