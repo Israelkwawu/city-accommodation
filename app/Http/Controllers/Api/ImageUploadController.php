@@ -30,9 +30,10 @@ class ImageUploadController extends Controller
                     'transformation' => [
                         'width' => 600,
                         'height' => 400,
-                        'crop' => 'limit',
+                        'crop' => 'fill',//limit,crop
                         'quality' => 'auto',
                         'fetch_format' => 'auto',
+                        'gravity' => 'auto',//faces
                     ],
                 ]
             )->getSecurePath();

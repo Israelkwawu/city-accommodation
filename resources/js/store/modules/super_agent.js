@@ -62,6 +62,18 @@ export default {
             }
         },
 
+        async updateAgent({ commit }, payload) {
+        
+            try {
+                const data = await Api().patch("/agent/"+ payload.id, payload.request);
+                commit("SET_RESPONSE", data);
+                commit("SET_ERROR", {});
+            } catch ( { response } ) {
+                commit("SET_ERROR", response);
+                commit("SET_RESPONSE", {});
+            }
+        },
+
         async deleteAgent({ commit }, payload) {
         
             try {

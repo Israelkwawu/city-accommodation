@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class AdminPolicy
 {
@@ -52,9 +53,10 @@ class AdminPolicy
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Admin $admin)
+    public function update(Admin $admin)
     {
-        //
+        return in_array($admin->role,['admin','manager']) ? Response::allow()
+        : Response::deny('You are not authorized to perform this action.');
     }
 
     /**
@@ -64,9 +66,10 @@ class AdminPolicy
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Admin $admin)
+    public function delete(Admin $admin)
     {
-        //
+        return in_array($admin->role,['admin','manager']) ? Response::allow()
+        : Response::deny('You are not authorized to perform this action.');
     }
 
     /**

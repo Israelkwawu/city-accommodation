@@ -21,9 +21,23 @@ class AgentController extends Controller
         return Admin::findOrFail($id);
     }
 
+    public function update(Request $request, $id)
+    {
+        //
+        $agent = Admin::findOrFail($id);
+        $this->authorize('update', $agent);
+        $agent->update($request->all());
+
+        return response()->json([
+            'status' => true,
+            'message' => "Agent Updated Successfully!",
+        ], 200);
+    }
+
     public function destroy($id)
     {
         $agent = Admin::findOrFail($id);
+        $this->authorize('update', $agent);
         $agent->delete();
 
         return response()->json([
