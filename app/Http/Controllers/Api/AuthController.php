@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AccountCreated;
 
 class AuthController extends Controller
 {
@@ -58,6 +60,13 @@ class AuthController extends Controller
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password)
             ]);
+            $adminAndMangerToNotify = Admin::whereIn('role',['admin', 'manager'])->get();
+            $data = [
+                'admin_id' => $admin->id,
+                'title' => 'Account Created',
+                'message' => 'The account with username "'.$admin->name.'" needs your review and approval.',
+            ];
+            Notification::send($adminAndMangerToNotify, new AccountCreated($data));
 
             return response()->json([
                 'status' => true,
@@ -71,7 +80,7 @@ class AuthController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
-     
+    
     }
 
     public function loginAdmin(Request $request) {

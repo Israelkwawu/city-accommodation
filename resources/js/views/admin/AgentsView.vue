@@ -73,7 +73,7 @@
                                                     <span  :class="agent.approved?'status--process':'status--denied'">{{ agent.approved?'Approved': 'Not Approved' }}</span>
                                                 </td>
                                                 <td>
-                                                    <div class="table-data-feature">
+                                                    <div v-if="agent.role != 'admin'" class="table-data-feature">
                                                     
                                                         <button class="item" v-if="role == 'admin' || role == 'manager'" @click="getPropertyId(agent.id)"  data-target="#settingModal" data-toggle="modal" data-placement="top" title="Role">
                                                             <i class="zmdi zmdi-settings"></i>

@@ -12,6 +12,7 @@ import authentication from "./modules/authentication";
 import super_agent from "./modules/super_agent";
 import super_notification from './modules/super_notification';
 import super_dashboard from './modules/super_dashboard';
+import register from './modules/register';
 import Cookies from 'js-cookie';
 
 Vue.use(Vuex);
@@ -44,6 +45,7 @@ const store = new Vuex.Store({
     super_agent,
     super_notification,
     super_dashboard,
+    register,
   }
 })
 
