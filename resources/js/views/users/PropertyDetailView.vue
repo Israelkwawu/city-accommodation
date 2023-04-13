@@ -1,0 +1,174 @@
+<template>
+    <div class="container-xxl bg-white p-0">
+        <spinner v-if="isLoading"></spinner>
+        <navbar></navbar>
+        <the-header title="Property Detail" page="Property Detail"></the-header>
+        <search></search>
+        <div class="container-xxl py-2 px-5">
+            <div class="container">
+                <a class="back" @click="$router.go(-1)">Go Back</a>
+                <div class="row g-0 gx-5 align-items-end mt-2">
+                    <div class="col-lg-12">
+                        <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                            <h1 class="mb-2">{{ getOnePropertyList.name }}</h1>
+                            <p>{{ getOnePropertyList.address }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-light rounded p-3">
+                    <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                                <vue-agile ref="carousel" :center-mode="true" :autoplay="true" :infinite="true" :fade="true" :dots="false">
+                                    <div class="slide" v-for="(image, index) in strToObject(getOnePropertyList.gallery)" :key="index">
+                                        <img :src="image" alt="gallery">
+                                    </div>
+                                    <template slot="prevButton">prev</template>
+                                    <template slot="nextButton">next</template>
+                                </vue-agile>
+                                <!--<vue-agile ref="thumbnails" :as-nav-for="[$refs.carousel]" :slides-to-show="4"></vue-agile>-->
+                            </div>
+                            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                                <div class="mb-4">
+                                    <h1 class="mb-3">Contact With Our Certified Agent</h1>
+                                    <p>Eirmod sed ipsum dolor sit rebum magna erat. Tempor lorem kasd vero ipsum sit sit diam justo sed vero dolor duo.</p>
+                                </div>
+                                <a href="tel:+233248132216" class="btn btn-primary py-3 px-4 me-2"><i class="fa fa-phone-alt me-2"></i>Make A Call</a>
+                                <a href="" class="btn btn-dark py-3 px-4"><i class="fa fa-calendar-alt me-2"></i>Get Appoinment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <the-footer></the-footer>
+        <back-to-top></back-to-top>
+    </div>
+</template>
+<script>
+import { mapActions, mapGetters } from 'vuex';
+import { Carousel, Slide } from 'vue-carousel';
+import { VueAgile } from 'vue-agile'
+import Spinner from '../../components/users/common/Spinner.vue';
+import Navbar from '../../components/users/common/Navbar.vue';
+import TheHeader from '../../components/users/common/TheHeader.vue';
+import Search from '../../components/users/common/Search.vue';
+import Contact from '../../components/users/Contact.vue';
+import TheFooter from '../../components/users/common/TheFooter.vue';
+import BackToTop from '../../components/users/common/BackToTop.vue';
+export default {
+    name: "PropertyDetailView",
+
+    props: {
+        id: {
+            // type: Number,
+            required: true,
+        }
+    },
+ 
+    components: {
+        Spinner,
+        Navbar,
+        TheHeader,
+        Search,
+        Contact,
+        TheFooter,
+        BackToTop,
+        Carousel,
+        Slide,
+        VueAgile,
+    },
+    data() {
+        return {
+            isLoading: false,
+            title: process.env.MIX_APP_NAME,
+            description: process.env.MIX_APP_DESCRIPTION,
+        }
+    },
+
+    computed: {
+        ...mapGetters("property_list_detail", ["getOnePropertyList", "getError"]),
+    },
+
+
+    methods:{
+        ...mapActions("property_list_detail", ["getPropertyListDetail"]), 
+        ucfirst(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        strToObject(string) {
+            return JSON.parse(string);
+        },
+    },
+
+    async beforeMount() {
+        this.isLoading = true;
+    },
+
+    mounted() {
+        this.isLoading = false;
+        this.getPropertyListDetail(this.id);
+        
+    },
+    head: {
+        // creates a title tag in header.
+        title() {
+            return {
+                inner: this.title,
+                separator: '-',
+                complement: this.ucfirst(this.$route.name),
+            }
+        },
+        meta() {
+            return [
+            // creates a meta description tag in header.
+                { 'http-equiv': 'X-UA-Compatible', content: 'ie=edge' },
+                { name: 'title', content: this.title +' - '+ this.ucfirst(this.$route.name)},
+                { name: 'description', content: this.description, id: 'desc' },
+                { name: 'robots', content: 'index,follow' },
+                //Open Graph/Facebook
+                
+                { property: 'og:type', content: 'website' },
+                { property: 'og:title', content: this.title +' - '+ this.ucfirst(this.$route.name) },
+                { property: 'og:url', content: '' },
+                { property: 'og:description', content: this.description },
+                { property: 'og:image', content: require('../../../../public/img/property-6.jpg') },
+
+                //twitter
+                { property: 'twitter:card', content: 'summary_large_image' },
+                { property: 'twitter:title', content: this.title +' - '+ this.ucfirst(this.$route.name) },
+                { property: 'twitter:url', content: '' },
+                { property: 'twitter:description', content: this.description },
+                { property: 'twitter:image', content: require('../../../../public/img/property-6.jpg') },
+
+                // Google+, LinkedIn, Pinterest, Slack
+                
+                { itemprop: 'name', content: this.title +' - '+ this.ucfirst(this.$route.name) },
+                { itemprop: 'url', content: '' },
+                { itemprop: 'description', content: this.description },
+                { itemprop: 'image', content: require('../../../../public/img/property-6.jpg') },
+                
+            ];
+        },
+        // style: [
+        //     { type: 'text/css', inner: 'body { background-color: #000; color: #fff}' }
+        // ],
+        link: [
+            { rel: 'icon', href: require("../../../../public/img/icon-deal.png"), sizes: '16x16', type: 'image/png' },
+            { rel: 'stylesheet', href: require("../../../../public/lib/animate/animate.css") },
+            { rel: 'stylesheet', href: require("../../../../public/lib/owlcarousel/assets/owl.carousel.min.css") },
+            { rel: 'stylesheet', href: require("../../../../public/css/bootstrap.min.css") },
+            { rel: 'stylesheet', href: require("../../../../public/css/style.css") },
+        ],
+        // script: [
+        //     { type: 'text/javascript', src: 'cdn/to/script.js', async: true, body: true}, // Insert in body
+        // ],
+    }
+}
+</script>
+<style scoped>
+ .back:hover {
+    cursor: pointer;
+ }
+</style>

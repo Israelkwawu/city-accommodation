@@ -155,6 +155,8 @@ export default {
             this.isLoading = false;
             if (this.results.length == 0) {
                 this.isNoResultsFound = true;
+            }else{
+                this.isNoResultsFound = false;
             }
         },
 
@@ -184,13 +186,16 @@ export default {
             this.results = [ ...this.getSearchResults ];
         }
     },
-    mounted() {
+    async mounted() {
         this.isLoading = true;
-        this.outPageSearch();
+        await this.outPageSearch();
         this.isLoading = false;
+        this.isNoResultsFound = false;
         if (this.results.length == 0) {
             this.isNoResultsFound = true;
             this.search_term = this.name;
+        }else{
+            this.isNoResultsFound = false;
         }
     }
 }

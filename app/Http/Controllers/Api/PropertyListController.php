@@ -17,4 +17,10 @@ class PropertyListController extends Controller
             ->cursorPaginate(12)
         );
     }
+
+    public function show($id)
+    {
+        //
+        return response()->json(Listing::findOrFail($id));
+    }
 }

@@ -51,3 +51,4 @@ Route::post('/search', [SearchController::class, 'filter']);
 Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/property_types', [PropertyTypeController::class, 'index']);
 Route::get('/property_lists', [PropertyListController::class, 'index']);
+Route::get('/property_lists/{id}', [PropertyListController::class, 'show']);

@@ -5,6 +5,7 @@ import search from './modules/search';
 import property_type from './modules/property_type';
 import country from './modules/country';
 import property_list from './modules/property_list';
+import property_list_detail from './modules/property_list_detail';
 import super_property_attribute from "./modules/super_property_attribute";
 import super_property_list from './modules/super_property_list';
 import super_property_approval from './modules/super_property_approval';
@@ -38,6 +39,7 @@ const store = new Vuex.Store({
     property_type,
     country,
     property_list,
+    property_list_detail,
     super_property_attribute,
     super_property_list,
     super_property_approval,

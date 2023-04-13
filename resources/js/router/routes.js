@@ -54,6 +54,16 @@ const routes = [
         }
     },
     {
+        path: '/property-list/:id(\\d+)',
+        props: true,
+        component: () => import(/* webpackChunkName: "users" */'../views/users/PropertyDetailView.vue'),
+        name: 'property_list_detail',
+        meta:{
+            middleware:"guest",
+            title:`Property Detail`
+        }
+    },
+    {
         path: '/testimonial',
         component: () => import(/* webpackChunkName: "users" */'../views/users/TestimonialView.vue'),
         name: 'testimonial',

@@ -29,6 +29,7 @@
     "dependencies": {
         "autoprefixer": "10.4.5",
         "js-cookie": "^3.0.1",
+        "vue-agile": "^2.0.0",
         "vue-carousel": "^0.18.0",
         "vue-datepicker-ui": "^2.3.0",
         "vue-head": "^2.2.0",

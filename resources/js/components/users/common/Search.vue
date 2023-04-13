@@ -205,16 +205,15 @@ export default {
                 this.request.created_at = this.selectedDate.map(this.formatDate).join();
             }
 
-            if (this.$route.name != "search") {
                 this.$router.push({
                     name: 'search',
                     params: {
                         ...this.request
                     }
-                }).catch(()=>{});
-            }else{
-                this.$emit('request', this.request)
-            }
+                }).catch(()=>{
+                    this.$emit('request', this.request);
+                });
+        
         
             
         }

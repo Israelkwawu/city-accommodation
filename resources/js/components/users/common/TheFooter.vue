@@ -17,8 +17,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-white mb-4">Quick Links</h5>
-                    <a class="btn btn-link text-white-50" href="">About Us</a>
-                    <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                    <a class="btn btn-link text-white-50" href="/about">About Us</a>
+                    <a class="btn btn-link text-white-50" href="/contact">Contact Us</a>
                     <a class="btn btn-link text-white-50" href="">Our Services</a>
                     <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
                     <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
@@ -60,12 +60,12 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">{{ app_name }}</a>, All Right Reserved. 
+                        &copy; <a class="border-bottom" href="/">{{ app_name }}</a>, All Right Reserved. 
                         
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         <div class="footer-menu">
-                            <a href="">Home</a>
+                            <a href="/">Home</a>
                             <a href="">Cookies</a>
                             <a href="">Help</a>
                             <a href="">FQAs</a>
