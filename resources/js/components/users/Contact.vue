@@ -25,7 +25,7 @@
                                     <div class="icon me-3" style="width: 45px; height: 45px;">
                                         <i class="fa fa-envelope-open text-primary"></i>
                                     </div>
-                                    <span>info@example.com</span>
+                                    <span>info@cityaccomodation.com</span>
                                 </div>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                     <div class="icon me-3" style="width: 45px; height: 45px;">
                                         <i class="fa fa-phone-alt text-primary"></i>
                                     </div>
-                                    <span>+012 345 6789</span>
+                                    <span>+233 24 813 2216</span>
                                 </div>
                             </div>
                         </div>

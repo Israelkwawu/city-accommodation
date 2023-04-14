@@ -11,14 +11,16 @@
                     <div class="col-lg-12">
                         <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
                             <h1 class="mb-2">{{ getOnePropertyList.name }}</h1>
-                            <p>{{ getOnePropertyList.address }}</p>
+                            <p>{{ getOnePropertyList.address }}, {{ getOnePropertyList.city }}, {{ getOnePropertyList.state }}</p>
+                            <p>{{ getOnePropertyList.country }}.</p>
+                            <small class="text-muted">Listed {{ getOnePropertyList.created_at }}.</small>
                         </div>
                     </div>
                 </div>
 
                 <div class="bg-light rounded p-3">
                     <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
-                        <div class="row g-5 align-items-center">
+                        <div class="row g-5 align-items-start">
                             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                         
                                 <div class="vueGallery">
@@ -42,9 +44,21 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                                <div class="mb-4">
-                                    <h1 class="mb-3">Contact With Our Certified Agent</h1>
-                                    <p>Eirmod sed ipsum dolor sit rebum magna erat. Tempor lorem kasd vero ipsum sit sit diam justo sed vero dolor duo.</p>
+                                <div class="mb-3">
+                                    <h5 v-if="getOnePropertyList.status == 'rent'">For Rent</h5>
+                                    <h5 v-else>For Sale</h5>
+                                    <small class="text-muted">Listed {{ getOnePropertyList.created_at }}.</small>
+                                    
+                                </div>
+                                <div class="bg-light rounded mb-3 py-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                                    <h3 class="">{{ getOnePropertyList.currency_symbol }} {{ getOnePropertyList.price }}</h3>
+                                    <small v-if="getOnePropertyList.status == 'rent'">PER MONTH</small>
+                                    <p>Property Type: {{ ucfirst(getOnePropertyList.property_type) }}</p>
+                                    <p>Property Sub Type: {{ ucfirst(getOnePropertyList.sub_property_type) }}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <h2 class="mb-3">Description</h2>
+                                    <p>{{ getOnePropertyList.description }}</p>
                                 </div>
                                 <a href="tel:+233248132216" class="btn btn-primary py-3 px-4 me-2"><i class="fa fa-phone-alt me-2"></i>Make A Call</a>
                                 <a href="" class="btn btn-dark py-3 px-4"><i class="fa fa-calendar-alt me-2"></i>Get Appoinment</a>
@@ -52,7 +66,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="row g-5 align-items-center">
+            
+                    <div class="col-lg-12 wow fadeIn" data-wow-delay="0.5s">
+                        <h2 class="my-4">Property Features and Facilities</h2>
+                    
+                        <p 
+                            v-for="(attribute, index) in strToObject(getOnePropertyList.attributes)"
+                            :key="index"
+                        ><i class="fa fa-check text-primary me-3"></i>{{ attribute }}</p>
+                    </div>
+                </div>
             </div>
+            <!--<property-list></property-list>-->
         </div>
         <the-footer></the-footer>
         <back-to-top></back-to-top>
@@ -60,14 +86,12 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { Carousel, Slide } from 'vue-carousel';
-import { VueAgile } from 'vue-agile';
-import VueGallery from 'vue-gallery';
 import Spinner from '../../components/users/common/Spinner.vue';
 import Navbar from '../../components/users/common/Navbar.vue';
 import TheHeader from '../../components/users/common/TheHeader.vue';
 import Search from '../../components/users/common/Search.vue';
 import Contact from '../../components/users/Contact.vue';
+import PropertyList from '../../components/users/common/PropertyList.vue';
 import TheFooter from '../../components/users/common/TheFooter.vue';
 import BackToTop from '../../components/users/common/BackToTop.vue';
 export default {
@@ -88,10 +112,7 @@ export default {
         Contact,
         TheFooter,
         BackToTop,
-        Carousel,
-        Slide,
-        VueAgile,
-        VueGallery,
+        PropertyList,
     },
     data() {
         return {
