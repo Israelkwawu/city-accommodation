@@ -20,14 +20,26 @@
                     <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
                         <div class="row g-5 align-items-center">
                             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                                <vue-agile ref="carousel" :center-mode="true" :autoplay="true" :infinite="true" :fade="true" :dots="false">
-                                    <div class="slide" v-for="(image, index) in strToObject(getOnePropertyList.gallery)" :key="index">
-                                        <img :src="image" alt="gallery">
+                        
+                                <div class="vueGallery">
+                                    <div class="activePhoto" :style="'background-image: url('+photos[activePhoto]+');'">
+                                        <button type="button" aria-label="Previous Photo" class="previous" @click="previousPhoto()">
+                                            <i class="fas fa-chevron-circle-left"></i>
+                                        </button>
+                                        <button type="button" aria-label="Next Photo" class="next" @click="nextPhoto()">
+                                            <i class="fas fa-chevron-circle-right"></i>
+                                        </button>
                                     </div>
-                                    <template slot="prevButton">prev</template>
-                                    <template slot="nextButton">next</template>
-                                </vue-agile>
-                                <!--<vue-agile ref="thumbnails" :as-nav-for="[$refs.carousel]" :slides-to-show="4"></vue-agile>-->
+                                    <div class="thumbnails">
+                                        <div
+                                            v-for="(photo, index) in photos"
+                                            :src="photo"
+                                            :key="index"
+                                            @click="activePhoto = index"
+                                            :class="{'active': activePhoto == index}" :style="'background-image: url('+photo+')'">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                                 <div class="mb-4">
@@ -49,7 +61,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { Carousel, Slide } from 'vue-carousel';
-import { VueAgile } from 'vue-agile'
+import { VueAgile } from 'vue-agile';
+import VueGallery from 'vue-gallery';
 import Spinner from '../../components/users/common/Spinner.vue';
 import Navbar from '../../components/users/common/Navbar.vue';
 import TheHeader from '../../components/users/common/TheHeader.vue';
@@ -66,7 +79,7 @@ export default {
             required: true,
         }
     },
- 
+
     components: {
         Spinner,
         Navbar,
@@ -78,17 +91,22 @@ export default {
         Carousel,
         Slide,
         VueAgile,
+        VueGallery,
     },
     data() {
         return {
             isLoading: false,
             title: process.env.MIX_APP_NAME,
             description: process.env.MIX_APP_DESCRIPTION,
+            activePhoto: 0,
         }
     },
 
     computed: {
         ...mapGetters("property_list_detail", ["getOnePropertyList", "getError"]),
+        photos() {
+            return this.strToObject(this.getOnePropertyList.gallery)
+        }
     },
 
 
@@ -100,6 +118,12 @@ export default {
         strToObject(string) {
             return JSON.parse(string);
         },
+        nextPhoto () {
+            this.activePhoto = ( this.activePhoto+1 < this.photos.length ? this.activePhoto+1 : 0 )
+        },
+        previousPhoto () {
+            this.activePhoto = ( this.activePhoto-1 >= 0 ? this.activePhoto-1 : this.photos.length-1 )
+        },
     },
 
     async beforeMount() {
@@ -109,6 +133,14 @@ export default {
     mounted() {
         this.isLoading = false;
         this.getPropertyListDetail(this.id);
+
+        this.activePhoto = 0
+        document.addEventListener("keydown", (event) => {
+            if (event.which == 37)
+                this.previousPhoto()
+            if (event.which == 39)
+                this.nextPhoto()
+        })
         
     },
     head: {
@@ -171,4 +203,67 @@ export default {
  .back:hover {
     cursor: pointer;
  }
+  
+.vueGallery .activePhoto {
+    width: 100%;
+    margin-bottom: 5px;
+    padding-bottom: 65%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid #fff;
+    position: relative;
+}
+.vueGallery .activePhoto button {
+    border: none;
+    background-color: transparent;
+    font-size: 32px;
+    color: #fff;
+    opacity: 0.5;
+    position: absolute;
+    outline: none;
+    height: 100%;
+}
+.vueGallery .activePhoto button:hover {
+    opacity: 1;
+}
+.vueGallery .activePhoto button.previous {
+    padding: 0 1em 0 0.7em;
+    left: 0;
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#80000000", endColorstr="#00000000",GradientType=1 );
+}
+.vueGallery .activePhoto button.next {
+    padding: 0 0.7em 0 1em;
+    right: 0;
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#00000000", endColorstr="#80000000",GradientType=1 );
+}
+.vueGallery .thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-gap: 5px;
+}
+.vueGallery .thumbnails div {
+    width: 100%;
+    border: 2px solid #fff;
+    outline: 2px solid #fff;
+    cursor: pointer;
+    padding-bottom: 65%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
+}
+.vueGallery .thumbnails div:hover {
+    opacity: 0.6;
+}
+.vueGallery .thumbnails div.active {
+    outline-color: #5c4084;
+    opacity: 1;
+}
 </style>
