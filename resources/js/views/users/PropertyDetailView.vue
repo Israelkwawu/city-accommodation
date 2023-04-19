@@ -152,8 +152,9 @@ export default {
     },
 
     mounted() {
-        this.isLoading = false;
+        this.isLoading = true;
         this.getPropertyListDetail(this.id);
+        this.isLoading = false;
 
         this.activePhoto = 0
         document.addEventListener("keydown", (event) => {

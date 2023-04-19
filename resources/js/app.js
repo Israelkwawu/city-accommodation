@@ -8,6 +8,7 @@ require('./bootstrap');
 import Vue from 'vue'
 import VueRouter from 'vue-router';
 import VueHead from 'vue-head';
+import Vuelidation from 'vuelidation';
 // window.Vue = require('vue').default; /// I commentted this
 import router from './router/index';
 import store from './store/index';
@@ -33,6 +34,7 @@ import App from './App.vue';
  */
 Vue.use(VueHead);
 Vue.use(VueRouter);
+Vue.use(Vuelidation);
 
 const app = new Vue({
     el: '#app',

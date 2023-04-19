@@ -50,34 +50,52 @@
                 <div class="col-md-6">
                     <div class="wow fadeInUp" data-wow-delay="0.5s">
                         <p class="mb-4">Have a question? Send us a message, we are happy to respond to your enquiries.</p>
-                        <form>
+                        <div :style="{ display: display }" :class="[ display == 'block' ? alertType:''  ]" class="sufee-alert alert with-close alert-dismissible fade show">
+                                
+                            {{ response }}
+                            <button type="button" ref="close" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form ref="form"  @submit.prevent="sendMail">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                        <input type="text" class="form-control" v-model="name" id="name" placeholder="Your Name">
+                                        <small v-if='$vuelidation.error("name")' class="form-text  text-danger">{{ $vuelidation.error('name') }}</small>
                                         <label for="name">Your Name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                        <input type="email" class="form-control" v-model="email" id="email" placeholder="Your Email">
+                                        <small v-if='$vuelidation.error("email")' class="form-text  text-danger">{{ $vuelidation.error('email') }}</small>
                                         <label for="email">Your Email</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                        <input type="tel" class="form-control" v-model="phone" id="phone" placeholder="+233 12 345 6789">
+                                        <small v-if='$vuelidation.error("phone")' class="form-text  text-danger">{{ $vuelidation.error('phone') }}</small>
+                                        <label for="subject">Your Phone Number (+233 12 345 6789)</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" v-model="subject" id="subject" placeholder="Subject">
+                                        <small v-if='$vuelidation.error("subject")' class="form-text  text-danger">{{ $vuelidation.error('subject') }}</small>
                                         <label for="subject">Subject</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 150px"></textarea>
+                                        <textarea class="form-control" v-model="message" placeholder="Leave a message here" id="message" style="height: 150px"></textarea>
+                                        <small v-if='$vuelidation.error("message")' class="form-text  text-danger">{{ $vuelidation.error('message') }}</small>
                                         <label for="message">Message</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                    <button :disabled="processing || $vuelidation.errors()" class="btn btn-primary w-100 py-3" type="submit">{{ processing ? "Please wait" : "Send Message" }}</button>
                                 </div>
                             </div>
                         </form>
@@ -91,7 +109,80 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 export default {
     name: "Contact",
+    computed: {
+        ...mapGetters("send_mail", ["getResponse", "getError"]),
+    },
+    data() {
+        return {
+            processing: false,
+            response: '',
+            alertType: '',
+            display: 'none',
+            name: '',
+            email: '',
+            message: '',
+            phone: '',
+            subject: '',
+        }
+    },
+
+    methods: {
+        ...mapActions("send_mail", ["send"]),  
+        async sendMail() {
+            if (this.$vuelidation.valid()) {
+                this.processing = true;
+                try {
+
+                    await this.send({
+                        email: this.email, 
+                        name: this.name,
+                        message: this.message,
+                        phone: this.phone,
+                        subject: this.subject,
+                    });
+                
+                    this.alertType = "alert-success";
+                    this.response = "Your Enquiry was sent Successfully!.";
+                    this.display = 'block'; 
+                    this.name = '';
+                    this.phone = '';
+                    this.email = '';
+                    this.message = '';
+                    this.subject = '';
+                } catch ({ response }) {
+                    this.alertType = "alert-danger";
+                    this.response = response.statusText;
+                    this.display = 'block';
+                } finally {
+                    this.processing = false;
+                }
+            }
+        }
+    },
+
+    vuelidation: {
+        data: {
+            name: {
+                required: true,
+            },
+            email: {
+                required: true,
+                email: true,
+            },
+            phone: {
+                required: true,
+            },
+            subject: {
+                required: true,
+            },
+            message: {
+                required: true,
+            },
+        
+        },
+    },
 }
 </script>
