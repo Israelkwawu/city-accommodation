@@ -45,8 +45,8 @@ class ContactUs extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->from("Contact Us Form", env('APP_NAME'))
-                    ->subject($this->data['title'])
+                    ->from("no-reply@cityaccommodation.com", env('APP_NAME'))
+                    ->subject($this->data['subject'])
                     ->line("Name: ".$this->data['name'])
                     ->line("Email: ".$this->data['email'])
                     ->line("Phone: ".$this->data['phone'])

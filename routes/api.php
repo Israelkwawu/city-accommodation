@@ -53,4 +53,4 @@ Route::get('/countries', [CountryController::class, 'index']);
 Route::get('/property_types', [PropertyTypeController::class, 'index']);
 Route::get('/property_lists', [PropertyListController::class, 'index']);
 Route::get('/property_lists/{id}', [PropertyListController::class, 'show']);
-Route::post('/send_mail', [ContactUsController::class, 'sendMail']);//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
+Route::post('/send_mail', [ContactUsController::class, 'sendMail']);

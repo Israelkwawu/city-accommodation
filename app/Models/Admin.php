@@ -46,4 +46,19 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Listing::class);
     }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return array|string
+     */
+    public function routeNotificationForMail($notification)
+    {
+        // Return email address only...
+        return $this->email;
+
+        // Return email address and name...
+        // return [$this->email => $this->name];
+    }
 }
