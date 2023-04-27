@@ -44,13 +44,18 @@ class ContactUs extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        // dd($notifiable);
+        if ($notifiable->role == 'admin' || $notifiable->role == 'manager') {
+            # code...
+            return (new MailMessage)
                     ->from("no-reply@cityaccommodation.com", env('APP_NAME'))
                     ->subject($this->data['subject'])
                     ->line("Name: ".$this->data['name'])
                     ->line("Email: ".$this->data['email'])
                     ->line("Phone: ".$this->data['phone'])
                     ->line($this->data['message']);
+        }
+        
     }
 
     /**
